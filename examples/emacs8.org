@@ -1,0 +1,1215 @@
+* packages
+#+begin_src emacs-lisp :tangle yes
+  (package-initialize nil)
+  (add-to-list 'package-archives
+               '("org" . "http://orgmode.org/elpa/"))
+  (add-to-list 'package-archives
+               '("melpa" . "http://melpa.org/packages/") t)
+  (setq package-archive-priorities '(("org" . 3)
+                                     ("melpa" . 2)
+                                     ("gnu" . 1)))
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
+  (setq use-package-verbose t)
+  (eval-when-compile
+    (require 'use-package))
+  (use-package diminish :ensure t)
+#+end_src
+* swiper/ivy
+#+begin_src emacs-lisp :tangle yes
+  (use-package ivy
+    :ensure t)
+  (use-package swiper
+    :ensure t
+    :diminish ivy-mode
+    :bind (("C-r" . swiper)
+           ("C-c C-r" . ivy-resume)
+           ("C-c h m" . woman)
+           ("C-x b" . ivy-switch-buffer)
+           ("C-c u" . swiper-all))
+    :config
+    (ivy-mode 1)
+    (setq ivy-use-virtual-buffers t))
+  (use-package counsel
+    :ensure t
+    :commands (counsel-mode)
+    :bind (("C-s" . counsel-grep-or-swiper)
+           ("M-x" . counsel-M-x)
+           ("C-x C-f" . counsel-find-file)
+           ("C-h f" . counsel-describe-function)
+           ("C-h v" . counsel-describe-variable)
+           ("C-h i" . counsel-info-lookup-symbol)
+           ("C-h u" . counsel-unicode-char)
+           ("C-c k" . counsel-rg)
+           ("C-x l" . counsel-locate)
+           ("C-c g" . counsel-git-grep)
+           ("C-c h i" . counsel-imenu)
+           ("C-x p" . counsel-list-processes))
+    :init (counsel-mode)
+    :config
+    (ivy-set-actions
+             'counsel-find-file
+             '(("j" find-file-other-window "other")))
+    (ivy-set-actions 'counsel-git-grep
+                     '(("j" find-file-other-window "other"))))
+  (use-package ivy-hydra
+    :ensure t)
+  (use-package ivy-xref
+    :ensure t
+    :init (setq xref-show-xrefs-function #'ivy-xref-show-xrefs))
+#+end_src
+
+* misc
+#+begin_src emacs-lisp :tangle yes
+  (setq save-interprogram-paste-before-kill t)
+  (setq ag-highlight-search t)
+  (blink-cursor-mode -1)
+  (use-package undo-tree
+    :ensure t
+    :config
+    (progn
+      (global-undo-tree-mode)
+      (setq undo-tree-visualizer-timestamps t))
+    :diminish undo-tree-mode)
+  (add-to-list 'auto-mode-alist '("\\.zsh\\'" . sh-mode))
+  (winner-mode 1)
+  (defalias 'yes-or-no-p 'y-or-n-p)
+  (global-unset-key (kbd "C-z"))
+  (put 'upcase-region 'disabled nil)
+  (setq require-final-newline t)
+  (use-package ws-butler
+    :ensure t
+    :diminish ws-butler-mode
+    :config
+    (progn
+      (ws-butler-global-mode)
+      (setq ws-butler-keep-whitespace-before-point nil)))
+  (use-package server
+    :config
+    (progn
+      (defun server-enable ()
+        (unless (server-running-p)
+          (server-start)))
+      (add-hook 'after-init-hook 'server-enable t)))
+#+end_src
+* company
+#+begin_src emacs-lisp :tangle yes
+  (use-package company
+    :ensure t
+    :diminish company-mode
+    :defer 2
+    :bind ("C-<tab>" . company-complete)
+    :config
+    (global-company-mode t))
+#+end_src
+* dired
+#+begin_src emacs-lisp :tangle yes
+  (use-package dired
+    :commands dired-mode
+    :bind (:map dired-mode-map ("C-o" . dired-omit-mode))
+    :config
+    (progn
+      (setq dired-dwim-target t)
+      (setq-default dired-omit-mode t)
+      (setq-default dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\\.$\\|^\\.")
+      (define-key dired-mode-map "i" 'dired-subtree-insert)
+      (define-key dired-mode-map ";" 'dired-subtree-remove)))
+  (use-package dired-subtree
+    :ensure t
+    :commands (dired-subtree-insert))
+#+end_src
+
+* projectile
+#+begin_src emacs-lisp :tangle yes
+  (use-package projectile
+    :ensure t
+    :commands (projectile-mode)
+    :config
+    (progn
+      (setq projectile-completion-system 'ivy)
+      (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+      (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)))
+  (use-package counsel-projectile
+    :ensure t
+    :commands (counsel-projectile-mode)
+    :init
+    (progn
+      (projectile-mode +1)
+      (counsel-projectile-mode)))
+#+end_src
+* gui
+#+begin_src emacs-lisp :tangle yes
+  (setq inhibit-splash-screen t)
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+  (column-number-mode t)
+  (use-package all-the-icons
+    :ensure t)
+  (use-package doom-themes
+    :ensure t
+    :config
+    (progn
+      (setq doom-one-brighter-comments t)
+      (load-theme 'doom-one t)))
+  (use-package powerline
+    :ensure t
+    :defer t)
+#+end_src
+* org
+#+begin_src emacs-lisp :tangle yes
+  (use-package org
+    :ensure t
+    :mode ("\\.org\\'" . org-mode)
+    :bind (("C-c l" . org-store-link)
+           ("C-c c" . org-capture)
+           ("C-c a" . org-agenda)
+           ("C-c b" . org-iswitchb)
+           ("C-c C-w" . org-refile)
+           ("C-c j" . org-clock-goto)
+           ("C-c C-x C-o" . org-clock-out))
+    :config
+    (progn
+      ;; The GTD part of this config is heavily inspired by
+      ;; https://emacs.cafe/emacs/orgmode/gtd/2017/06/30/orgmode-gtd.html
+      (setq org-directory "~/org")
+      (setq org-agenda-files
+            (mapcar (lambda (path) (concat org-directory path))
+                    '("/org.org"
+                      "/gtd/gtd.org"
+                      "/gtd/inbox.org"
+                      "/gtd/tickler.org")))
+      (setq org-log-done 'time)
+      (setq org-src-fontify-natively t)
+      (setq org-use-speed-commands t)
+      (setq org-capture-templates
+            '(("t" "Todo [inbox]" entry
+               (file+headline "~/org/gtd/inbox.org" "Tasks")
+               "* TODO %i%?")
+              ("T" "Tickler" entry
+               (file+headline "~/org/gtd/tickler.org" "Tickler")
+               "* %i%? \n %^t")))
+      (setq org-refile-targets
+            '(("~/org/gtd/gtd.org" :maxlevel . 3)
+              ("~/org/gtd/someday.org" :level . 1)
+              ("~/org/gtd/tickler.org" :maxlevel . 2)))
+      (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
+      (setq org-agenda-custom-commands
+            '(("@" "Contexts"
+               ((tags-todo "@email"
+                           ((org-agenda-overriding-header "Emails")))
+                (tags-todo "@phone"
+                           ((org-agenda-overriding-header "Phone")))))))
+      (setq org-clock-persist t)
+      (org-clock-persistence-insinuate)
+      (setq org-time-clocksum-format '(:hours "%d" :require-hours t :minutes ":%02d" :require-minutes t))))
+  (use-package org-inlinetask
+    :bind (:map org-mode-map
+                ("C-c C-x t" . org-inlinetask-insert-task))
+    :after (org)
+    :commands (org-inlinetask-insert-task))
+  (use-package org-bullets
+    :ensure t
+    :commands (org-bullets-mode)
+    :init (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+#+end_src
+* functions
+#+begin_src emacs-lisp :tangle yes
+  ;; functions to paste to http://sprunge.us using web.el
+  (defun sprunge-buffer ()
+    (interactive)
+    (sprunge-region (point-min) (point-max)))
+  (defun sprunge-region (start end)
+    (interactive "r")
+    (let ((buffer-contents (buffer-substring-no-properties start end))
+          (query-data (make-hash-table :test 'equal)))
+      (puthash 'sprunge buffer-contents query-data)
+      (web-http-post
+       (lambda (con header data)
+         (kill-new (substring data 0 -1)))
+       :url "http://sprunge.us"
+       :data query-data)))
+  (use-package web
+    :commands (sprunge-region sprunge-buffer)
+    :ensure t)
+  (defun narrow-or-widen-dwim (p)
+    "Widen if buffer is narrowed, narrow-dwim otherwise.
+  Dwim means: region, org-src-block, org-subtree, or defun,
+  whichever applies first. Narrowing to org-src-block actually
+  calls `org-edit-src-code'.
+
+  With prefix P, don't widen, just narrow even if buffer is
+  already narrowed."
+    (interactive "P")
+    (declare (interactive-only))
+    (cond ((and (buffer-narrowed-p) (not p)) (widen))
+          ((region-active-p)
+           (narrow-to-region (region-beginning) (region-end)))
+          ((derived-mode-p 'org-mode)
+           ;; `org-edit-src-code' is not a real narrowing
+           ;; command. Remove this first conditional if you
+           ;; don't want it.
+           (cond ((ignore-errors (org-edit-src-code))
+                  (delete-other-windows))
+                 ((ignore-errors (org-narrow-to-block) t))
+                 (t (org-narrow-to-subtree))))
+          ((derived-mode-p 'latex-mode)
+           (LaTeX-narrow-to-environment))
+          (t (narrow-to-defun))))
+  (bind-key "C-c n" 'narrow-or-widen-dwim)
+#+end_src
+* bindings
+#+begin_src emacs-lisp :tangle yes
+  (global-set-key (kbd "C-c ;") 'comment-line)
+  ;; expand-region
+  (pending-delete-mode t)
+  (use-package expand-region
+    :ensure t
+    :commands (er/expand-region
+               er/mark-inside-pairs
+               er/mark-inside-quotes
+               er/mark-outside-pairs
+               er/mark-outside-quotes
+               er/mark-defun
+               er/mark-comment
+               er/mark-text-sentence
+               er/mark-text-paragraph
+               er/mark-word
+               er/mark-url
+               er/mark-email
+               er/mark-symbol))
+  (global-set-key (kbd "C-x C-b") 'ibuffer)
+  (global-set-key (kbd "C-x C-r") 'revert-buffer)
+
+#+end_src
+* ace
+#+begin_src emacs-lisp :tangle yes
+  (use-package ace-window
+    :ensure t
+    :bind ("M-ä" . ace-window))
+  (use-package avy
+    :ensure avy
+    :bind (("C-ß" . avy-goto-char)
+           ("C-ö" . avy-goto-word-1)
+           ("C-ä" . avy-goto-char-2)
+           ("C-ü" . avy-goto-line))
+    :config (setq avy-case-fold-search nil))
+#+end_src
+* auctex
+#+begin_src emacs-lisp :tangle yes
+  (use-package tex
+    :ensure auctex
+    :mode ("\\.tex\\'" . LaTeX-mode)
+    :config
+    (setq TeX-view-program-list
+          '(("zathura"
+             ("zathura" (mode-io-correlate "-sync.sh")
+              " "
+              (mode-io-correlate "%n:1:%b ")
+              "%o"))))
+    (setq TeX-view-program-selection '((output-pdf "zathura")))
+    (setq TeX-PDF-mode t)
+    (TeX-source-correlate-mode))
+#+end_src
+* haskell
+#+begin_src emacs-lisp :tangle yes
+  (use-package hindent
+    :ensure t
+    :commands (hindent-reformat-decl hindent-mode)
+    :hook (haskell-mode . hindent-mode))
+  (use-package haskell-mode
+    :ensure t
+    :mode (("\\.c?hs\\'" . haskell-mode)
+           ("\\.cabal\\'" . haskell-cabal-mode))
+    :bind (:map haskell-mode-map
+                ("C-c i" . hindent-reformat-decl)
+                ("C-c C-`" . haskell-interactive-bring)
+                ("C-c C-l" . haskell-process-load-file)
+                ("C-c C-k" . haskell-interactive-mode-clear))
+    :config
+    (setq haskell-process-log t)
+    :hook (haskell-mode . haskell-indentation-mode))
+#+end_src
+* mu4e
+#+begin_src emacs-lisp :tangle yes
+  (use-package mu4e
+    :load-path "/usr/share/emacs/site-lisp/mu4e"
+    :commands mu4e
+    :config
+    (use-package mu4e-contrib)
+    (if mail-on
+        (progn
+          (setq mu4e-html2text-command
+                'mu4e-shr2text)
+          (setq mu4e-context-policy 'pick-first)
+          (setq mu4e-completing-read-function 'ivy-completing-read)
+          (setq message-send-mail-function 'smtpmail-send-it)
+          (setq mu4e-view-html-plaintext-ratio-heuristic 50)
+          (setq mu4e-contexts
+                (list (make-mu4e-context
+                       :name "purelyfunctional"
+                       :enter-func (lambda () (mu4e-message "Switch to the purelyfunctional context"))
+                       :match-func (lambda (msg)
+                                     (when msg
+                                       (s-prefix? "/purelyfunctional/" (mu4e-message-field msg :maildir))))
+                       :vars '((user-mail-address . "moritz.kiefer@purelyfunctional.org")
+                               (mu4e-sent-folder . "/purelyfunctional/sent")
+                               (mu4e-drafts-folder . "/purelyfunctional/drafts")
+                               (mu4e-trash-folder . "/purelyfunctional/Trash")
+                               (mu4e-sent-messages-behavior . sent)
+                               (smtpmail-default-smtp-server . "cassiopeia.uberspace.de")
+                               (smtpmail-smtp-server . "cassiopeia.uberspace.de")
+                               (smtpmail-stream-type . starttls)
+                               (smtpmail-smtp-service . 587)))
+                      (make-mu4e-context
+                       :name "gmail"
+                       :enter-func (lambda () (mu4e-message "Switch to the gmail context"))
+                       :match-func (lambda (msg)
+                                     (when msg
+                                       (s-prefix? "/gmail/" (mu4e-message-field msg :maildir))))
+                       :vars '((user-mail-address . "moritz.kiefer@gmail.com")
+                               (mu4e-sent-folder . "/gmail/sent")
+                               (mu4e-drafts-folder . "/gmail/drafts")
+                               (mu4e-trash-folder . "/gmail/trash")
+                               (mu4e-sent-messages-behavior . delete)
+                               (smtpmail-default-smtp-server . "smtp.gmail.com")
+                               (smtpmail-smtp-server . "smtp.gmail.com")
+                               (smtpmail-stream-type . starttls)
+                               (smtpmail-smtp-service . 587)))
+                      (make-mu4e-context
+                       :name "holarse"
+                       :enter-func (lambda () (mu4e-message "Switch to holarse context"))
+                       :match-func (lambda (msg)
+                                     (when
+                                         msg (mu4e-message-contact-field-matches
+                                              msg :to "javafant@holarse-linuxgaming.de")))
+                       :vars '((user-mail-address . "javafant@holarse-linuxgaming.de")
+                               (mu4e-sent-folder . "/holarse/sent")
+                               (mu4e-drafts-folder . "/holarse/drafts")
+                               (mu4e-sent-messages-behavior . sent)
+                               (smtpmail-default-smtp-server . "asmtp.mail.hostpoint.ch")
+                               (smtpmail-smtp-server . "asmtp.mail.hostpoint.ch")
+                               (smtpmail-stream-type . starttls)
+                               (smtpmail-smtp-service . 587)))))
+          (setq mu4e-maildir "~/mail")
+          (setq mu4e-get-mail-command "mbsync -a")
+          (setq mu4e-update-interval 300)
+          (setq mu4e-view-show-addresses t)
+          (setq mu4e-headers-include-related t)
+          (setq mu4e-headers-show-threads nil)
+          (setq mu4e-headers-skip-duplicates t)
+          (setq mu4e-split-view 'vertical)
+          (setq
+           user-full-name  "Moritz Kiefer"
+           mu4e-compose-signature ""
+           mu4e-compose-signature-auto-include nil
+           mu4e-attachment-dir "~/downloads")
+          (setq mu4e-maildir-shortcuts
+                '(("/gmail/inbox"     . ?g)
+                  ("/holarse/inbox"       . ?h)
+                  ("/purelyfunctional/inbox" . ?p)))
+
+          (setq mu4e-bookmarks '(("flag:unread AND NOT flag:trashed AND NOT maildir:/gmail/spam AND NOT maildir:/purelyfunctional/haskell AND NOT maildir:/purelyfunctional/github"
+                                  "Unread messages"     ?u)
+                                 ("date:today..now"                  "Today's messages"     ?t)
+                                 ("date:7d..now"                     "Last 7 days"          ?w)
+                                 ("mime:image/*"                     "Messages with images" ?p)
+                                 ("maildir:/purelyfunctional/haskell" "haskell" ?h)))
+
+          (add-hook 'mu4e-compose-mode-hook 'mml-secure-message-sign)
+          (add-hook 'mu4e-view-mode-hook '(lambda ()
+                                            (local-set-key (kbd "<end>") 'end-of-line)
+                                            (local-set-key (kbd "<home>") 'beginning-of-line)))
+          (when (fboundp 'imagemagick-register-types)
+            (imagemagick-register-types))
+          (add-to-list 'mu4e-view-actions
+                       '("View in browser" . mu4e-action-view-in-browser) t)
+
+          ;; don't keep message buffers around
+          (setq message-kill-buffer-on-exit t))))
+#+end_src
+* indentation
+#+begin_src emacs-lisp :tangle yes
+  (setq-default tab-width 4)
+  (setq-default indent-tabs-mode nil)
+#+end_src
+* lisp
+#+begin_src emacs-lisp :tangle yes
+  (use-package lisp-mode
+    :defer t
+    :mode "\\.smt2\\'"
+    :init
+    (progn
+      (use-package elisp-slime-nav
+        :diminish elisp-slime-nav-mode
+        :ensure t
+        :commands turn-on-elisp-slime-nav-mode)
+      (dolist (hook '(emacs-lisp-mode-hook ielm-mode-hook eval-expression-minibuffer-setup-hook))
+        (add-hook hook 'turn-on-elisp-slime-nav-mode))
+      (use-package eldoc
+        :diminish eldoc-mode
+        :commands turn-on-eldoc-mode
+        :init
+        (progn
+          (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
+          (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
+          (add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)))))
+#+end_src
+* flycheck
+#+begin_src emacs-lisp :tangle yes
+  (use-package flycheck
+    :ensure t
+    :defer 2
+    :commands (flycheck-mode)
+    :config
+    (progn
+      (global-flycheck-mode)
+      (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-gcc flycheck-rtags haskell-stack-ghc))
+      (setq flycheck-emacs-lisp-load-path 'inherit)
+      (setq flycheck-verilog-verilator-executable "invoke_verilator.sh"))
+    :init
+    (add-hook 'coq-mode-hook (lambda () (flycheck-mode -1))))
+  (use-package flycheck-package
+    :ensure t
+    :defer t)
+#+end_src
+* browser
+#+begin_src emacs-lisp :tangle yes
+  (setq browse-url-browser-function 'browse-url-xdg-open)
+#+end_src
+* gdb
+#+begin_src emacs-lisp :tangle yes
+  (setq gdb-many-windows t)
+#+end_src
+* yasnippet
+#+begin_src emacs-lisp :tangle yes
+  (use-package yasnippet
+    :diminish yas-minor-mode
+    :ensure t
+    :config
+    (yas-global-mode t)
+    :init
+    (setq yas-alias-to-yas/prefix-p nil))
+  (use-package yasnippet-snippets
+    :ensure t)
+#+end_src
+* symlinks
+#+begin_src emacs-lisp :tangle yes
+  (setq vc-follow-symlinks t)
+#+end_src
+* magit
+#+begin_src emacs-lisp :tangle yes
+  (use-package magit
+    :ensure t
+    :commands magit-status
+    :config
+    (progn
+      (magit-auto-revert-mode 1)
+      (setq magit-completing-read-function 'ivy-completing-read))
+    :init
+    (add-hook 'magit-mode-hook 'magit-load-config-extensions))
+  (use-package magithub
+    :after magit
+    :ensure t
+    :disabled
+    :config (magithub-feature-autoinject t))
+#+end_src
+* pkgbuild
+#+begin_src emacs-lisp :tangle yes
+  (use-package pkgbuild-mode
+    :ensure t
+    :mode "/PKGBULD$")
+#+end_src
+* abbrev
+#+begin_src emacs-lisp :tangle yes
+  (use-package abbrev
+    :diminish abbrev-mode
+    :config
+    (progn (abbrev-mode)
+           (setq abbrev-file-name "~/.emacs.d/abbrev_defs")))
+#+end_src
+* ediff
+#+begin_src emacs-lisp :tangle yes
+  (setq ediff-window-setup-function 'ediff-setup-windows-plain)
+  (setq ediff-split-window-function 'split-window-horizontally)
+#+end_src
+* idris
+#+begin_src emacs-lisp :tangle yes
+  (use-package idris-mode
+    :ensure t
+    :pin melpa
+    :mode "\\.idr\\'"
+    :init (use-package prop-menu
+            :ensure t))
+#+end_src
+* gpgfix
+#+begin_src emacs-lisp :tangle yes
+  (defun epg--list-keys-1 (context name mode)
+    (let ((args (append (if (epg-context-home-directory context)
+                            (list "--homedir"
+                                  (epg-context-home-directory context)))
+                        '("--with-colons" "--no-greeting" "--batch"
+                          "--with-fingerprint" "--with-fingerprint")
+                        (unless (eq (epg-context-protocol context) 'CMS)
+                          '("--fixed-list-mode"))))
+          (list-keys-option (if (memq mode '(t secret))
+                                "--list-secret-keys"
+                              (if (memq mode '(nil public))
+                                  "--list-keys"
+                                "--list-sigs")))
+          (coding-system-for-read 'binary)
+          keys string field index)
+      (if name
+          (progn
+            (unless (listp name)
+              (setq name (list name)))
+            (while name
+              (setq args (append args (list list-keys-option (car name)))
+                    name (cdr name))))
+        (setq args (append args (list list-keys-option))))
+      (with-temp-buffer
+        (apply #'call-process
+               (epg-context-program context)
+               nil (list t nil) nil args)
+        (goto-char (point-min))
+        (while (re-search-forward "^[a-z][a-z][a-z]:.*" nil t)
+          (setq keys (cons (make-vector 15 nil) keys)
+                string (match-string 0)
+                index 0
+                field 0)
+          (while (and (< field (length (car keys)))
+                      (eq index
+                          (string-match "\\([^:]+\\)?:" string index)))
+            (setq index (match-end 0))
+            (aset (car keys) field (match-string 1 string))
+            (setq field (1+ field))))
+        (nreverse keys))))
+#+end_src
+* hydra
+#+begin_src emacs-lisp :tangle yes
+  (use-package hydra
+    :ensure t)
+  (global-set-key
+   (kbd "M-ö")
+   (defhydra hydra-window (:color amaranth)
+     "window"
+     ("n" windmove-left)
+     ("r" windmove-down)
+     ("t" windmove-up)
+     ("d" windmove-right)
+     ("v" (lambda ()
+            (interactive)
+            (split-window-right)
+            (windmove-right))
+      "vert")
+     ("x" (lambda ()
+            (interactive)
+            (split-window-below)
+            (windmove-down))
+      "horz")
+     ;; ("t" transpose-frame "'")
+     ("o" delete-other-windows "one" :color blue)
+     ("a" ace-window "ace")
+     ("s" ace-swap-window "swap")
+     ("k" ace-delete-window "del")
+     ("i" ace-maximize-window "ace-one" :color blue)
+     ("b" ivy-switch-buffer "buf")
+     ("f" counsel-find-file "file")
+     ;; ("m" headlong-bookmark-jump "bmk")
+     ("q" nil "cancel")))
+  (defhydra hydra-zoom (global-map "<f2>")
+    "zoom"
+    ("g" text-scale-increase "in")
+    ("l" text-scale-decrease "out")
+    ("0" text-scale-adjust "reset"))
+  (defhydra hydra-error (global-map "M-g")
+    "goto-error"
+    ("h" first-error "first")
+    ("j" next-error "next")
+    ("k" previous-error "prev")
+    ("v" recenter-top-bottom "recenter")
+    ("q" nil "quit"))
+  (use-package windmove)
+  (defun hydra-move-splitter-left (arg)
+    "Move window splitter left."
+    (interactive "p")
+    (if (let ((windmove-wrap-around))
+          (windmove-find-other-window 'right))
+        (shrink-window-horizontally arg)
+      (enlarge-window-horizontally arg)))
+  (defun hydra-move-splitter-right (arg)
+    "Move window splitter right."
+    (interactive "p")
+    (if (let ((windmove-wrap-around))
+          (windmove-find-other-window 'right))
+        (enlarge-window-horizontally arg)
+      (shrink-window-horizontally arg)))
+  (defun hydra-move-splitter-up (arg)
+    "Move window splitter up."
+    (interactive "p")
+    (if (let ((windmove-wrap-around))
+          (windmove-find-other-window 'up))
+        (enlarge-window arg)
+      (shrink-window arg)))
+  (defun hydra-move-splitter-down (arg)
+    "Move window splitter down."
+    (interactive "p")
+    (if (let ((windmove-wrap-around))
+          (windmove-find-other-window 'up))
+        (shrink-window arg)
+      (enlarge-window arg)))
+  (global-set-key
+   (kbd "M-ü")
+   (defhydra hydra-splitter ()
+     "splitter"
+     ("n" hydra-move-splitter-left)
+     ("r" hydra-move-splitter-down)
+     ("t" hydra-move-splitter-up)
+     ("d" hydra-move-splitter-right)
+     ("q" nil "quit")))
+  (use-package volume
+    :commands (volume-lower volume-raise)
+    :ensure t)
+  (bind-key*
+   "C-c v"
+   (defhydra hydra-volume (:color amaranth)
+     ("d" (volume-lower 5))
+     ("u" (volume-raise 5))
+     ("n" volume-raise)
+     ("p" volume-lower)
+     ("q" nil "quit")))
+  (bind-key
+   "C-="
+   (defhydra hydra-mark (:hint nil)
+     "
+  ^Structure^      ^Pairs^              ^Misc^
+  ^^^^^^^^-------------------------------------------
+  _SPC_: region    _P_: inside pairs    _u_: url
+  _d_: defun       _p_: outside pairs   _m_: email
+  _c_: comment     _Q_: inside quotes   _s_: symbol
+  _._: sentence    _q_: outside quotes
+  _h_: paragraph
+  "
+     ("SPC" er/expand-region)
+     ("P" er/mark-inside-pairs)
+     ("Q" er/mark-inside-quotes)
+     ("p" er/mark-outside-pairs)
+     ("q" er/mark-outside-quotes)
+     ("d" er/mark-defun)
+     ("c" er/mark-comment)
+     ("." er/mark-text-sentence)
+     ("h" er/mark-text-paragraph)
+     ("w" er/mark-word)
+     ("u" er/mark-url)
+     ("m" er/mark-email)
+     ("s" er/mark-symbol)))
+#+end_src
+* guide-key
+#+begin_src emacs-lisp :tangle yes
+  (use-package which-key
+    :ensure t
+    :diminish which-key-mode
+    :config
+      (which-key-mode))
+#+end_src
+* multiple cursors
+#+begin_src emacs-lisp :tangle yes
+  (use-package multiple-cursors
+    :ensure t
+    :commands mc/num-cursors
+    :bind
+    ("C->" . hydra-multiple-cursors/body)
+    :init
+    (defhydra hydra-multiple-cursors (:hint nil)
+    "
+   Up^^             Down^^           Miscellaneous           % 2(mc/num-cursors) cursor%s(if (> (mc/num-cursors) 1) \"s\" \"\")
+  ------------------------------------------------------------------
+   [_p_]   Next     [_n_]   Next     [_l_] Edit lines  [_0_] Insert numbers
+   [_P_]   Skip     [_N_]   Skip     [_a_] Mark all    [_A_] Insert letters
+   [_M-p_] Unmark   [_M-n_] Unmark   [_s_] Search      [_q_] Quit
+   [_|_] Align with input CHAR       [Click] Cursor at point"
+    ("l" mc/edit-lines :exit t)
+    ("a" mc/mark-all-like-this :exit t)
+    ("n" mc/mark-next-like-this)
+    ("N" mc/skip-to-next-like-this)
+    ("M-n" mc/unmark-next-like-this)
+    ("p" mc/mark-previous-like-this)
+    ("P" mc/skip-to-previous-like-this)
+    ("M-p" mc/unmark-previous-like-this)
+    ("|" mc/vertical-align)
+    ("s" mc/mark-all-in-region-regexp :exit t)
+    ("0" mc/insert-numbers :exit t)
+    ("A" mc/insert-letters :exit t)
+    ("<mouse-1>" mc/add-cursor-on-click)
+    ;; Help with click recognition in this hydra
+    ("<down-mouse-1>" ignore)
+    ("<drag-mouse-1>" ignore)
+    ("q" nil)))
+#+end_src
+* markdown
+#+begin_src emacs-lisp :tangle yes
+  (use-package markdown-mode
+    :mode "\\.md\\'"
+    :ensure t)
+#+end_src
+* holidays
+#+begin_src emacs-lisp :tangle yes
+  (setq holiday-general-holidays
+        '((holiday-fixed 1 1 "Neujahr")
+          (holiday-fixed 5 1 "Tag der Arbeit")
+          (holiday-fixed 10 3 "Tag der deutschen Einheit")))
+  (setq holiday-christian-holidays
+        '((holiday-fixed 12 25 "1. Weihnachtstag")
+          (holiday-fixed 12 26 "2. Weihnachtstag")
+          (holiday-fixed 1 6 "Heilige 3 Könige")
+          (holiday-fixed 10 31 "Reformationstag")
+          (holiday-fixed 11 1 "Allerheiligen")
+          ;; Date of Easter calculation taken from holidays.el.
+          (let* ((century (1+ (/ displayed-year 100)))
+                 (shifted-epact (% (+ 14 (* 11 (% displayed-year 19))
+                                      (- (/ (* 3 century) 4))
+                                      (/ (+ 5 (* 8 century)) 25)
+                                      (* 30 century))
+                                   30))
+                 (adjusted-epact (if (or (= shifted-epact 0)
+                                         (and (= shifted-epact 1)
+                                              (< 10 (% displayed-year 19))))
+                                     (1+ shifted-epact)
+                                   shifted-epact))
+                 (paschal-moon (- (calendar-absolute-from-gregorian
+                                   (list 4 19 displayed-year))
+                                  adjusted-epact))
+                 (easter (calendar-dayname-on-or-before 0 (+ paschal-moon 7))))
+            (holiday-filter-visible-calendar
+             (mapcar
+              (lambda (l)
+                (list (calendar-gregorian-from-absolute (+ easter (car l)))
+                      (nth 1 l)))
+              '(( -2 "Karfreitag")
+                (  0 "Ostersonntag")
+                ( +1 "Ostermontag")
+                (+39 "Christi Himmelfahrt")
+                (+49 "Pfingstsonntag")
+                (+50 "Pfingstmontag")
+                (+60 "Fronleichnam")))))))
+  (setq calendar-holidays (append holiday-general-holidays holiday-christian-holidays))
+#+end_src
+* ledger
+#+begin_src emacs-lisp :tangle yes
+  (use-package ledger-mode
+    :ensure t
+    :mode "\\.ledger\\'"
+    :config
+    (progn
+      (setq ledger-default-date-format "%Y-%m-%d")
+      (setq ledger-use-iso-dates t)
+      (setq  ledger-report-use-strict t)
+      (setq ledger-reconcile-default-commodity "€")
+      (let ((height (face-attribute 'default :height)))
+        (set-face-attribute 'ledger-font-payee-cleared-face nil :height height)
+        (set-face-attribute 'ledger-font-payee-uncleared-face nil :height height))))
+#+end_src
+* proofgeneral
+#+begin_src emacs-lisp :tangle yes
+  (use-package proof-site
+    :load-path ("~/code/emacs/PG/generic")
+    :mode ("\\.v\\'" . coq-mode)
+    :init (setq proof-splash-enable nil)
+    :config (setq proof-three-window-mode-policy 'hybrid))
+  (use-package company-coq
+    :load-path ("~/code/emacs/company-coq/")
+    :commands (company-coq-mode)
+    :init (add-hook 'coq-mode-hook 'company-coq-mode t))
+  (use-package coq
+    :defer t)
+#+end_src
+* json
+#+begin_src emacs-lisp :tangle yes
+  (use-package json-mode
+    :mode "\\.json\\'"
+    :ensure t)
+#+end_src
+* web
+#+begin_src emacs-lisp :tangle yes
+  (use-package web-mode
+    :ensure t
+    :mode ("\\.html\\'"
+           "\\.css\\'"
+           "\\.php\\'")
+    :config
+    (progn
+      (setq web-mode-code-indent-offset 2)
+      (setq web-mode-enable-auto-quoting nil)))
+#+end_src
+* yaml
+#+begin_src emacs-lisp :tangle yes
+  (use-package yaml-mode
+    :mode "\\.yaml\\'"
+    :ensure t)
+#+end_src
+* nginx
+#+begin_src emacs-lisp :tangle yes
+  (use-package nginx-mode
+    :mode "\\.nginx\\'"
+    :ensure t)
+#+end_src
+* c/c++
+#+begin_src emacs-lisp :tangle yes
+  (use-package cc-mode
+    :mode (("\\.cpp\\'" . c++-mode)
+           ("\\.c\\'" . c-mode))
+    :init
+    (progn
+      (defun remap-fill-paragraph () (define-key c++-mode-map [remap c-fill-paragraph] #'clang-format-buffer))
+      (defun remap-fill-paragraph-c () (define-key c-mode-map [remap c-fill-paragraph] #'clang-format-buffer))
+      (add-hook 'c++-mode-hook 'remap-fill-paragraph)
+      (add-hook 'c-mode-hook 'remap-fill-paragraph-c))
+    :config
+    (progn
+      (setq c-basic-offset 4)))
+  (use-package cc-styles
+    :config
+    (progn
+      (c-set-offset 'inextern-lang 0)))
+  (use-package clang-format
+    :ensure t
+    :commands (clang-format-buffer))
+#+end_src
+* rust
+#+begin_src emacs-lisp :tangle yes
+  (use-package rust-mode
+    :mode "\\.rs\\'"
+    :ensure t)
+#+end_src
+* toml
+#+begin_src emacs-lisp :tangle yes
+  (use-package toml-mode
+    :mode "\\.toml\\'"
+    :ensure t)
+#+end_src
+* sml
+#+begin_src emacs-lisp :tangle yes
+  (use-package sml-mode
+    :ensure t
+    :mode ("\\.fun\\'" "\\.sig\\'" "\\.sml\\'"))
+#+end_src
+* jonprl
+#+begin_src emacs-lisp :tangle yes
+  (use-package jonprl-mode
+    :mode "\\.jonprl\\'"
+    :ensure t)
+#+end_src
+* gnuplot
+#+begin_src emacs-lisp :tangle yes
+  (use-package gnuplot
+    :commands gnuplot-mode
+    :defer t
+    :ensure t)
+#+end_src
+* cmake
+#+begin_src emacs-lisp :tangle yes
+  (use-package cmake-mode
+    :ensure t
+    :mode "CMakeLists\\.txt\\'")
+#+end_src
+* docker
+#+begin_src emacs-lisp :tangle yes
+  (use-package dockerfile-mode
+    :mode "Dockerfile\\'"
+    :ensure t)
+#+end_src
+* smtlib
+#+begin_src emacs-lisp :tangle yes
+#+end_src
+* pdf-tools
+#+begin_src emacs-lisp :tangle yes
+  (use-package pdf-tools
+    :mode ("\\.pdf\\'" . pdf-view-mode)
+    :ensure t
+    :init (add-hook 'pdf-view-mode-hook 'pdf-view-fit-page-to-window))
+#+end_src
+* lean
+#+begin_src emacs-lisp :tangle yes
+  (use-package dash
+    :defer t
+    :ensure t)
+  (use-package dash-functional
+    :defer t
+    :ensure t)
+  (use-package f
+    :defer t
+    :ensure t)
+  (use-package lua-mode
+    :defer t
+    :ensure t)
+  (use-package mmm-mode
+    :defer t
+    :ensure t)
+  (use-package lean-mode
+    :mode ("\\.lean\\'" "\\.hlean\\'")
+    :load-path "~/code/lean/src/emacs"
+    :init (setq lean-rootdir "~/code/lean/"))
+#+end_src
+* scala
+#+begin_src emacs-lisp :tangle yes
+  (use-package scala-mode
+    :ensure t
+    :mode ("\\.scala\\'" . scala-mode)
+    ;; :config (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+    )
+#+end_src
+* rainbow
+#+begin_src emacs-lisp :tangle yes
+  (use-package rainbow-delimiters
+    :ensure t
+    :commands rainbow-delimiters-mode
+    :init
+    (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+#+end_src
+* tramp
+#+begin_src emacs-lisp :tangle yes
+  (setq tramp-default-method "ssh")
+#+end_src
+* keyfreq
+#+begin_src emacs-lisp :tangle yes
+  (use-package keyfreq
+    :ensure t
+    :config
+    (setq keyfreq-excluded-commands
+        '(self-insert-command
+          previous-line
+          next-line
+          mu4e~headers-jump-to-maildir
+          mwheel-scroll
+          mouse-drag-region
+          mouse-set-point
+          left-char
+          ivy-done
+          kill-line
+          save-buffers
+          mu4e-headers-search-bookmark))
+    :config
+    (keyfreq-mode 1)
+    (keyfreq-autosave-mode 1))
+#+end_src
+* systemd
+#+begin_src emacs-lisp :tangle yes
+  (use-package systemd
+    :ensure t
+    :mode ("\\.socket\\'" . systemd-mode))
+#+end_src
+* writeroom
+#+begin_src emacs-lisp :tangle yes
+  (use-package writeroom-mode
+    :ensure t
+    :commands writeroom-mode
+    :config
+    (progn
+      (defun my-writeroom-theme (arg)
+        (cond
+         ((= arg 1)
+          (enable-theme 'leuven)
+          (disable-theme 'doom-one)
+          (text-scale-increase 1))
+         ((= arg -1)
+          (disable-theme 'leuven)
+          (enable-theme 'doom-one)
+          (text-scale-increase 0))))
+      (add-to-list 'writeroom-global-effects 'my-writeroom-theme)
+      (add-to-list 'writeroom-global-effects 'visual-line-mode))
+    :init (load-theme 'leuven nil t))
+#+end_src
+* bison
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package bison-mode
+    :commands (bison-mode)
+    :ensure t)
+#+END_SRC
+* prolog
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package prolog
+    :load-path "~/code/emacs/prolog"
+    :mode ("\\.pl\\'" . prolog-mode)
+    :config
+      (setq-default prolog-system 'swi)
+      (setq prolog-system 'swi))
+#+END_SRC
+* racket
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package racket-mode
+    :mode "\\.rkt\\'"
+    :ensure t)
+#+END_SRC
+* smartparens
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package smartparens-config
+      :ensure smartparens
+      :commands (turn-on-smartparens-strict-mode)
+      :demand t
+      :init
+      (progn
+        (add-hook 'racket-mode-hook #'turn-on-smartparens-strict-mode)
+        (add-hook 'racket-repl-mode-hook #'turn-on-smartparens-strict-mode)
+        (add-hook 'lisp-mode-hook #'turn-on-smartparens-strict-mode)
+        (add-hook 'emacs-lisp-mode-hook #'turn-on-smartparens-strict-mode))
+      :config
+      (progn
+        (setq sp-show-pair-delay 0)
+        (show-smartparens-global-mode t))
+      :bind
+      (:map smartparens-mode-map
+            ("C-M-f" . sp-forward-sexp)
+            ("C-M-b" . sp-backward-sexp)
+
+            ("C-M-d" . sp-down-sexp)
+            ("C-M-e" . sp-up-sexp)
+
+            ("C-M-a" . sp-backward-down-sexp)
+            ("C-M-u" . sp-backward-up-sexp)
+
+            ("C-S-d" . sp-beginning-of-sexp)
+            ("C-S-a" . sp-end-of-sexp)
+
+            ("C-M-n" . sp-next-sexp)
+            ("C-M-p" . sp-previous-sexp)
+
+            ("C-M-k" . sp-kill-sexp)
+            ("C-M-w" . sp-copy-sexp)
+
+            ("M-[" . sp-backward-unwrap-sexp)
+            ("M-]" . sp-unwrap-sexp)
+
+            ("C-)" . sp-forward-slurp-sexp)
+            ("C-(" . sp-forward-barf-sexp)
+            ("C-M-)"  . sp-backward-slurp-sexp)
+            ("C-M-("  . sp-backward-barf-sexp)
+
+            ("M-D" . sp-splice-sexp)
+            ("C-M-<delete>" . sp-spilce-sexp-killing-forward)
+            ("C-M-<backspace>" . sp-splice-sexp-killing-backward)
+            ("C-S-<backspace>" . sp-splice-sexp-killing-around)
+
+            ("C-]" . sp-select-next-thing-exchange)
+            ("C-M-]" . sp-select-next-thing)
+
+            ("M-F" . sp-forward-symbol)
+            ("M-B" . sp-backward-symbol)
+            ("M-q" . sp-indent-defun)
+            ("M-r" . sp-raise-sexp)))
+#+END_SRC
+* ocaml
+#+begin_src emacs-lisp :tangle yes
+  (use-package tuareg
+    :ensure t
+    :mode ("\\.ml\\'" . tuareg-mode))
+#+end_src
+* js
+#+begin_src emacs-lisp :tangle yes
+  (defun lunaryorn-use-js-executables-from-node-modules ()
+    "Set executables of JS checkers from local node modules."
+    (-when-let* ((file-name (buffer-file-name))
+                 (root (locate-dominating-file file-name "node_modules"))
+                 (module-directory (expand-file-name "node_modules" root)))
+      (pcase-dolist (`(,checker . ,module) '((javascript-jshint . "jshint")
+                                             (javascript-eslint . "eslint")
+                                             (javascript-jscs   . "jscs")))
+        (let ((package-directory (expand-file-name module module-directory))
+              (executable-var (flycheck-checker-executable-variable checker)))
+          (when (file-directory-p package-directory)
+            (set (make-local-variable executable-var)
+                 (expand-file-name (concat "bin/" module ".js")
+                                   package-directory)))))))
+  (use-package js2-mode
+    :ensure t
+    :mode ("\\.js\\'" . js2-mode)
+    :config
+    (progn
+      (setq js2-basic-offset 2)
+      (setq js2-mode-show-parse-errors nil)
+      (flycheck-add-mode 'javascript-eslint 'rjsx-mode))
+    :init (add-hook 'js2-mode-hook 'lunaryorn-use-js-executables-from-node-modules))
+  (use-package rjsx-mode
+    :mode ("\\(components\\|containers\\).*\\.js\\'" . rjsx-mode)
+    :ensure t)
+  (use-package prettier-js
+    :load-path "~/code/js/prettier/editors/emacs"
+    :commands (prettier-mode prettier)
+    :init (add-hook 'js2-mode-hook 'prettier-mode)
+    :bind (:map js2-mode-map ("M-q" . prettier))
+    :config (setq prettier-target-mode "js2-mode"))
+#+end_src
+* webpaste
+#+begin_src emacs-lisp :tangle yes
+  (use-package webpaste
+    :ensure t
+    :commands (webpaste-paste-buffer webpaste-paste-region))
+#+end_src
+* nix
+#+begin_src emacs-lisp :tangle yes
+  (use-package nix-mode
+    :ensure t
+    :mode "\\.nix\\'")
+#+end_src
+* verilog
+#+begin_src emacs-lisp :tangle yes
+  (use-package verilog-mode
+    :config
+    (setq verilog-auto-newline nil))
+#+end_src
+* why3
+#+begin_src emacs-lisp :tangle yes
+  (use-package why3
+    :load-path "/home/moritz/code/why3-0.88.1/share/emacs/site-lisp/"
+    :mode ("\\.mlw\\'" . why3-mode))
+#+end_src
+* spell checking
+#+begin_src emacs-lisp :tangle yes
+  (use-package ispell
+    :config
+    (progn
+      (setq ispell-program-name (executable-find "hunspell"))
+      (setq ispell-dictionary "en_US")
+      (setq ispell-tex-skip-alists
+            (list
+             (append
+              (car ispell-tex-skip-alists)
+              '(("\\\\autocite"   ispell-tex-arg-end)
+                ("\\\\autocites"  ispell-tex-arg-end)))
+             (cadr ispell-tex-skip-alists)))))
+  (use-package flyspell-correct-ivy
+    :ensure t
+    :after flyspell
+    :bind (:map flyspell-mode-map
+                ("C-;" . flyspell-correct-previous-word-generic)))
+  (use-package langtool
+    :ensure t
+    :config
+    (progn
+      (setq langtool-bin "/usr/bin/languagetool")
+      (setq langtool-default-language "en-US")))
+#+end_src
+* gist
+#+begin_src emacs-lisp :tangle yes
+  (use-package gist
+    :ensure t)
+#+end_src
+* auth-sources
+#+begin_src emacs-lisp :tangle yes
+  (setq auth-sources '("~/.authinfo.gpg" "~/.authinfo" "~/.netrc"))
+#+end_src
+* academic-phrases
+#+begin_src emacs-lisp :tangle yes
+  (use-package academic-phrases
+    :ensure t)
+#+end_src
+* glsl
+#+begin_src emacs-lisp :tangle yes
+  (use-package glsl-mode
+    :ensure t)
+#+end_src
+* Agda
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package agda2
+    :mode ("\\.agda\\'" . agda2-mode))
+#+END_SRC

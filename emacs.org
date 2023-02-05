@@ -1,0 +1,10 @@
+#+TITLE: Emacs configuration file
+#+AUTHOR: Drew Herron
+#+BABEL: :cache yes
+#+LATEX_HEADER: \usepackage{parskip}
+#+LATEX_HEADER: \usepackage{inconsolata}
+#+LATEX_HEADER: \usepackage[utf8]{inputenc}
+#+PROPERTY: header-args :tangle yes
+
+* Emacs Configuration File
+** Maybe I'll do it this way after getting the init.el file itslef worked out.
