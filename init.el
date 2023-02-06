@@ -1,5 +1,5 @@
 ;;===========================;;
-;;  This is MY emacs config  ;;
+;;  This Is MY emacs config  ;;
 ;;  There are many like it   ;;
 ;;  But this one is mine     ;;
 ;;  Below this block will go ;;
@@ -27,6 +27,19 @@
                          ("gnu" . "https://elpa.gnu.org/packages/")))
 
 (package-initialize)
+(package-refresh-contents)
+
+;;===========;;
+;; Evil Mode ;;
+;;===========;;
+
+;; Download Evil
+(unless (package-installed-p 'evil)
+  (package-install 'evil))
+
+;; Enable Evil
+(require 'evil)
+(evil-mode 1)
 
 ;;=============;;
 ;; Environment ;;
@@ -58,8 +71,6 @@
 ;; God Mode ;;
 ;;==========;;
 
-;; Using god-mode because it seems like an easier starting
-;; point than evil-mode if I want to do a full customization
 ;(setq god-mode-enable-function-key-translation nil)
 ;(require 'god-mode)
 ;(god-mode)
@@ -98,7 +109,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages '(## tron-legacy-theme night-owl-theme base16-theme))
+ '(package-selected-packages '(evil ## tron-legacy-theme night-owl-theme base16-theme))
  '(scroll-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
