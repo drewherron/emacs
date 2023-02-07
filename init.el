@@ -27,7 +27,8 @@
                          ("gnu" . "https://elpa.gnu.org/packages/")))
 
 (package-initialize)
-(package-refresh-contents)
+;; Uncomment when you're updating this file less frequently
+;;(package-refresh-contents)
 
 ;;===========;;
 ;; Evil Mode ;;
@@ -45,10 +46,12 @@
 ;; Environment ;;
 ;;=============;;
 
-(unless (display-graphic-p)
-   (menu-bar-mode -1))
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+(set-fringe-mode 10)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;; re-org by M-x customize groups
+;;;;;;;;;;;;;;;;;;;;;;;;;;; re-org by M-x customize groups?
 
 (global-display-line-numbers-mode)
 
@@ -68,52 +71,26 @@
                     :width 'normal)
 
 ;;==========;;
-;; God Mode ;;
-;;==========;;
-
-;(setq god-mode-enable-function-key-translation nil)
-;(require 'god-mode)
-;(god-mode)
-;(global-set-key (kbd "<escape>") #'god-mode-all)
-;(setq god-exempt-major-modes nil)
-;(setq god-exempt-predicates nil)
-
-
-
-;;==========;;
 ;; Org Mode ;;
 ;;==========;;
 
 (require 'org)
+(global-set-key (kbd "C-c a") 'org-agenda)
 
 (setq org-todo-keywords
-	'((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE")))
+	'((sequence "TODO" "NEXT" "DONE")))
 ;; Latin? Pensum, Pendens, Finitus
 
+(setq org-log-done 'time)
+
 ;; Org Agenda
-(setq org-agenda-files '("~/Documents/Notes/Capture.org"
-                         "~/Documents/Notes/Projects.org"
+(setq org-agenda-files '("~/Documents/Notes/Projects.org"
                          "~/Documents/Notes/Tickler.org"))
 ;; Org Capture
-(setq org-default-notes-file (concat org-directory "/notes.org"))
+(setq org-default-notes-file "~/Documents/Notes/Capture.org")
 
 ;;(setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 
 ;;(after! org (plist-put org-format-latex-options :scale 1.75))
 
 ;;(plist-put org-format-latex-options :scale 2)
-
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages '(evil ## tron-legacy-theme night-owl-theme base16-theme))
- '(scroll-bar-mode nil))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
