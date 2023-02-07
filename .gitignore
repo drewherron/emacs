@@ -6,5 +6,6 @@ eshell/history
 eshell/lastdir
 elpa/
 examples/
+themes/
 .dir-locals.el
 
