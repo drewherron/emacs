@@ -66,7 +66,7 @@
 ;; set default font
 (set-face-attribute 'default nil
                     :family "Cascadia Mono"
-                    :height 110
+                    :height 140
                     :weight 'normal
                     :width 'normal)
 
@@ -89,8 +89,8 @@
 ;; Org Capture
 (setq org-default-notes-file "~/Documents/Notes/Capture.org")
 
-;;(setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
+;(setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 
-;;(after! org (plist-put org-format-latex-options :scale 1.75))
+;(after! org (plist-put org-format-latex-options :scale 2))
 
-;;(plist-put org-format-latex-options :scale 2)
+(plist-put org-format-latex-options :scale 2)
