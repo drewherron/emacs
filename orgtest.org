@@ -1,7 +1,29 @@
-* TODO Sample task [3/3] 
+#+STARTUP: latexpreview
+
+* A file to test org mode stuff
+
+** TODO Sample task [3/3] 
 - [X] One
   - [X] One
 - [X] One
 - [X] One
 
   
+
+\begin{bmatrix}
+3 & -1 & 6 \\
+5 & 2 & 7 \\
+8 & 9 & 4
+\end{bmatrix}
+
+$x$ is good
+
+#+BEGIN_SRC latex
+A =
+\begin{vmatrix}
+1 & 4 \\
+2 & 3
+\end{vmatrix}
+= 1 \cdot 3 - 2 \cdot 4 = -5
+#+END_SC
+

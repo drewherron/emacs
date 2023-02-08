@@ -1,0 +1,912 @@
+* My emacs config
+** Basic configs
+   #+BEGIN_SRC emacs-lisp
+	 (server-start)
+	 (setq x-alt-keysym 'meta)
+	 (set-keyboard-coding-system 'utf-8)
+
+	 (menu-bar-mode -1)
+	 (tool-bar-mode -1)
+	 (scroll-bar-mode -1)
+	 (blink-cursor-mode -1)
+	 (setq visible-cursor nil)
+	 (global-hl-line-mode 1)
+	 (global-auto-revert-mode t)
+	 (defun my/disable-scroll-bars (frame)
+	   (modify-frame-parameters frame
+								'((vertical-scroll-bars . nil)
+								  (horizontal-scroll-bars . nil))))
+	 (add-hook 'after-make-frame-functions 'my/disable-scroll-bars)
+
+	 (setq default-frame-alist '((font . "mononoki Nerd Font:pixelsize=17")))
+	 ;; (set-frame-font "mononoki Nerd Font:pixelsize=15" nil t)
+	 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+	 (add-hook 'text-mode-hook 'display-line-numbers-mode)
+
+	 (setq scroll-step 1)
+	 ;; (setq scroll-margin 1)
+	 (setq echo-keystrokes 0.1)
+	 (setq initial-scratch-message nil)
+	 (defalias 'yes-or-no-p 'y-or-n-p)
+
+	 (setq backup-directory-alist '(("." . "/tmp/emacs-backup"))
+		   backup-by-copying t
+		   version-control t
+		   delete-old-versions t
+		   kept-new-versions 20
+		   kept-old-versions 5)
+   #+END_SRC
+
+** Desktop-save
+   #+BEGIN_SRC emacs-lisp
+	 (setq desktop-dirname (expand-file-name "desktop" user-emacs-directory)
+		   desktop-base-file-name "emacs.desktop"
+		   desktop-base-lock-name "lock"
+		   desktop-path (list desktop-dirname)
+		   desktop-save t
+		   desktop-files-not-to-save "^$"
+		   desktop-auto-save-timeout 60)
+	 (desktop-save-mode 1)
+   #+END_SRC
+
+** GC
+   #+BEGIN_SRC emacs-lisp
+	 (add-hook 'focus-out-hook 'garbage-collect)
+	 (add-hook 'minibuffer-setup-hook 'my/set-max-gc-cons-threshold) ;; defined in early-init.el
+	 (add-hook 'minibuffer-exit-hook 'my/set-default-gc-cons-threshold)
+   #+END_SRC
+
+** MELPA and non-MELPA
+#+BEGIN_SRC emacs-lisp
+  (require 'package)
+  (push (expand-file-name "elpa" user-emacs-directory) package-directory-list)
+  (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+  (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+  (package-initialize)
+
+  (add-to-list 'load-path (expand-file-name "font-lock+" user-emacs-directory))
+  (add-to-list 'load-path (expand-file-name "header2/" user-emacs-directory))
+  (add-to-list 'load-path (expand-file-name "all-the-icons/" user-emacs-directory))
+  (add-to-list 'load-path (expand-file-name "all-the-icons-dired/" user-emacs-directory))
+
+  (setq package-selected-packages '(
+									evil evil-collection evil-leader
+									evil-search-highlight-persist evil-mc evil-surround
+									evil-visual-mark-mode evil-nerd-commenter evil-vimish-fold
+									evil-numbers evil-quickscope
+									lsp-mode lsp-ui
+									windresize
+									yasnippet yasnippet-classic-snippets yasnippet-snippets auto-yasnippet el-autoyas
+									helm helm-xref helm-lsp helm-etags-plus helm-fuzzy helm-themes helm-make helm-projectile
+									projectile
+									org-evil
+									company company-box company-go company-fuzzy company-nginx
+									which-key
+									magit
+									undo-tree
+									shell-pop
+									smartparens
+									rainbow-delimiters
+									color-identifiers-mode
+									ibuffer-vc ibuffer-projectile
+									eyebrowse
+									diff-hl
+									fzf
+									font-utils
+									restart-emacs
+									string-utils
+									dired-icon
+									kaolin-themes gruvbox-theme doom-themes spacemacs-theme
+									doom-modeline
+									dashboard
+									org-superstar toc-org
+									pdf-tools
+									dockerfile-mode
+									go-mode
+									web-mode
+									ssh sudo-ext
+									vimish-fold
+									bind-key
+									all-the-icons all-the-icons-dired all-the-icons-ibuffer
+									mutt-mode vimrc-mode nginx-mode gemini-mode yaml-mode crontab-mode
+									neotree
+									))
+
+  (when (cl-find-if-not #'package-installed-p package-selected-packages)
+	(package-refresh-contents)
+	(mapc #'package-install package-selected-packages))
+#+END_SRC
+
+** Some org
+#+BEGIN_SRC emacs-lisp
+	;; set key for agenda
+	;; (require 'org)
+	;; (global-set-(kbd "C-c a") 'org-agenda)
+
+	;;file to save todo items
+	;; (setq org-agenda-files (quote ("~/.config/emacs/org/todo.org")))
+	(setq org-log-done 'time)
+
+	;;set priority range from A to C with default A
+	 (setq org-highest-priority ?A)
+	 (setq org-lowest-priority ?C)
+	 (setq org-default-priority ?A)
+
+	;;set colours for priorities
+	(setq org-priority-faces '((?A . (:foreground "#F0DFAF" :weight bold))
+							   (?B . (:foreground "LightSteelBlue"))
+							   (?C . (:foreground "OliveDrab"))))
+
+ (setq org-todo-keywords
+  '((sequence "TODO"
+      "|"
+      "DONE"
+      "CANCELED")))
+
+  (setq org-log-done 'time)
+
+	;;open agenda in current window
+	;; (setq org-agenda-window-setup (quote current-window))
+
+	;;capture todo items using C-c C-t t
+	;; (define-key global-map (kbd "C-c C-t") 'org-capture)
+	;; (setq org-capture-templates
+	;;	  '(("t" "todo" entry (file+headline "~/.config/emacs/org/todo.org" "Tasks")
+	;;		 "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")))
+
+	;;open agenda in current window
+	;; (setq org-agenda-window-setup (quote current-window))
+	;;warn me of any deadlines in next 7 days
+	;; (setq org-deadline-warning-days 7)
+	;;show me tasks scheduled or due in next fortnight
+	;; (setq org-agenda-span (quote fortnight))
+	;;don't show tasks as scheduled if they are already shown as a deadline
+	;; (setq org-agenda-skip-scheduled-if-deadline-is-shown t)
+	;;don't give awarning colour to tasks with impending deadlines
+	;;if they are scheduled to be done
+	;; (setq org-agenda-skip-deadline-prewarning-if-scheduled (quote pre-scheduled))
+	;;don't show tasks that are scheduled or have deadlines in the
+	;;normal todo list
+	;; (setq org-agenda-todo-ignore-deadlines (quote all))
+	;; (setq org-agenda-todo-ignore-scheduled (quote all))
+	;;sort tasks in order of when they are due and then by priority
+	;; (setq org-agenda-sorting-strategy
+	;;  (quote
+	;;   ((agenda deadline-up priority-down)
+	;;	(todo priority-down category-keep)
+	;;	(tags priority-down category-keep)
+	;;	(search category-keep))))
+
+	(org-babel-do-load-languages
+		'org-babel-load-languages '((C . t )))
+	(org-babel-do-load-languages
+		'org-babel-load-languages '((lisp . t)))
+	 (eval-after-load "org"
+	 '(require 'ox-md nil t))
+#+END_SRC
+
+** header2
+#+BEGIN_SRC emacs-lisp
+#+END_SRC
+
+** Other configs
+#+BEGIN_SRC emacs-lisp
+  (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+  (setq evil-want-keybinding nil)
+  (setq evil-want-C-u-scroll t)
+
+  (add-hook 'html-mode-hook
+			(lambda()
+			  (setq sgml-basic-offset 4)
+			  (setq indent-tabs-mode t)))
+#+END_SRC
+
+** Files types attribution
+   #+BEGIN_SRC emacs-lisp
+	  (add-to-list 'auto-mode-alist '("xinitrc$" . shell-script-mode))
+	  (add-to-list 'auto-mode-alist '("env$" . shell-script-mode))
+	  (add-to-list 'auto-mode-alist '("lfrc$" . vimrc-mode))
+	  (add-to-list 'auto-mode-alist '("muttrc$" . mutt-mode))
+	  (add-to-list 'auto-mode-alist '("dunstrc$" . conf-mode))
+	  (add-to-list 'auto-mode-alist '("loader.conf$" . conf-mode))
+	  (add-to-list 'auto-mode-alist '("mailcap$" . conf-mode))
+	  (add-to-list 'auto-mode-alist '("/tmp/neomutt-*" . mail-mode))
+   #+END_SRC
+
+** Core packages
+*** Smartparens
+#+BEGIN_SRC emacs-lisp
+  (require 'smartparens-config)
+(smartparens-global-mode)
+#+END_SRC
+
+*** Evil mode
+#+BEGIN_SRC emacs-lisp
+  (require 'evil)
+  (require 'evil-collection)
+  (require 'evil-leader)
+  (require 'evil-search-highlight-persist)
+  (require 'org-evil)
+  (evil-mode t)
+  (evil-collection-init 'ibuffer)
+  (evil-collection-init 'magit)
+  (evil-collection-init 'flymake)
+  (evil-collection-init 'neotree)
+  (evil-collection-init 'mu4e)
+
+
+  (setq evil-emacs-state-cursor '("#b16286" box))
+  (setq evil-normal-state-cursor '("#d79921" box))
+  (setq evil-visual-state-cursor '("#b06597" box))
+  (setq evil-insert-state-cursor '("#d79921" bar))
+  (setq evil-replace-state-cursor '("#cc241d" hbar))
+  (setq evil-operator-state-cursor '("#d79921" hbar))
+
+
+  (evil-define-key 'insert global-map (kbd "C-o") 'delete-other-windows)
+  (evil-define-key 'insert global-map (kbd "C-u") 'evil-delete-backward-word)
+  (evil-define-key 'insert global-map (kbd "C-h") 'evil-delete-backward-char)
+  (evil-define-key 'normal global-map (kbd "C-o") 'delete-other-windows)
+  (evil-define-key 'normal global-map (kbd "C-k") 'windmove-up)
+  (evil-define-key 'normal global-map (kbd "C-j") 'windmove-down)
+  (evil-define-key 'normal global-map (kbd "C-h") 'windmove-left)
+  (evil-define-key 'normal global-map (kbd "C-l") 'windmove-right)
+
+  (global-evil-leader-mode)
+  (evil-leader/set-leader "\\")
+  (setq evil-leader/in-all-states 1)
+
+  (require 'evil-search-highlight-persist)
+  (global-evil-search-highlight-persist 1)
+
+  (evil-leader/set-key "SPC" 'evil-search-highlight-persist-remove-all)
+
+  (global-undo-tree-mode)
+  (evil-set-undo-system 'undo-tree)
+#+END_SRC
+
+*** Evil nerd commenter
+#+BEGIN_SRC emacs-lisp
+(require 'evil-nerd-commenter)
+(evilnc-default-hotkeys)
+#+END_SRC
+
+*** Evil surround
+#+BEGIN_SRC emacs-lisp
+  (require 'evil-surround)
+  (global-evil-surround-mode 1)
+#+END_SRC
+
+*** Evil multiple-cursor
+#+BEGIN_SRC emacs-lisp
+  (require 'evil-mc)
+  (global-evil-mc-mode 1)
+#+END_SRC
+
+*** Evil vimish Fold
+	#+BEGIN_SRC emacs-lisp
+	(require 'vimish-fold)
+	(require 'evil-vimish-fold)
+	(add-hook 'prog-mode-hook 'evil-vimish-fold-mode)
+	(add-hook 'text-mode-hook 'evil-vimish-fold-mode)
+	#+END_SRC
+
+*** Evil numbers
+#+BEGIN_SRC emacs-lisp
+  (require 'evil-numbers)
+  (define-key evil-normal-state-map (kbd "C-c C-a") 'evil-numbers/inc-at-pt)
+  (define-key evil-normal-state-map (kbd "C-c C-x") 'evil-numbers/dec-at-pt)
+#+END_SRC
+
+*** Evil quickscope
+	#+BEGIN_SRC emacs-lisp
+	  (require 'evil-quickscope)
+	  (global-evil-quickscope-mode 1)
+	#+END_SRC
+
+*** Dashboard
+#+BEGIN_SRC emacs-lisp
+  (require 'dashboard)
+  (dashboard-setup-startup-hook)
+
+  (setq dashboard-banner-logo-title	(concat "Welcome back to Emacs " emacs-version ", partner!")
+
+		dashboard-startup-banner		"~/pics/profile/caco.png"
+		;; dashboard-startup-banner		'official
+		dashboard-set-init-info		nil
+		dashboard-set-footer			nil
+		dashboard-center-content		t
+		dashboard-show-shortcuts		nil
+		dashboard-set-heading-icons	t
+		dashboard-set-file-icons		nil
+		dashboard-set-navigator		t
+		show-week-agenda-p			t)
+
+  (setq dashboard-items '((projects . 10)
+						  (recents . 10)
+						  (bookmarks . 10)))
+
+  (add-to-list 'evil-emacs-state-modes 'dashboard-mode)
+#+END_SRC
+
+*** w3m
+#+BEGIN_SRC emacs-lisp
+;; (require 'w3m-load)
+;; (setq w3m-home-page "https://start.duckduckgo.com/")
+;; (setq w3m-default-display-inline-images t)
+;; (define-key w3m-mode-map "w" 'right-word)
+;; (define-key w3m-mode-map "b" 'left-word)
+;; (define-key w3m-mode-map "<" 'scroll-left)
+;; (define-key w3m-mode-map ">" 'scroll-right)
+;; (define-key w3m-mode-map (kbd "C-d") 'evil-scroll-page-down)
+;; (define-key w3m-mode-map (kbd "C-u") 'evil-scroll-page-up)
+;; (define-key w3m-mode-map "H" 'w3m-view-previous-page)
+;; (define-key w3m-mode-map "L" 'w3m-view-next-page)
+;; (define-key w3m-mode-map "o" 'w3m-goto-url)
+;; (define-key w3m-mode-map "O" 'w3m-goto-url-new-session)
+;; (define-key w3m-mode-map "v" 'w3m-view-image)
+;; (define-key w3m-mode-map "$" 'w3m-end-of-line)
+;; (define-key w3m-mode-map "^" 'w3m-beginning-of-line)
+;; (define-key w3m-mode-map (kbd "M-j") 'w3m-next-buffer)
+;; (define-key w3m-mode-map (kbd "M-k") 'w3m-previous-buffer)
+;; (define-key w3m-mode-map "t" 'w3m-copy-buffer)
+#+END_SRC
+
+*** Helm, projectile
+	#+BEGIN_SRC emacs-lisp
+	  (require 'helm-misc)
+	  (require 'helm-projectile)
+	  (require 'helm-locate)
+	  (require 'helm-lsp)
+
+	  (global-set-key (kbd "M-x") 'helm-M-x)
+	  (global-set-key (kbd "C-x C-f") #'helm-find-files)
+	  (global-set-key (kbd "M-p") #'helm-projectile-switch-project)
+	  (global-set-key (kbd "C-x C-b") #'helm-mini)
+	  (global-set-key (kbd "C-x p") #'helm-projectile)
+	  (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
+	  (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)
+	  (define-key helm-map (kbd "C-z") 'helm-select-action)
+	  (define-key helm-map (kbd "C-j") 'helm-next-line)
+	  (define-key helm-map (kbd "C-k") 'helm-previous-line)
+	  (define-key helm-find-files-map (kbd "C-h") 'helm-find-files-up-one-level)
+	  (define-key helm-find-files-map (kbd "C-l") 'helm-execute-persistent-action)
+
+	  (setq helm-quick-update				t
+			helm-bookmark-show-location		t
+			helm-buffers-fuzzy-matching		t
+			helm-make-executable			"/usr/local/bin/gmake"
+			helm-make-nproc					5
+			helm-split-window-in-side-p		t)
+
+	  (defun helm-my-buffers ()
+		(interactive)
+		(let ((helm-ff-transformer-show-only-basename nil))
+		  (helm-other-buffer '(helm-c-source-buffers-list
+							   helm-c-source-elscreen
+							   helm-c-source-projectile-files-list
+							   helm-c-source-ctags
+							   helm-c-source-recentf
+							   helm-c-source-locate)
+							 "*helm-my-buffers*")))
+
+	  (helm-mode 1)
+	  (projectile-mode +1)
+	#+END_SRC
+
+*** DOOM Modeline
+#+BEGIN_SRC emacs-lisp
+(setq display-time-string-forms
+	   '((propertize (concat " " 24-hours ":" minutes " "))))
+
+(require 'doom-modeline)
+(doom-modeline-mode 1)
+(setq doom-modeline-height 30)
+(setq doom-modeline-project-detection 'projectile)
+(setq doom-modeline-buffer-file-name-style 'truncate-upto-project)
+(setq doom-modeline-icon (display-graphic-p))
+(setq doom-modeline-major-mode-icon t)
+(setq doom-modeline-major-mode-color-icon t)
+(setq doom-modeline-buffer-state-icon t)
+(setq doom-modeline-buffer-modification-icon t)
+(setq doom-modeline-unicode-fallback t)
+(setq doom-modeline-enable-word-count nil)
+(setq doom-modeline-buffer-encoding nil)
+(setq doom-modeline-indent-info nil)
+(setq doom-modeline-checker-simple-format t)
+(setq doom-modeline-number-limit 99)
+(setq doom-modeline-vcs-max-length 12)
+(setq doom-modeline-persp-name t)
+(setq doom-modeline-lsp t)
+(setq doom-modeline-github nil)
+(setq doom-modeline-github-interval (* 30 60))
+(setq doom-modeline-modal-icon t)
+(setq doom-modeline-gnus nil)
+(setq doom-modeline-irc t)
+(setq doom-modeline-irc-stylize 'identity)
+(setq doom-modeline-env-version t)
+(setq doom-modeline-env-python-executable "python-shell-interpreter")
+(setq doom-modeline-env-ruby-executable "ruby")
+(setq doom-modeline-env-perl-executable "perl")
+(setq doom-modeline-env-go-executable "go")
+(setq doom-modeline-env-elixir-executable "iex")
+(setq doom-modeline-env-rust-executable "rustc")
+(setq doom-modeline-env-load-string "...")
+(setq doom-modeline-before-update-env-hook nil)
+(setq doom-modeline-after-update-env-hook nil)
+(display-battery-mode)
+(column-number-mode)
+(display-time)
+(doom-themes-neotree-config)
+#+END_SRC
+
+*** Colors and rainbows
+#+BEGIN_SRC emacs-lisp
+;; (require 'color-identifiers-mode)
+;; (global-color-identifiers-mode)
+
+(require 'rainbow-delimiters)
+(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+#+END_SRC
+
+*** C default style
+#+BEGIN_SRC emacs-lisp
+  (c-add-style "openbsd"
+			   '("bsd"
+				 (c-backspace-function . delete-backward-char)
+				 (c-syntactic-indentation-in-macros . nil)
+				 (c-tab-always-indent . nil)
+				 (c-hanging-braces-alist
+				  (block-close . c-snug-do-while))
+				 (c-offsets-alist
+				  (arglist-cont-nonempty . *)
+				  (statement-cont . *))
+				 (indent-tabs-mode . t)))
+  (setq c-default-style "openbsd")
+#+END_SRC
+
+*** Magit
+#+BEGIN_SRC emacs-lisp
+(require 'magit)
+
+(defun my/magit-kill-buffers ()
+	"Restore window configuration and kill all Magit buffers.
+Attribution: URL `https://manuel-uberti.github.io/emacs/2018/02/17/magit-bury-buffer/'"
+	(interactive)
+	(let ((buffers (magit-mode-get-buffers)))
+		(magit-restore-window-configuration)
+	    (mapc #'kill-buffer buffers)))
+
+(bind-key "q" #'my/magit-kill-buffers magit-status-mode-map)
+(evil-define-key 'insert magit-status-mode-map (kbd "q") #'my/magit-kill-buffers)
+(evil-define-key 'normal magit-status-mode-map (kbd "q") #'my/magit-kill-buffers)
+#+END_SRC
+
+*** Lock windows
+#+BEGIN_SRC emacs-lisp
+(defun my/toggle-window-dedicated ()
+  "Control whether or not Emacs is allowed to display another
+buffer in current window."
+  (interactive)
+  (message
+   (if (let (window (get-buffer-window (current-buffer)))
+		 (set-window-dedicated-p window (not (window-dedicated-p window))))
+	   "%s: locked"
+	 "%s is up for grabs")
+   (current-buffer)))
+
+(global-set-key (kbd "C-c t") 'my/toggle-window-dedicated)
+#+END_SRC
+
+*** Tabs and stuff
+#+BEGIN_SRC emacs-lisp
+(defun minibuffer-keyboard-quit ()
+  "Abort recursive edit.
+In Delete Selection mode, if the mark is active, just deactivate it;
+then it takes a second \\[keyboard-quit] to abort the minibuffer."
+  (interactive)
+  (if (and delete-selection-mode transient-mark-mode mark-active)
+	  (setq deactivate-mark  t)
+	(when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
+	(abort-recursive-edit)))
+(define-key evil-normal-state-map [escape] 'keyboard-quit)
+(define-key evil-visual-state-map [escape] 'keyboard-quit)
+(define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
+(define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
+(define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
+(define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
+(define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
+
+(defun my/insert-tab-char ()
+  (interactive)
+  (insert "\t"))
+
+(define-key evil-insert-state-map [tab] 'my/insert-tab-char)
+(setq my/tab-stop 4)
+(setq-default indent-tabs-mode t)
+(setq tab-always-indent 'complete)
+(setq-default tab-width my/tab-stop)
+(setq tab-width my/tab-stop)
+(setq-default c-basic-offset my/tab-stop)
+(setq-default cperl-indent-level my/tab-stop)
+#+END_SRC
+
+*** ibuffer
+	#+BEGIN_SRC emacs-lisp
+	  (require 'ibuffer)
+	  (require 'ibuffer-vc)
+	  (require 'ibuffer-projectile)
+	  (add-hook 'ibuffer-hook
+				(lambda ()
+				  (ibuffer-projectile-set-filter-groups)
+				  (unless (eq ibuffer-sorting-mode 'alphabetic)
+					(ibuffer-do-sort-by-alphabetic))))
+	#+END_SRC
+
+*** all the icons
+#+BEGIN_SRC emacs-lisp
+(require 'font-lock+)
+(require 'all-the-icons)
+(require 'all-the-icons-dired)
+(require 'all-the-icons-ibuffer)
+(load "all-the-icons-dired.el")
+(add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+(all-the-icons-ibuffer-mode 1)
+#+END_SRC
+
+*** which-key
+#+BEGIN_SRC emacs-lisp
+(require 'which-key)
+(which-key-mode)
+#+END_SRC
+
+*** shell-pop
+#+BEGIN_SRC emacs-lisp
+(require 'shell-pop)
+(setq my/shell-pop-shell-type
+	(quote
+	("ansi-term" "*ansi-term*"
+	(lambda nil
+	(ansi-term shell-pop-term-shell)))))
+
+(setq shell-pop-term-shell "/usr/local/bin/zsh")
+(add-to-list 'evil-emacs-state-modes 'term-mode)
+#+END_SRC
+
+*** org-superstar
+#+BEGIN_SRC emacs-lisp
+(require 'org-superstar)
+(add-hook 'org-mode-hook (lambda () (org-superstar-mode 1)))
+#+END_SRC
+
+*** toc-org
+#+BEGIN_SRC emacs-lisp
+(require 'toc-org)
+(add-hook 'org-mode-hook 'toc-org-mode)
+;; enable in markdown, too
+(add-hook 'markdown-mode-hook 'toc-org-mode)
+(define-key markdown-mode-map (kbd "\C-c\C-o") 'toc-org-markdown-follow-thing-at-point)
+#+END_SRC
+
+*** lsp, ccls, clangd, company, yasnippet
+#+BEGIN_SRC emacs-lisp
+  (require 'lsp-mode)
+  (require 'lsp-ui)
+  ;; (require 'ccls)
+  (require 'company)
+  (require 'company-box)
+  (require 'yasnippet)
+  (require 'yasnippet-snippets)
+  (require 'yasnippet-classic-snippets)
+  (yas-reload-all)
+  (yas-global-mode)
+  (add-hook 'c-mode-hook 'lsp)
+  (add-hook 'c++-mode-hook 'lsp)
+  (add-hook 'perl-mode-hook 'lsp)
+  (add-hook 'go-mode-hook 'lsp)
+  (add-hook 'lsp-mode-hook 'lsp-enable-which-key-integration)
+
+  (setq lsp-ui-doc-header t
+		lsp-ui-doc-position 'top
+		lsp-ui-doc-delay 2
+		lsp-ui-doc-show-with-cursor t
+		lsp-ui-doc-show-with-mouse t)
+
+
+  (setq lsp-ui-sideline-enable nil
+		lsp-ui-sideline-show-diagnostics t
+		lsp-ui-sideline-show-hover nil
+		lsp-ui-sideline-show-code-actions nil
+		lsp-ui-sideline-update-mode 'line
+		lsp-ui-sideline-delay 0)
+
+  (setq lsp-enable-indentation nil
+		lsp-completion-enable t
+		lsp-headerline-breadcrumb-enable nil)
+
+  (setq gc-cons-threshold (* 100 1024 1024)
+		read-process-output-max (* 1024 1024)
+		company-idle-delay 0.0
+		company-minimum-prefix-length 1
+		lsp-idle-delay 0.1)
+
+  (with-eval-after-load 'lsp-mode
+	(add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
+	(yas-global-mode))
+
+  (add-hook 'after-init-hook 'global-company-mode)
+  (global-company-mode)
+
+  (define-key company-active-map (kbd "C-j") 'company-select-next)
+  (define-key company-active-map (kbd "C-k") 'company-select-previous)
+  (define-key company-search-map (kbd "C-j") 'company-select-next)
+  (define-key company-search-map (kbd "C-k") 'company-select-previous)
+  (define-key company-search-map (kbd "C-t") 'company-search-toggle-filtering)
+  (define-key company-search-map (kbd "C-i") 'company-complete-common)
+  ;; (push 'company-lsp company-backends)
+  ;; (setq company-transformers nil company-lsp-async t company-lsp-cache-candidates nil)
+  (add-hook 'company-mode-hook 'company-box-mode)
+
+  (require 'lsp-clangd)
+  (setq lsp-clangd-executable "/usr/local/llvm13/bin/clangd")
+
+  ;; (setq ccls-executable "ccls")
+
+  ;; (defun ccls/callee () (interactive) (lsp-ui-peek-find-custom "$ccls/call" '(:callee t)))
+  ;; (defun ccls/caller () (interactive) (lsp-ui-peek-find-custom "$ccls/call"))
+  ;; (defun ccls/vars (kind) (lsp-ui-peek-find-custom "$ccls/vars" `(:kind ,kind)))
+  ;; (defun ccls/base (levels) (lsp-ui-peek-find-custom "$ccls/inheritance" `(:levels ,levels)))
+  ;; (defun ccls/derived (levels) (lsp-ui-peek-find-custom "$ccls/inheritance" `(:levels ,levels :derived t)))
+  ;; (defun ccls/member (kind) (interactive) (lsp-ui-peek-find-custom "$ccls/member" `(:kind ,kind)))
+
+  ;; ;; References w/ Role::Role
+  ;; (defun ccls/references-read () (interactive)
+  ;; 		 (lsp-ui-peek-find-custom "textDocument/references"
+  ;; 								  (plist-put (lsp--text-document-position-params) :role 8)))
+
+  ;; ;; References w/ Role::Write
+  ;; (defun ccls/references-write ()
+  ;; 	(interactive)
+  ;; 	(lsp-ui-peek-find-custom "textDocument/references"
+  ;; 							 (plist-put (lsp--text-document-position-params) :role 16)))
+
+  ;; ;; References w/ Role::Dynamic bit (macro expansions)
+  ;; (defun ccls/references-macro () (interactive)
+  ;; 		 (lsp-ui-peek-find-custom "textDocument/references"
+  ;; 								  (plist-put (lsp--text-document-position-params) :role 64)))
+
+  ;; ;; References w/o Role::Call bit (e.g. where functions are taken addresses)
+  ;; (defun ccls/references-not-call () (interactive)
+  ;; 		 (lsp-ui-peek-find-custom "textDocument/references"
+  ;; 								  (plist-put (lsp--text-document-position-params) :excludeRole 32)))
+
+  ;; ;; ccls/vars ccls/base ccls/derived ccls/members have a parameter while others are interactive.
+  ;; ;; (ccls/base 1) direct bases
+  ;; ;; (ccls/derived 1) direct derived
+  ;; ;; (ccls/member 2) => 2 (Type) => nested classes / types in a namespace
+  ;; ;; (ccls/member 3) => 3 (Func) => member functions / functions in a namespace
+  ;; ;; (ccls/member 0) => member variables / variables in a namespace
+  ;; ;; (ccls/vars 1) => field
+  ;; ;; (ccls/vars 2) => local variable
+  ;; ;; (ccls/vars 3) => field or local variable. 3 = 1 | 2
+  ;; ;; (ccls/vars 4) => parameter
+
+  ;; ;; References whose filenames are under this project
+  ;; (setq ccls-sem-highlight-method 'overlay)
+  ;; (ccls-use-default-rainbow-sem-highlight)
+#+END_SRC
+
+*** diff-hl
+#+BEGIN_SRC emacs-lisp
+  (require 'diff-hl)
+  (global-diff-hl-mode)
+  (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
+  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
+#+END_SRC
+
+*** Saveplace, savehist
+	#+BEGIN_SRC emacs-lisp
+	  (require 'saveplace)
+	  (add-hook 'after-init-hook 'save-place-mode)
+	  (require 'savehist)
+	  (setq history-length 1000
+			savehist-additional-variables '(search-ring
+											regexp-search-ring
+											extended-command-history)
+			savehist-autosave-interval 60)
+	  (add-hook 'after-init-hook 'savehist-mode)
+	#+END_SRC
+	
+*** Eyebrowse
+	#+BEGIN_SRC emacs-lisp
+	  (require 'eyebrowse)
+	  (define-key eyebrowse-mode-map (kbd "M-1") 'eyebrowse-switch-to-window-config-1)
+	  (define-key eyebrowse-mode-map (kbd "M-2") 'eyebrowse-switch-to-window-config-2)
+	  (define-key eyebrowse-mode-map (kbd "M-3") 'eyebrowse-switch-to-window-config-3)
+	  (define-key eyebrowse-mode-map (kbd "M-4") 'eyebrowse-switch-to-window-config-4)
+	  (define-key eyebrowse-mode-map (kbd "M-5") 'eyebrowse-switch-to-window-config-5)
+	  (define-key eyebrowse-mode-map (kbd "M-6") 'eyebrowse-switch-to-window-config-6)
+	  (define-key eyebrowse-mode-map (kbd "M-7") 'eyebrowse-switch-to-window-config-7)
+	  (define-key eyebrowse-mode-map (kbd "M-8") 'eyebrowse-switch-to-window-config-8)
+	  (eyebrowse-mode t)
+	  (setq eyebrowse-new-workspace t)
+	#+END_SRC
+
+*** web-mode
+	#+BEGIN_SRC emacs-lisp
+	  (defun my-setup-php ()
+		;; enable web mode
+		(web-mode)
+
+		;; make these variables local
+		(make-local-variable 'web-mode-code-indent-offset)
+		(make-local-variable 'web-mode-markup-indent-offset)
+		(make-local-variable 'web-mode-css-indent-offset)
+
+		;; set indentation, can set different indentation level for different code type
+		(setq web-mode-code-indent-offset 4)
+		(setq web-mode-css-indent-offset 4)
+		(setq web-mode-markup-indent-offset 4))
+	  (add-to-list 'auto-mode-alist '("\\.php$" . my-setup-php))
+	#+END_SRC
+
+*** undo-tree
+	#+BEGIN_SRC emacs-lisp
+	  (require 'undo-tree)
+	(setq undo-tree-auto-save-history nil)
+	#+END_SRC
+
+*** neotree
+#+BEGIN_SRC emacs-lisp
+  (require 'neotree)
+  (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
+  (setq neo-window-width 35)
+#+END_SRC
+
+*** mu4e
+#+BEGIN_SRC emacs-lisp
+	(require 'mu4e)
+	(require 'org-mu4e)
+	(require 'mu4e-contrib)
+	(require 'smtpmail)
+
+	(auth-source-pass-enable)
+	(setq auth-source-debug t)
+	(setq auth-source-do-cache nil)
+	(setq auth-sources '(password-store))
+	(setq message-kill-buffer-on-exit t)
+	(setq message-send-mail-function 'smtpmail-send-it)
+	(setq mu4e-attachment-dir "~/dl")
+	(setq mu4e-change-filenames-when-moving t)
+	(setq mu4e-completing-read-function 'completing-read)
+	(setq mu4e-compose-complete-addresses t)
+	(setq mu4e-compose-context-policy nil)
+	(setq mu4e-compose-dont-reply-to-self t)
+	(setq mu4e-compose-keep-self-cc nil)
+	(setq mu4e-context-policy 'pick-first)
+	(setq mu4e-get-mail-command "mbsync -a -c ~/.config/mbsync/mbsyncrc")
+	(setq mu4e-headers-date-format "%d-%m-%Y %H:%M")
+	(setq mu4e-headers-fields '((:human-date . 20)
+								(:flags . 6)
+								(:mailing-list . 10)
+								(:from . 22)
+								(:subject)))
+	(setq mu4e-headers-include-related t)
+	(setq mu4e-sent-messages-behavior 'delete)
+	(setq mu4e-view-show-addresses t)
+	(setq mu4e-view-show-images t)
+	(setq smtpmail-debug-info t)
+	(setq smtpmail-stream-type 'starttls)
+	(setq mm-sign-option 'guided)
+
+	(when (fboundp 'imagemagick-register-types)
+	  (imagemagick-register-types))
+
+	(defun sign-or-encrypt-message ()
+	  (let ((answer (read-from-minibuffer "Sign or encrypt?\nEmpty to do nothing.\n[s/e]: ")))
+		(cond
+		 ((string-equal answer "s") (progn
+									  (message "Signing message.")
+									  (mml-secure-message-sign-pgpmime)))
+		 ((string-equal answer "e") (progn
+									  (message "Encrypt and signing message.")
+									  (mml-secure-message-encrypt-pgpmime)))
+		 (t (progn
+			  (message "Dont signing or encrypting message.")
+			  nil)))))
+
+	(add-hook 'message-send-hook 'sign-or-encrypt-message)
+
+	(setq mu4e-contexts
+		  `( ,(make-mu4e-context
+			   :name "gmail"
+			   :enter-func (lambda ()
+							 (mu4e-message "Entering gmail context")
+							 (when (string-match-p (buffer-name (current-buffer)) "mu4e-main")
+							   (revert-buffer)))
+			   :leave-func (lambda ()
+							 (mu4e-message "Leaving gmail context")
+							 (when (string-match-p (buffer-name (current-buffer)) "mu4e-main")
+							   (revert-buffer)))
+			   :match-func (lambda (msg)
+							 (when msg
+							   (or (mu4e-message-contact-field-matches msg :to "Rudy Bousset <bousset.rudy@gmail.com>")
+								   (mu4e-message-contact-field-matches msg :from "Rudy Bousset <bousset.rudy@gmail.com>")
+								   (mu4e-message-contact-field-matches msg :cc "Rudy Bousset <bousset.rudy@gmail.com>")
+								   (mu4e-message-contact-field-matches msg :bcc "Rudy Bousset <bousset.rudy@gmail.com>")
+								   (string-match-p "^/bousset.rudy@gmail.com/INBOX" (mu4e-message-field msg :maildir)))))
+			   :vars '( ( user-mail-address            . "bousset.rudy@gmail.com" )
+						( smtpmail-smtp-user           . "bousset.rudy@gmail.com" )
+						( mu4e-compose-signature       . "Rudy Bousset" )
+						( smtpmail-smtp-server         . "smtp.gmail.com" )
+						( smtpmail-smtp-service        . 587 )
+						( mu4e-maildir-shortcuts       . ((:maildir "/bousset.rudy@gmail.com/INBOX" :key ?i)))
+						( mu4e-bookmarks
+						  .
+						  (( :name  "Unread messages"
+									 :query "maildir:/bousset.rudy@gmail.com/INBOX AND flag:unread AND NOT flag:trashed AND NOT outdoorexperten"
+									 :key ?u)
+							( :name "Today's messages"
+									:query "maildir:/bousset.rudy@gmail.com/INBOX AND date:today..now"
+									:key ?t)
+							( :name "Last 7 days"
+									:query "maildir:/bousset.rudy@gmail.com/INBOX AND date:7d..now"
+									:hide-unread t
+									:key ?w)
+							( :name "Deleted"
+									:query "flag:trashed"
+									:key ?d)
+							( :name "Possibly garbage"
+									:query "bokio OR outdoorexperten"
+									:key ?g)))))
+  ))
+#+END_SRC
+
+** Custom funcs
+#+BEGIN_SRC emacs-lisp
+(defadvice text-scale-increase (around all-buffers (arg) activate)
+  (dolist (buffer (buffer-list))
+    (with-current-buffer buffer
+      ad-do-it)))
+#+END_SRC
+
+** Compilation
+*** Close window after errorless compilation
+#+BEGIN_SRC emacs-lisp
+  (defun bury-compile-buffer-if-successful (buffer string)
+   "Bury a compilation buffer if succeeded without warnings "
+   (when (and
+		   (buffer-live-p buffer)
+		   (string-match "compilation" (buffer-name buffer))
+		   (string-match "finished" string)
+		   (not
+			(with-current-buffer buffer
+			  (goto-char (point-min))
+			  (search-forward "warning" nil t))))
+	  (run-with-timer 0.5 nil
+					  (lambda (buf)
+						(bury-buffer buf)
+						(switch-to-prev-buffer (get-buffer-window buf) 'kill)
+  						(delete-window))
+					  buffer)))
+  (add-hook 'compilation-finish-functions 'bury-compile-buffer-if-successful)
+#+END_SRC
+
+** Other key bindings
+   #+BEGIN_SRC emacs-lisp
+	 (defun my/nothing ())
+	 (global-set-key [f1] 'shell-pop)
+	 (global-set-key [f2] 'neotree-toggle)
+	 (global-set-key [f3] 'flymake-show-diagnostics-buffer)
+	 (global-set-key [f4] 'helm-make-projectile)
+	 (global-set-key [f5] 'undo-tree-visualize)
+	 (global-set-key (kbd "C-x d") 'dired)
+	 (global-set-key (kbd "C-x b") 'ibuffer)
+	 (global-set-key (kbd "M-9") 'shell-command)
+	 (global-set-key (kbd "M-0") 'async-shell-command)
+	 (global-set-key (kbd "M-j") 'next-buffer)
+	 (global-set-key (kbd "M-k") 'previous-buffer)
+
+	 (shell-pop--set-shell-type 'my/shell-pop-shell-type my/shell-pop-shell-type)
+   #+END_SRC
