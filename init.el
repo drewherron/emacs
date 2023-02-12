@@ -30,6 +30,13 @@
 ;; Uncomment when you're updating this file less frequently
 ;;(package-refresh-contents)
 
+;;==========;;
+;; Files    ;;
+;;==========;;
+
+;; Load config files
+(load "~/.config/emacs/org-config/org-capture-templates")
+
 ;;===========;;
 ;; Evil Mode ;;
 ;;===========;;
@@ -75,22 +82,40 @@
 ;;==========;;
 
 (require 'org)
+(define-key org-mode-map (kbd "RET") nil)
+
 (global-set-key (kbd "C-c a") 'org-agenda)
 
 (setq org-todo-keywords
 	'((sequence "TODO" "NEXT" "DONE")))
-;; Latin? Pensum, Pendens, Finitus
 
 (setq org-log-done 'time)
 
-;; Org Agenda
-(setq org-agenda-files '("~/Documents/Notes/Projects.org"
-                         "~/Documents/Notes/Tickler.org"))
+(setq org-directory "~/org/")
+
+(setq org-refile-targets '((org-agenda-files :maxlevel . 2)))
+
 ;; Org Capture
-(setq org-default-notes-file "~/Documents/Notes/Capture.org")
+(setq org-default-notes-file (concat org-directory "~/capture.org"))
 
-;(setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
+(global-set-key (kbd "C-c c") 'org-capture)
 
-;(after! org (plist-put org-format-latex-options :scale 2))
+;; Org Agenda
+(setq org-agenda-files (list "~/org/"))
 
+;; Org Journal
+(require 'org-journal)
+
+(setq org-journal-dir (concat org-directory "journal/"))
+
+;; Calendar stuff
+;(eval-after-load "calendar"
+;  `(progn
+;     (define-key calendar-mode-map (kbd "RET") 'org-journal-display-entry)
+;    ; (define-key calendar-mode-map (kbd "M-[") 'calendar-backward-month)
+;     ))
+(define-key calendar-mode-map (kbd "RET") 'org-journal-display-entry)
+
+;; LaTeX
 (plist-put org-format-latex-options :scale 2)
+
