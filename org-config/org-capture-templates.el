@@ -1,28 +1,31 @@
 (setq org-capture-templates
       '(
 
-   ;; Inbox/generic capture
+   ;; Generic inbox entries
    ("i" "Inbox" entry (file "capture.org")
     "* %^{Note} %^g\n:PROPERTIES:\n:CREATED:  %U\n:END:\n\n%?"
     :prepend t
-    :empty-lines 1
     :created t
     )
 
-   ;;  Tickler file
-   ("t" "Tickler" entry (file "tickler.org")
+   ;; Actions
+   ("t" "Todo" entry (file "capture.org")
+    "* TODO %^{Note} %^g\n:PROPERTIES:\n:CREATED:  %U\n:END:\n\n%?"
+    :prepend t
+    :created t
+    )
+
+   ;; Reminders
+   ("r" "Reminder" entry (file "tickler.org")
     "* %^{Reminder} %^g\nSCHEDULED:  %^t\n:PROPERTIES:\n:CREATED:  %U\n:END:\n\n%?"
     :prepend t
-    :empty-lines 1
     :created t
     )
-
 
    ;; Shopping
    ("s" "Shopping" entry (file "~/Share/shopping.org")
     "* %^{Need} %^g\n:PROPERTIES:\n:CREATED:  %U\n:END:\n\n%?"
     :prepend t
-    :empty-lines 1
     :created t
     )
 
@@ -47,7 +50,6 @@
 :W-Email:
 :Github:
 :Linkedin:
-:CREATED:  %U
 :END:
 
 ** Wish List

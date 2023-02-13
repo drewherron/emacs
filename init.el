@@ -88,14 +88,11 @@
 (global-set-key (kbd "C-c r") 'org-refile)
 
 (setq org-todo-keywords
-	'((sequence "TODO" "NEXT" "|"  "DONE")))
+	'((sequence "TODO" "NEXT" "WAITING" "|"  "DONE")))
 
 (setq org-log-done 'time)
 
 (setq org-directory "~/org/")
-
-(setq org-refile-targets '((org-agenda-files :maxlevel . 2)))
-(setq org-refile-use-outline-path 'file)
 
 ;; Org Capture
 (setq org-default-notes-file (concat org-directory "~/capture.org"))
@@ -105,12 +102,25 @@
 ;; Org Agenda
 ;(setq org-agenda-files (list "~/org/"))
 (setq org-agenda-files '("projects.org"
+			 "people.org"
+			 "todo.org"
                          "tickler.org"))
+
+(setq org-refile-targets '((org-agenda-files :maxlevel . 2)))
+(setq org-refile-use-outline-path 'file)
+;; or to specify files, or vary maxlevels:
+;(setq org-refile-targets
+;      '(("projects.org" :maxlevel . 1)
+;        ("people.org" :maxlevel . 2)))
 
 ;; Org Journal
 (require 'org-journal)
 
 (setq org-journal-dir (concat org-directory "journal/"))
+(setq org-journal-file-type 'yearly)
+;(setq org-journal-time-prefix "** ")
+;(setq org-journal-date-format "%A, %B %d %Y")
+
 
 ;; Calendar stuff
 ;(eval-after-load "calendar"
