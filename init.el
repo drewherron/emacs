@@ -35,6 +35,7 @@
 ;;==========;;
 
 ;; Load config files
+;;(This section will grow)
 (load "~/.config/emacs/org-config/org-capture-templates")
 
 ;;===========;;
@@ -76,7 +77,6 @@
                     :height 140
                     :weight 'normal
                     :width 'normal)
-
 ;;==========;;
 ;; Org Mode ;;
 ;;==========;;
@@ -85,15 +85,17 @@
 (define-key org-mode-map (kbd "RET") nil)
 
 (global-set-key (kbd "C-c a") 'org-agenda)
+(global-set-key (kbd "C-c r") 'org-refile)
 
 (setq org-todo-keywords
-	'((sequence "TODO" "NEXT" "DONE")))
+	'((sequence "TODO" "NEXT" "|"  "DONE")))
 
 (setq org-log-done 'time)
 
 (setq org-directory "~/org/")
 
 (setq org-refile-targets '((org-agenda-files :maxlevel . 2)))
+(setq org-refile-use-outline-path 'file)
 
 ;; Org Capture
 (setq org-default-notes-file (concat org-directory "~/capture.org"))
@@ -101,7 +103,9 @@
 (global-set-key (kbd "C-c c") 'org-capture)
 
 ;; Org Agenda
-(setq org-agenda-files (list "~/org/"))
+;(setq org-agenda-files (list "~/org/"))
+(setq org-agenda-files '("projects.org"
+                         "tickler.org"))
 
 ;; Org Journal
 (require 'org-journal)
@@ -119,3 +123,19 @@
 ;; LaTeX
 (plist-put org-format-latex-options :scale 2)
 
+;;========;;
+;;========;;
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(helm tron-legacy-theme org-journal nyan-mode night-owl-theme evil base16-theme)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
