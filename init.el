@@ -50,6 +50,8 @@
 (require 'evil)
 (evil-mode 1)
 
+(evil-define-key 'normal org-mode-map (kbd "<tab>") #'org-cycle)
+
 ;;=============;;
 ;; Environment ;;
 ;;=============;;
@@ -87,6 +89,7 @@
 (global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c r") 'org-refile)
 
+
 (setq org-todo-keywords
 	'((sequence "TODO" "NEXT" "WAITING" "|"  "DONE")))
 
@@ -100,11 +103,11 @@
 (global-set-key (kbd "C-c c") 'org-capture)
 
 ;; Org Agenda
-;(setq org-agenda-files (list "~/org/"))
-(setq org-agenda-files '("projects.org"
-			 "people.org"
-			 "todo.org"
-                         "tickler.org"))
+(setq org-agenda-files (list "~/org/"))
+;(setq org-agenda-files '("projects.org"
+;			 "people.org"
+;			 "todo.org"
+;                         "tickler.org"))
 
 (setq org-refile-targets '((org-agenda-files :maxlevel . 2)))
 (setq org-refile-use-outline-path 'file)

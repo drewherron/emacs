@@ -10,7 +10,7 @@
 
    ;; Actions
    ("t" "Todo" entry (file "capture.org")
-    "* TODO %^{Note} %^g\n:PROPERTIES:\n:CREATED:  %U\n:END:\n\n%?"
+    "* TODO %^{Todo} %^g\n:PROPERTIES:\n:CREATED:  %U\n:END:\n\n%?"
     :prepend t
     :created t
     )

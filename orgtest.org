@@ -27,3 +27,11 @@ A =
 = 1 \cdot 3 - 2 \cdot 4 = -5
 #+END_SC
 
+
+* Code?
+
+#+begin_src C
+for (int i = 0; i < 10; i++) {
+printf("Hi");
+}
+#+end_src
