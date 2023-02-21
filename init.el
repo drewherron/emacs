@@ -28,7 +28,7 @@
 
 (package-initialize)
 ;; Uncomment when you're updating this file less frequently
-;;(package-refresh-contents)
+;(package-refresh-contents)
 
 ;;==========;;
 ;; Files    ;;
@@ -51,6 +51,13 @@
 (evil-mode 1)
 
 (evil-define-key 'normal org-mode-map (kbd "<tab>") #'org-cycle)
+
+;;======;;
+;; Undo ;;
+;;======;;
+
+(evil-set-undo-system 'undo-tree)
+(global-undo-tree-mode 1)
 
 ;;=============;;
 ;; Environment ;;
