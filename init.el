@@ -140,9 +140,39 @@
 ;     ))
 (define-key calendar-mode-map (kbd "RET") 'org-journal-display-entry)
 
+;; Source blocks
+(defun org-insert-source-block (name language switches header)
+  "Asks name, language, switches, header.
+Inserts org-mode source code snippet"
+  (interactive "sname? 
+slanguage? 
+sswitches? 
+sheader? ")
+  (insert 
+   (if (string= name "")
+       ""
+     (concat "#+NAME: " name) )
+   (format "
+#+BEGIN_SRC %s %s %s
+
+#+END_SRC" language switches header
+)
+   )
+  (forward-line -1)
+  (goto-char (line-end-position))
+  )
+
+(define-key org-mode-map (kbd "C-c s") #'org-insert-source-block)
+
 ;; LaTeX
 (plist-put org-format-latex-options :scale 2)
 
+;; Ido
+(setq ido-everywhere t)
+(setq ido-enable-flex-matching t)
+(ido-mode t)
+
+;;========;;
 ;;========;;
 ;;========;;
 
@@ -152,7 +182,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(helm tron-legacy-theme org-journal nyan-mode night-owl-theme evil base16-theme)))
+   '(undo-tree helm tron-legacy-theme org-journal nyan-mode night-owl-theme evil base16-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
