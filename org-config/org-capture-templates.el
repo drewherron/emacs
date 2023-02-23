@@ -52,7 +52,7 @@
 :Linkedin:
 :END:
 
-** Wish List
+** gifts
 
-** Notes\n\n%?" :empty-lines 1)
+** notes\n\n%?" :empty-lines 1)
    ))
