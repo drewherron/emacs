@@ -56,8 +56,10 @@
 ;; Undo ;;
 ;;======;;
 
+(unless (package-installed-p 'undo-tree)
+  (package-install 'undo-tree))
 (evil-set-undo-system 'undo-tree)
-(global-undo-tree-mode 1)
+(global-undo-tree-mode)
 
 ;;=============;;
 ;; Environment ;;
@@ -124,6 +126,8 @@
 ;        ("people.org" :maxlevel . 2)))
 
 ;; Org Journal
+(unless (package-installed-p 'org-journal)
+  (package-install 'org-journal))
 (require 'org-journal)
 
 (setq org-journal-dir (concat org-directory "journal/"))
