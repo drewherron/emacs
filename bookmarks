@@ -14,7 +14,7 @@
  (position . 348))
 ("org-capture-last-stored"
  (filename . "~/org/capture.org")
- (front-context-string . "* TODO This is s")
+ (front-context-string . "* A simple linux")
  (rear-context-string)
  (position . 1))
 )

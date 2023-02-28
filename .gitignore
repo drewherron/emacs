@@ -7,4 +7,6 @@ eshell/lastdir
 elpa/
 ltximg/
 .dir-locals.el
+ido.last
+bookmarks
 
