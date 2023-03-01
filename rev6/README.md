@@ -1,1 +1,0 @@
-oh just get from Obsidian.

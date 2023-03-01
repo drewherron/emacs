@@ -26,6 +26,13 @@
                          ("melpa" . "https://melpa.org/packages/")
                          ("gnu" . "https://elpa.gnu.org/packages/")))
 
+(unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
+(eval-and-compile
+    (setq use-package-always-ensure t
+        use-package-expand-minimally t))
+
 (package-initialize)
 ;; Uncomment when you're updating this file less frequently
 ;(package-refresh-contents)
@@ -39,29 +46,30 @@
 (load "~/.config/emacs/org-config/org-capture-templates")
 
 ;;===========;;
-;; Evil Mode ;;
+;; Imp Mode ;;
 ;;===========;;
 
-;; Download Evil
-;(unless (package-installed-p 'evil)
-;  (package-install 'evil))
+;; Download Imp Mode
+;(unless (package-installed-p 'imp-mode)
+;  (package-install 'imp-mode))
 
-;; Enable Evil
-;(require 'evil)
-;(evil-mode 1)
-
-;(evil-define-key 'normal org-mode-map (kbd "<tab>") #'org-cycle)
-
-;(evil-set-undo-system 'undo-tree)
+;; Enable Imp Mode
+;(require 'imp-mode)
+;(imp-mode 1)
 
 ;;======;;
 ;; Undo ;;
 ;;======;;
 
 (unless (package-installed-p 'undo-tree)
-  (package-install 'undo-tree))
-(evil-set-undo-system 'undo-tree)
+    (package-install 'undo-tree))
 (global-undo-tree-mode)
+
+;; Spaces
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
+(setq indent-line-function 'insert-tab)
+
 
 ;;=============;;
 ;; Environment ;;
@@ -188,7 +196,7 @@ sheader? ")
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(undo-tree helm tron-legacy-theme org-journal nyan-mode night-owl-theme base16-theme)))
+   '(use-package undo-tree helm tron-legacy-theme org-journal nyan-mode night-owl-theme base16-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
