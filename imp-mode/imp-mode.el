@@ -11,6 +11,9 @@
 
 ;;; Commentary:
 
+;; nameofsomekey enters imp-mode (ESC by default)
+;; nameofotherkey leaves imp-mode (; by default)
+
 ;;|   | h                        | j                   | k                     | l                  |
 ;;|---|--------------------------|---------------------|-----------------------|--------------------|
 ;;|   | (backward-char)          | (next-line)         | (previous-line)       | (forward-char)     |
