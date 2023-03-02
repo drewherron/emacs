@@ -45,22 +45,18 @@
   (corfu-cycle t)
   (corfu-auto t)
   (corfu-auto-prefix 2)
-  (corfu-auto-delay 0.0)
-  (corfu-echo-documentation 0.25)
+  (corfu-auto-delay 0.3)
   (corfu-preview-current 'insert)
-  (corfu-preselect-first nil)
   (corfu-on-exact-match nil)
-  :init
-  (global-corfu-mode))
-
+  :hook prog-mode)
+        
 ;; TAB cycle if there are only few candidates
 (setq completion-cycle-threshold 3)
-
 
 ;;==========;;
 ;; Files    ;;
 ;;==========;;
-
+ 
 ;; Load config files
 ;;(This section will grow)
 (load "~/.config/emacs/org-config/org-capture-templates")
