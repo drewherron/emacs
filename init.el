@@ -10,32 +10,52 @@
 ; I'll use this later:
 ;(setq inhibit-startup-message t)
 
-;;==========;;
-;; Packages ;;
-;;==========;;
 
-(require 'package)
 
 (if (and (= emacs-major-version 26)
          (<= emacs-minor-version 1))
     (progn (message "Fixing GNU TLS algorithm")
            (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")))
 
+;;==========;;
+;; Packages ;;
+;;==========;;
+(require 'package)
 
-(setq package-archives '(("org" . "https://orgmode.org/elpa/")
-                         ("melpa" . "https://melpa.org/packages/")
-                         ("gnu" . "https://elpa.gnu.org/packages/")))
+(setq package-archives '(("melpa" .  "https://melpa.org/packages/")
+                         ("org"   .  "https://orgmode.org/elpa/")
+                         ("gnu"   .  "https://elpa.gnu.org/packages/")))
+
+;; Uncomment when you're updating this file less frequently
+;(package-refresh-contents)
 
 (unless (package-installed-p 'use-package)
     (package-refresh-contents)
     (package-install 'use-package))
+
 (eval-and-compile
     (setq use-package-always-ensure t
         use-package-expand-minimally t))
 
 (package-initialize)
-;; Uncomment when you're updating this file less frequently
-;(package-refresh-contents)
+
+(use-package corfu
+  :ensure t
+  :custom
+  (corfu-cycle t)
+  (corfu-auto t)
+  (corfu-auto-prefix 2)
+  (corfu-auto-delay 0.0)
+  (corfu-echo-documentation 0.25)
+  (corfu-preview-current 'insert)
+  (corfu-preselect-first nil)
+  (corfu-on-exact-match nil)
+  :init
+  (global-corfu-mode))
+
+;; TAB cycle if there are only few candidates
+(setq completion-cycle-threshold 3)
+
 
 ;;==========;;
 ;; Files    ;;
@@ -186,6 +206,11 @@ sheader? ")
 (setq ido-enable-flex-matching t)
 (ido-mode t)
 
+;; Corfu
+
+
+
+;;========;;
 ;;========;;
 ;;========;;
 ;;========;;
@@ -196,7 +221,7 @@ sheader? ")
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(use-package undo-tree helm tron-legacy-theme org-journal nyan-mode night-owl-theme base16-theme)))
+        '(corfu use-package undo-tree helm tron-legacy-theme org-journal nyan-mode night-owl-theme base16-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
