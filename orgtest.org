@@ -6,8 +6,7 @@
 - [X] One
   - [X] One
 - [X] One
-- [X] One
-
+- [ ] One
   
 
 \begin{bmatrix}
@@ -28,10 +27,21 @@ A =
 #+END_SC
 
 
-* Code?
+[[/home/drew/Pictures/mianqian.jpg]]
 
-#+begin_src C
-for (int i = 0; i < 10; i++) {
-printf("Hi");
+* Code
+  
+#+NAME: Code name
+#+BEGIN_SRC c  
+while (x < 7)
+{
+   for (int i = 0; i < 10; i++)
+   {
+       x += 1;
+       printf("Hey\n");
+   }
 }
-#+end_src
+#+END_SRC
+
+* Also
+** TODO Something to do
