@@ -39,19 +39,31 @@
 
 (package-initialize)
 
+;; Corfu
 (use-package corfu
   :ensure t
   :custom
   (corfu-cycle t)
+  (corfu-preselect 'prompt)
   (corfu-auto t)
   (corfu-auto-prefix 2)
   (corfu-auto-delay 0.3)
   (corfu-preview-current 'insert)
   (corfu-on-exact-match nil)
+  :bind
+    (:map corfu-map
+        ("TAB"     .  corfu-next)
+        ([tab]     .  corfu-next)
+        ("S-TAB"   .  corfu-previous)
+        ([backtab] .  corfu-previous))
   :hook prog-mode)
-        
-;; TAB cycle if there are only few candidates
-(setq completion-cycle-threshold 3)
+
+;; Magit
+(use-package magit
+  :ensure t)
+
+(use-package try
+  :ensure t)
 
 ;;==========;;
 ;; Files    ;;
@@ -124,7 +136,6 @@
 (global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c r") 'org-refile)
 
-
 (setq org-todo-keywords
 	'((sequence "TODO" "NEXT" "WAITING" "|"  "DONE")))
 
@@ -147,9 +158,9 @@
 (setq org-refile-targets '((org-agenda-files :maxlevel . 2)))
 (setq org-refile-use-outline-path 'file)
 ;; or to specify files, or vary maxlevels:
-;(setq org-refile-targets
-;      '(("projects.org" :maxlevel . 1)
-;        ("people.org" :maxlevel . 2)))
+                                        ;(setq org-refile-targets
+                                        ;      '(("projects.org" :maxlevel . 1)
+                                        ;        ("people.org" :maxlevel . 2)))
 
 ;; Org Journal
 (unless (package-installed-p 'org-journal)
@@ -174,10 +185,10 @@
 (defun org-insert-source-block (name language switches header)
   "Asks name, language, switches, header.
 Inserts org-mode source code snippet"
-  (interactive "sname? 
-slanguage? 
-sswitches? 
-sheader? ")
+  (interactive "sName: 
+sLanguage: 
+sSwitches: 
+sHeader: ")
   (insert 
    (if (string= name "")
        ""
@@ -186,13 +197,15 @@ sheader? ")
 #+BEGIN_SRC %s %s %s
 
 #+END_SRC" language switches header
-)
-   )
+))
   (forward-line -1)
   (goto-char (line-end-position))
   )
 
 (define-key org-mode-map (kbd "C-c s") #'org-insert-source-block)
+
+;; Colors in source blocks
+(setq org-src-fontify-natively t)
 
 ;; LaTeX
 (plist-put org-format-latex-options :scale 2)
@@ -201,9 +214,6 @@ sheader? ")
 (setq ido-everywhere t)
 (setq ido-enable-flex-matching t)
 (ido-mode t)
-
-;; Corfu
-
 
 
 ;;========;;
@@ -217,7 +227,7 @@ sheader? ")
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-        '(corfu use-package undo-tree helm tron-legacy-theme org-journal nyan-mode night-owl-theme base16-theme)))
+        '(try magit corfu use-package undo-tree org-journal nyan-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
