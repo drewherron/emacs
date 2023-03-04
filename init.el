@@ -72,18 +72,7 @@
 ;; Load config files
 ;;(This section will grow)
 (load "~/.config/emacs/org-config/org-capture-templates")
-
-;;===========;;
-;; Imp Mode ;;
-;;===========;;
-
-;; Download Imp Mode
-;(unless (package-installed-p 'imp-mode)
-;  (package-install 'imp-mode))
-
-;; Enable Imp Mode
-;(require 'imp-mode)
-;(imp-mode 1)
+;(load "~/.config/emacs/imp-mode/imp-mode")
 
 ;;======;;
 ;; Undo ;;
@@ -213,7 +202,11 @@ sHeader: ")
 ;; Ido
 (setq ido-everywhere t)
 (setq ido-enable-flex-matching t)
+(setq ido-show-dot-for-dired t)
 (ido-mode t)
+
+
+;; imp mode
 
 
 ;;========;;
