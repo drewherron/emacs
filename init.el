@@ -62,6 +62,16 @@
 (use-package magit
   :ensure t)
 
+;; Smartparens
+(use-package smartparens
+  :ensure t
+  :config
+  (smartparens-global-mode t)
+  ;(evil-smartparens-keybindings-mode t)
+  (show-smartparens-global-mode t)
+  (setq sp-show-pair-from-inside t))
+
+;; Try
 (use-package try
   :ensure t)
 
@@ -207,8 +217,12 @@ sHeader: ")
 
 
 ;; imp mode
+;(let ((default-directory "/imp-mode")) 
+;    (shell-command "hypercaps.sh"))
+;(setq x-hyper-keysym 'hyper)
 
 
+    
 ;;========;;
 ;;========;;
 ;;========;;
@@ -220,7 +234,7 @@ sHeader: ")
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-        '(try magit corfu use-package undo-tree org-journal nyan-mode)))
+        '(smartparens try magit corfu use-package undo-tree org-journal nyan-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
