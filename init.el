@@ -10,8 +10,6 @@
 ; I'll use this later:
 ;(setq inhibit-startup-message t)
 
-
-
 (if (and (= emacs-major-version 26)
          (<= emacs-minor-version 1))
     (progn (message "Fixing GNU TLS algorithm")
@@ -22,12 +20,14 @@
 ;;==========;;
 (require 'package)
 
-(setq package-archives '(("melpa" .  "https://melpa.org/packages/")
+(setq package-archives '(("gnu"   .  "https://elpa.gnu.org/packages/")
+                         ("nongnu" . "https://elpa.nongnu.org/nongnu/") 
                          ("org"   .  "https://orgmode.org/elpa/")
-                         ("gnu"   .  "https://elpa.gnu.org/packages/")))
+                         ("melpa" .  "https://melpa.org/packages/")))
+                         
 
 ;; Uncomment when you're updating this file less frequently
-;(package-refresh-contents)
+(package-refresh-contents)
 
 (unless (package-installed-p 'use-package)
     (package-refresh-contents)
@@ -62,6 +62,31 @@
 (use-package magit
   :ensure t)
 
+(use-package org-roam
+  :ensure t
+  :after org
+  :custom
+  (org-roam-directory "~/org/roam/")
+  (org-roam-dailies-directory "~/org/daily/")
+
+  :bind (("C-c n f" . org-roam-node-find)
+         ("C-c n r" . org-roam-node-random)
+         ("C-c n c" . org-roam-capture)
+         (:map org-roam-mode-map
+               (("C-c n l" . org-roam)
+                ("C-c n t" . org-roam-tag-add)
+                ("C-c n f" . org-roam-find-file)
+                ("C-c n g" . org-roam-graph))
+               :map org-mode-map
+               (("C-c n i" . org-roam-node-insert))
+               (("C-c n I" . org-roam-insert-immediate))))
+  :config
+  (setq org-roam-completion-everywhere t)
+  (org-roam-db-autosync-mode t)
+  ;; (require 'org-roam-protocol)
+  )
+
+    
 ;; Smartparens
 (use-package smartparens
   :ensure t
@@ -162,12 +187,13 @@
                                         ;        ("people.org" :maxlevel . 2)))
 
 ;; Org Journal
-(unless (package-installed-p 'org-journal)
-  (package-install 'org-journal))
-(require 'org-journal)
-
-(setq org-journal-dir (concat org-directory "journal/"))
-(setq org-journal-file-type 'yearly)
+;; Moving to roam
+;(unless (package-installed-p 'org-journal)
+;  (package-install 'org-journal))
+;(require 'org-journal)
+;
+;(setq org-journal-dir (concat org-directory "journal/"))
+;(setq org-journal-file-type 'yearly)
 ;(setq org-journal-time-prefix "** ")
 ;(setq org-journal-date-format "%A, %B %d %Y")
 
@@ -221,7 +247,10 @@ sHeader: ")
 ;    (shell-command "hypercaps.sh"))
 ;(setq x-hyper-keysym 'hyper)
 
-
+(defun open-init-file ()
+  "Open the Emacs config file."
+  (interactive)
+  (find-file "~/.config/emacs/init.el"))
     
 ;;========;;
 ;;========;;
@@ -234,7 +263,7 @@ sHeader: ")
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-        '(smartparens try magit corfu use-package undo-tree org-journal nyan-mode)))
+        '(org-roam smartparens try magit corfu use-package undo-tree nyan-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
