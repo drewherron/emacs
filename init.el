@@ -132,12 +132,13 @@
 (unless (package-installed-p 'undo-tree)
     (package-install 'undo-tree))
 (global-undo-tree-mode)
+;; Consolidate undo tree files
+(setq undo-tree-history-directory-alist '(("." . "~/.config/emacs/undo")))
 
 ;; Spaces
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 (setq indent-line-function 'insert-tab)
-
 
 ;;=============;;
 ;; Environment ;;
