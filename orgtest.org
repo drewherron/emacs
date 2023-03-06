@@ -45,3 +45,8 @@ while (x < 7)
 
 * Also
 ** TODO Something to do
+
+[[id:bf663560-1fca-4fec-997e-d26a9fefb7dd][capture]]
+
+[[id:43b9799f-71ad-492a-88e1-28330b0b4bb4][Fat]]
+
