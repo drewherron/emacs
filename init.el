@@ -79,22 +79,21 @@
          ("C-c n r" . org-roam-node-random)
          ("C-c n c" . org-roam-capture)
          ("C-c n l" . org-roam-dailies-capture-today)
-         :map org-roam-mode-map
+         :map org-mode-map
          ("C-c n b" . org-roam-buffer-toggle)
          ("C-c n t" . org-roam-tag-add)
          ("C-c n f" . org-roam-find-file)
-         :map org-mode-map
          ("C-c n i" . org-roam-node-insert))
   :config
   (setq org-roam-completion-everywhere t)
   (org-roam-db-autosync-mode t)
   ;; (require 'org-roam-protocol)
 
-(setq org-roam-dailies-capture-templates
-  '(("d" "default" entry
-     (file "~/org/log/template.org")
-     :target (file+head "%<%Y-%m-%d>.org"
-                        "#+title: %<%Y-%m-%d>\n"))))
+;(setq org-roam-dailies-capture-templates
+;  '(("d" "default" entry
+;     (file "~/org/log/template.org")
+;     :target (file+head "%<%Y-%m-%d>.org"
+;                        "#+title: %<%Y-%m-%d>\n"))))
 )
     
 ;; Smartparens
