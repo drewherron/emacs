@@ -82,10 +82,11 @@
          :map org-mode-map
          ("C-c n b" . org-roam-buffer-toggle)
          ("C-c n t" . org-roam-tag-add)
-         ("C-c n f" . org-roam-find-file)
+         ("C-c n e" . org-roam-extract-subtree)
          ("C-c n i" . org-roam-node-insert))
   :config
   (setq org-roam-completion-everywhere t)
+  (setq org-roam-completion-system 'ido) 
   (org-roam-db-autosync-mode t)
   ;; (require 'org-roam-protocol)
 
