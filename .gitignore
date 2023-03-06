@@ -9,4 +9,7 @@ ltximg/
 .dir-locals.el
 ido.last
 bookmarks
-
+.org-id-locations
+transient/
+url/
+org-roam.db
