@@ -119,6 +119,12 @@
 (load "~/.config/emacs/org-config/org-capture-templates")
 ;(load "~/.config/emacs/imp-mode/imp-mode")
 
+;; Temp files to /tmp/
+(setq backup-directory-alist
+      `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
+
 ;;======;;
 ;; Undo ;;
 ;;======;;
