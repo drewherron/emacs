@@ -62,30 +62,40 @@
 (use-package magit
   :ensure t)
 
+;; Org
+(use-package org
+  :pin gnu)
+
+;; Org-Roam
 (use-package org-roam
   :ensure t
   :after org
   :custom
   (org-roam-directory "~/org/roam/")
-  (org-roam-dailies-directory "~/org/daily/")
+  (org-roam-db-location "~/org/roam/roam.db")
+  (org-roam-dailies-directory "~/org/log/")
 
   :bind (("C-c n f" . org-roam-node-find)
          ("C-c n r" . org-roam-node-random)
          ("C-c n c" . org-roam-capture)
-         (:map org-roam-mode-map
-               (("C-c n l" . org-roam)
-                ("C-c n t" . org-roam-tag-add)
-                ("C-c n f" . org-roam-find-file)
-                ("C-c n g" . org-roam-graph))
-               :map org-mode-map
-               (("C-c n i" . org-roam-node-insert))
-               (("C-c n I" . org-roam-insert-immediate))))
+         ("C-c n l" . org-roam-dailies-capture-today)
+         :map org-roam-mode-map
+         ("C-c n b" . org-roam-buffer-toggle)
+         ("C-c n t" . org-roam-tag-add)
+         ("C-c n f" . org-roam-find-file)
+         :map org-mode-map
+         ("C-c n i" . org-roam-node-insert))
   :config
   (setq org-roam-completion-everywhere t)
   (org-roam-db-autosync-mode t)
   ;; (require 'org-roam-protocol)
-  )
 
+(setq org-roam-dailies-capture-templates
+  '(("d" "default" entry
+     (file "~/org/log/template.org")
+     :target (file+head "%<%Y-%m-%d>.org"
+                        "#+title: %<%Y-%m-%d>\n"))))
+)
     
 ;; Smartparens
 (use-package smartparens
@@ -263,7 +273,7 @@ sHeader: ")
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-        '(org-roam smartparens try magit corfu use-package undo-tree nyan-mode)))
+   '(org-roam smartparens try magit corfu use-package undo-tree nyan-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
