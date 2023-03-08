@@ -64,7 +64,10 @@
 
 ;; Org
 (use-package org
-  :pin gnu)
+  :pin gnu
+  :custom
+  (org-startup-folded t)
+  (org-startup-indented t))
 
 ;; Org-Roam
 (use-package org-roam
