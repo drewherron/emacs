@@ -110,6 +110,15 @@
 (use-package try
   :ensure t)
 
+(use-package undo-tree
+  :ensure t
+  :init (global-undo-tree-mode t)
+  :custom
+  (undo-tree-auto-save-history t)
+  (undo-tree-visualizer-diff t)
+  (undo-tree-history-directory-alist ("." . "~/.config/emacs/undo"))
+  :bind  (("C-x u" . undo-tree-visualize)))
+
 ;;==========;;
 ;; Files    ;;
 ;;==========;;
@@ -124,16 +133,6 @@
       `((".*" . ,temporary-file-directory)))
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
-
-;;======;;
-;; Undo ;;
-;;======;;
-
-(unless (package-installed-p 'undo-tree)
-    (package-install 'undo-tree))
-(global-undo-tree-mode)
-;; Consolidate undo tree files
-(setq undo-tree-history-directory-alist '(("." . "~/.config/emacs/undo")))
 
 ;; Spaces
 (setq-default indent-tabs-mode nil)
