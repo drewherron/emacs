@@ -22,9 +22,8 @@
 
 (setq package-archives '(("gnu"   .  "https://elpa.gnu.org/packages/")
                          ("nongnu" . "https://elpa.nongnu.org/nongnu/") 
-                         ("org"   .  "https://orgmode.org/elpa/")
-                         ("melpa" .  "https://melpa.org/packages/")))
-                         
+                         ("melpa" .  "https://melpa.org/packages/")
+                         ("org"   .  "https://orgmode.org/elpa/")))
 
 ;; Uncomment when you're updating this file less frequently
 (package-refresh-contents)
@@ -64,6 +63,7 @@
 
 ;; Org
 (use-package org
+  :ensure t
   :pin gnu
   :custom
   (org-startup-folded t)
@@ -104,7 +104,7 @@
 (use-package smartparens
   :ensure t
   :config
-  (smartparens-global-mode t)
+  (setq smartparens-global-mode -1)
   ;(evil-smartparens-keybindings-mode t)
   (show-smartparens-global-mode t)
   (setq sp-show-pair-from-inside t))
@@ -119,7 +119,8 @@
   :custom
   (undo-tree-auto-save-history t)
   (undo-tree-visualizer-diff t)
-  (undo-tree-history-directory-alist ("." . "~/.config/emacs/undo"))
+  :config
+  (setq undo-tree-history-directory-alist `(("." . "~/.config/emacs/undo")))
   :bind  (("C-x u" . undo-tree-visualize)))
 
 ;;==========;;
