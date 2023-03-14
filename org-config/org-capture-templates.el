@@ -2,7 +2,7 @@
       '(
 
    ;; Generic inbox entries
-   ("i" "Inbox" entry (file "capture.org")
+   ("c" "Inbox" entry (file "capture.org")
     "* %^{Note} %^g\n:PROPERTIES:\n:CREATED:  %U\n:END:\n\n%?"
     :prepend t
     :created t
