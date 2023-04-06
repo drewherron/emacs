@@ -57,9 +57,23 @@
         ([backtab] .  corfu-previous))
   :hook prog-mode)
 
-;; Magit
-(use-package magit
-  :ensure t)
+;; key-chord
+(use-package key-chord
+  :ensure t
+  :config
+  (setq key-chord-two-keys-delay 0.150)
+  (key-chord-mode))
+
+(key-chord-define-global "kj" ctl-x-map)
+(key-chord-define-global "df" 'null)
+(define-key key-translation-map (kbd "<key-chord> df")  (kbd "C-c"))
+(key-chord-define-global "fd" 'null)
+(define-key key-translation-map (kbd "<key-chord> fd")  (kbd "C-c"))
+
+;; use-package-chords
+(use-package use-package-chords
+  :ensure t
+  :config (key-chord-mode 1))
 
 ;; Org
 (use-package org
@@ -293,7 +307,7 @@ sHeader: ")
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(which-key org-roam smartparens try magit corfu use-package undo-tree nyan-mode)))
+   '(use-package-chords key-chord which-key org-roam smartparens try magit corfu use-package undo-tree nyan-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
