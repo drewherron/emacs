@@ -128,7 +128,7 @@
 (use-package which-key
   :ensure t
   :config
-  (setq which-key-idle-delay 0.3)
+  (setq which-key-idle-delay 0.5)
   (which-key-setup-side-window-right-bottom) ; Change later
   (which-key-mode))
 
@@ -202,11 +202,12 @@
 (global-set-key (kbd "C-c c") 'org-capture)
 
 ;; Org Agenda
-(setq org-agenda-files (list "~/org/"))
-;(setq org-agenda-files '("projects.org"
-;			 "people.org"
-;			 "todo.org"
-;                         "tickler.org"))
+(setq org-agenda-files '("~/org/" "~/org/psu/" "~/org/log/"))
+;(setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
+;(setq org-agenda-files '("~/org/projects.org"
+;			             "~/org/people.org"
+;			             "~/org/todo.org"
+;                         "~/org/tickler.org"))
 
 (setq org-refile-targets '((org-agenda-files :maxlevel . 2)))
 (setq org-refile-use-outline-path 'file)
