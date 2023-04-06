@@ -113,6 +113,7 @@
 (use-package try
   :ensure t)
 
+;; undo-tree
 (use-package undo-tree
   :ensure t
   :init (global-undo-tree-mode t)
@@ -122,6 +123,14 @@
   :config
   (setq undo-tree-history-directory-alist `(("." . "~/.config/emacs/undo")))
   :bind  (("C-x u" . undo-tree-visualize)))
+
+;; which-key
+(use-package which-key
+  :ensure t
+  :config
+  (setq which-key-idle-delay 0.3)
+  (which-key-setup-side-window-right-bottom) ; Change later
+  (which-key-mode))
 
 ;;==========;;
 ;; Files    ;;
@@ -283,7 +292,7 @@ sHeader: ")
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(org-roam smartparens try magit corfu use-package undo-tree nyan-mode)))
+   '(which-key org-roam smartparens try magit corfu use-package undo-tree nyan-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
