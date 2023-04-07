@@ -20,10 +20,10 @@
 ;;==========;;
 (require 'package)
 
-(setq package-archives '(("gnu"   .  "https://elpa.gnu.org/packages/")
-                         ("nongnu" . "https://elpa.nongnu.org/nongnu/") 
-                         ("melpa" .  "https://melpa.org/packages/")
-                         ("org"   .  "https://orgmode.org/elpa/")))
+(setq package-archives '(("gnu"    .  "https://elpa.gnu.org/packages/")
+                         ("nongnu" .  "https://elpa.nongnu.org/nongnu/") 
+                         ("melpa"  .  "https://melpa.org/packages/")
+                         ("org"    .  "https://orgmode.org/elpa/")))
 
 ;; Uncomment when you're updating this file less frequently
 (package-refresh-contents)
@@ -64,6 +64,7 @@
   (setq key-chord-two-keys-delay 0.150)
   (key-chord-mode))
 
+; This will change, a lot
 (key-chord-define-global "kj" ctl-x-map)
 (key-chord-define-global "df" 'null)
 (define-key key-translation-map (kbd "<key-chord> df")  (kbd "C-c"))
@@ -230,6 +231,10 @@
                                         ;      '(("projects.org" :maxlevel . 1)
                                         ;        ("people.org" :maxlevel . 2)))
 
+(setq org-agenda-start-day "-3d")
+(setq org-agenda-span 10)
+(setq org-agenda-start-on-weekday nil)
+    
 ;; Org Journal
 ;; Moving to roam
 ;(unless (package-installed-p 'org-journal)
@@ -249,6 +254,8 @@
 ;    ; (define-key calendar-mode-map (kbd "M-[") 'calendar-backward-month)
 ;     ))
 (define-key calendar-mode-map (kbd "RET") 'org-journal-display-entry)
+
+;; Latex Export
 
 ;; Source blocks
 (defun org-insert-source-block (name language switches header)
