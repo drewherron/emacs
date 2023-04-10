@@ -217,7 +217,11 @@
 (global-set-key (kbd "C-c c") 'org-capture)
 
 ;; Org Agenda
-(setq org-agenda-files '("~/org/" "~/org/psu/" "~/org/log/"))
+(setq org-agenda-files '("~/org/"
+                         "~/org/log/"
+                         "~/Documents/CS/311/CS311.org"
+                         "~/Documents/CS/350/CS350.org"
+                         "~/Documents/CS/586/CS586.org"))
 ;(setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
 ;(setq org-agenda-files '("~/org/projects.org"
 ;			             "~/org/people.org"
