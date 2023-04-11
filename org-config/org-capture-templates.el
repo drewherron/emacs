@@ -36,7 +36,7 @@
 :First:    %\\1
 :Middle:
 :Last:     %\\2
-:Birthday: %^{Birth Date}u
+:Birthday: %^{Birth Date}t
 :Phone:    %^{Phone}
 :Email:    %^{Email}
 :Website:

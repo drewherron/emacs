@@ -76,6 +76,14 @@
   :ensure t
   :config (key-chord-mode 1))
 
+;; multiple-cursors
+(use-package multiple-cursors
+    :ensure t
+    :bind (("C-S-c C-S-c" . mc/edit-lines)
+           ("C->"         . mc/mark-next-like-this)
+           ("C-<"         . mc/mark-previous-like-this)
+           ("C-c C->"     . mc/mark-all-like-this)))
+    
 ;; Org
 (use-package org
   :ensure t
@@ -176,9 +184,11 @@
 (scroll-bar-mode -1)
 (set-fringe-mode 10)
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;; re-org by M-x customize groups?
 
-(global-display-line-numbers-mode)
+(global-display-line-numbers-mode t)
+(global-visual-line-mode t)
 
 ;; Themes
 (add-to-list 'custom-theme-load-path "~/.config/emacs/themes")
@@ -231,13 +241,17 @@
 (setq org-refile-targets '((org-agenda-files :maxlevel . 2)))
 (setq org-refile-use-outline-path 'file)
 ;; or to specify files, or vary maxlevels:
-                                        ;(setq org-refile-targets
-                                        ;      '(("projects.org" :maxlevel . 1)
-                                        ;        ("people.org" :maxlevel . 2)))
+;(setq org-refile-targets
+;      '(("projects.org" :maxlevel . 1)
+;        ("people.org" :maxlevel . 2)))
 
 (setq org-agenda-start-day "-3d")
 (setq org-agenda-span 10)
 (setq org-agenda-start-on-weekday nil)
+
+(setq org-agenda-hide-tags-regexp "noexport\\|exampleforreference")
+
+(setq org-agenda-show-future-repeats nil)
     
 ;; Org Journal
 ;; Moving to roam
@@ -318,7 +332,7 @@ sHeader: ")
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(use-package-chords key-chord which-key org-roam smartparens try magit corfu use-package undo-tree nyan-mode)))
+        '(multiple-cursors use-package-chords key-chord which-key org-roam smartparens try magit corfu use-package undo-tree nyan-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
