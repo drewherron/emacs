@@ -246,8 +246,9 @@
 ;        ("people.org" :maxlevel . 2)))
 
 (setq org-agenda-start-day "-3d")
-(setq org-agenda-span 10)
+(setq org-agenda-span 14)
 (setq org-agenda-start-on-weekday nil)
+(setq org-deadline-warning-days 0)
 
 (setq org-agenda-hide-tags-regexp "noexport\\|exampleforreference")
 
@@ -304,12 +305,18 @@ sHeader: ")
 ;; LaTeX
 (plist-put org-format-latex-options :scale 2)
 
+; Not sure about this yet
+;(add-to-list 'org-latex-packages-alist '("" "booktabs" nil))
+;(setq org-latex-tables-booktabs t)
+    
+;; other org settings
+(setq org-image-actual-width nil)
+
 ;; Ido
 (setq ido-everywhere t)
 (setq ido-enable-flex-matching t)
 (setq ido-show-dot-for-dired t)
 (ido-mode t)
-
 
 ;; imp mode
 ;(let ((default-directory "/imp-mode")) 

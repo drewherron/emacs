@@ -3,6 +3,8 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+        beginning-of-visual-line
+        end-of-visual-line
         org-self-insert-command
         ))
 
