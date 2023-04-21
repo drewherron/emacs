@@ -300,8 +300,8 @@
 (defun org-insert-source-block (name language switches header)
   "Asks name, language, switches, header.
 Inserts org-mode source code snippet"
-  (interactive "sName: 
-sLanguage: 
+  (interactive "sLanguage: 
+sName:
 sSwitches: 
 sHeader: ")
   (insert 
