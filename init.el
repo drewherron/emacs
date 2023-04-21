@@ -57,6 +57,19 @@
         ([backtab] .  corfu-previous))
   :hook prog-mode)
 
+;; Helm
+(use-package helm
+  :config
+  (helm-adaptive-mode)
+  (helm-mode)
+  )
+
+(add-to-list 'display-buffer-alist
+                    `(,(rx bos "*helm" (* not-newline) "*" eos)
+                         (display-buffer-in-side-window)
+                         (inhibit-same-window . t)
+                         (window-height . 0.4)))
+
 ;; key-chord
 (use-package key-chord
   :ensure t
@@ -183,6 +196,9 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 (set-fringe-mode 10)
+
+(setq x-select-enable-clipboard t)
+(setq x-select-enable-clipboard-manager t)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;; re-org by M-x customize groups?
@@ -313,10 +329,10 @@ sHeader: ")
 (setq org-image-actual-width nil)
 
 ;; Ido
-(setq ido-everywhere t)
-(setq ido-enable-flex-matching t)
-(setq ido-show-dot-for-dired t)
-(ido-mode t)
+;(setq ido-everywhere t)
+;(setq ido-enable-flex-matching t)
+;(setq ido-show-dot-for-dired t)
+;(ido-mode t)
 
 ;; imp mode
 ;(let ((default-directory "/imp-mode")) 
@@ -339,7 +355,7 @@ sHeader: ")
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-        '(multiple-cursors use-package-chords key-chord which-key org-roam smartparens try magit corfu use-package undo-tree nyan-mode)))
+   '(helm multiple-cursors use-package-chords key-chord which-key org-roam smartparens try magit corfu use-package undo-tree nyan-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
