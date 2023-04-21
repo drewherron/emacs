@@ -59,6 +59,10 @@
 
 ;; Helm
 (use-package helm
+  :ensure t
+  :bind (("M-x"     . helm-M-x)
+         ("C-x b"   . helm-mini)
+         ("C-x C-f" . helm-find-files))
   :config
   (helm-adaptive-mode)
   (helm-mode)
