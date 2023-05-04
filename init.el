@@ -62,6 +62,7 @@
   :ensure t
   :bind (("M-x"     . helm-M-x)
          ("C-x b"   . helm-mini)
+         ("C-h a"   . helm-apropos)
          ("C-x C-f" . helm-find-files))
   :config
   (helm-adaptive-mode)
@@ -300,8 +301,8 @@
 (defun org-insert-source-block (name language switches header)
   "Asks name, language, switches, header.
 Inserts org-mode source code snippet"
-  (interactive "sLanguage: 
-sName:
+  (interactive "sName:
+sLanguage:
 sSwitches: 
 sHeader: ")
   (insert 
@@ -323,7 +324,7 @@ sHeader: ")
 (setq org-src-fontify-natively t)
 
 ;; LaTeX
-(plist-put org-format-latex-options :scale 2)
+(plist-put org-format-latex-options :scale 2.5)
 
 ; Not sure about this yet
 ;(add-to-list 'org-latex-packages-alist '("" "booktabs" nil))
