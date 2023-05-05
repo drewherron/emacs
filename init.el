@@ -108,7 +108,16 @@
   :pin gnu
   :custom
   (org-startup-folded t)
-  (org-startup-indented t))
+  (org-startup-indented t)
+  :config
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (lisp       . t)
+     (C          . t)
+     (python     . t)
+     (shell      . t)))
+  )
 
 ;; Org-Roam
 (use-package org-roam
