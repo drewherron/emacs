@@ -38,25 +38,39 @@
 
 (package-initialize)
 
-;; Corfu
-(use-package corfu
-  :ensure t
-  :custom
-  (corfu-cycle t)
-  (corfu-preselect 'prompt)
-  (corfu-auto t)
-  (corfu-auto-prefix 2)
-  (corfu-auto-delay 0.3)
-  (corfu-preview-current 'insert)
-  (corfu-on-exact-match nil)
-  :bind
-    (:map corfu-map
-        ("TAB"     .  corfu-next)
-        ([tab]     .  corfu-next)
-        ("S-TAB"   .  corfu-previous)
-        ([backtab] .  corfu-previous))
-  :hook prog-mode)
+;; Company
+(use-package company
+  :commands (global-company-mode)
+  :delight
+  :init
+  (global-company-mode))
 
+(use-package helm-company
+  :after company
+  :bind (:map company-mode-map
+	 ("C-;" . helm-company)
+	 :map company-active-map
+	 ("C-;" . helm-company)))
+
+;; Corfu
+;(use-package corfu
+;  :ensure t
+;  :custom
+;  (corfu-cycle t)
+;  (corfu-preselect 'prompt)
+;  (corfu-auto t)
+;  (corfu-auto-prefix 2)
+;  (corfu-auto-delay 0.3)
+;  (corfu-preview-current 'insert)
+;  (corfu-on-exact-match nil)
+;  :bind
+;    (:map corfu-map
+;        ("TAB"     .  corfu-next)
+;        ([tab]     .  corfu-next)
+;        ("S-TAB"   .  corfu-previous)
+;        ([backtab] .  corfu-previous))
+;  :hook prog-mode)
+;
 ;; Helm
 (use-package helm
   :ensure t
