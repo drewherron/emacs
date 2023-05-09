@@ -2,21 +2,29 @@
       '(
 
    ;; Generic inbox entries
-   ("c" "Inbox" entry (file "capture.org")
+   ("c" "Inbox" entry (file "~/org/gtd/capture.org")
     "* %^{Note} %^g\n:PROPERTIES:\n:CREATED:  %U\n:END:\n\n%?"
     :prepend t
     :created t
     )
 
    ;; Actions
-   ("t" "Todo" entry (file "capture.org")
+   ("t" "Todo" entry (file "~/org/gtd/capture.org")
     "* TODO %^{Todo} %^g\n:PROPERTIES:\n:CREATED:  %U\n:END:\n\n%?"
     :prepend t
     :created t
     )
 
+   ;; Log
+   ("l" "Log" entry
+     (file+function (lambda () (my/org-capture-journal-file)) my/org-capture-find-datetree-location)
+     "* %<%H:%M> %^{Title}\n%?" :empty-lines 1)
+
+
+
+
    ;; Reminders
-   ("r" "Reminder" entry (file "tickler.org")
+   ("r" "Reminder" entry (file "~/org/gtd/tickler.org")
     "* %^{Reminder} %^g\nSCHEDULED:  %^t\n:PROPERTIES:\n:CREATED:  %U\n:END:\n\n%?"
     :prepend t
     :created t
@@ -30,7 +38,7 @@
     )
 
    ;; People
-   ("p" "People" entry (file "people.org")
+   ("p" "People" entry (file "~/org/ref/people.org")
   "* %^{First} %^{Last}
 :PROPERTIES:
 :First:    %\\1

@@ -133,6 +133,18 @@
      (shell      . t)))
   )
 
+;;;Org-Journal
+;(use-package org-journal
+;  :ensure t
+;  :defer t
+;  :custom
+;  (org-journal-dir "~/org/log/")
+;  (org-journal-file-format "%Y.org")
+;  (org-journal-date-prefix "* ")
+;  (org-journal-time-prefix "** %H:%M ")
+;  (org-journal-date-format "%Y-%m-%d %A")
+;  (org-journal-enable-agenda-integration t))
+;
 ;; Org-Roam
 ;(use-package org-roam
 ;  :ensure t
@@ -270,25 +282,26 @@
 (setq org-directory "~/org/")
 
 ;; Org Capture
-(setq org-default-notes-file (concat org-directory "~/capture.org"))
+(setq org-default-notes-file (concat org-directory "~/inbox/capture.org"))
 
 (global-set-key (kbd "C-c c") 'org-capture)
 
 ;; Org Agenda
 (setq org-agenda-files '("~/org/"
-                         "~/org/log/"
-                         "~/Documents/CS/"))
-;                         "~/Documents/CS/311/CS311.org"
-;                         "~/Documents/CS/350/CS350.org"
-;                         "~/Documents/CS/586/CS586.org"))
+                         "~/org/gtd/"
+                         "~/org/inbox/"
+                         "~/Documents/CS/311/"
+                         "~/Documents/CS/350/"
+                         "~/Documents/CS/586/"))
 ;(setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
 ;(setq org-agenda-files '("~/org/projects.org"
 ;			             "~/org/people.org"
 ;			             "~/org/todo.org"
 ;                         "~/org/tickler.org"))
 
-(setq org-refile-targets '((org-agenda-files :maxlevel . 2)
-                           ("~/org/ref/" :maxlevel . 2)))
+(setq org-refile-targets '((org-agenda-files :maxlevel . 1)
+                           ("~/org/gtd/" :maxlevel . 1)
+                           ("~/org/ref/" :maxlevel . 1)))
 (setq org-refile-use-outline-path 'file)
 (setq org-outline-path-complete-in-steps nil)
 (setq org-refile-allow-creating-parent-nodes 'confirm)
@@ -302,17 +315,28 @@
 
 (setq org-agenda-show-future-repeats nil)
     
-;; Org Journal
-;; Moving to roam
-;(unless (package-installed-p 'org-journal)
-;  (package-install 'org-journal))
-;(require 'org-journal)
-;
-;(setq org-journal-dir (concat org-directory "journal/"))
-;(setq org-journal-file-type 'yearly)
-;(setq org-journal-time-prefix "** ")
-;(setq org-journal-date-format "%A, %B %d %Y")
+;; Org capture journal file
+(defun my/org-capture-journal-file ()
+  (let ((current-year (format-time-string "%Y")))
+    (unless (file-exists-p (concat org-directory "/log/" current-year ".org"))
+      (with-temp-buffer
+        (insert (concat
+                 "#+TITLE: " current-year "\n"
+                 "#+OPTIONS: " "^:nil " "author:nil " "date:nil " "H:4 " "num:nil"  "\n"
+                 "#+LATEX: \\setcounter{secnumdepth}{0}\n\n"))
+        (write-file (concat org-directory "/log/" current-year ".org"))))
+    (concat org-directory "/log/" current-year ".org")))
 
+(defun my/org-capture-journal-entry ()
+  (let ((entry-file (my/org-capture-journal-file)))
+    (with-current-buffer (find-file-noselect entry-file)
+      (goto-char (point-min))
+      (search-forward (format-time-string "%Y-%m-%d") nil t)
+      (org-capture-put-target-region-and-position)
+      (org-capture-place-entry))))
+
+(defun my/org-capture-find-datetree-location ()
+  (org-datetree-find-date-create (calendar-current-date)))
 
 ;; Calendar stuff
 ;(eval-after-load "calendar"
@@ -388,7 +412,7 @@ sHeader: ")
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(slime helm multiple-cursors use-package-chords key-chord which-key  smartparens try magit corfu use-package undo-tree nyan-mode)))
+   '(helm multiple-cursors use-package-chords key-chord which-key smartparens try magit corfu use-package undo-tree nyan-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
