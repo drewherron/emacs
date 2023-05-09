@@ -134,35 +134,35 @@
   )
 
 ;; Org-Roam
-(use-package org-roam
-  :ensure t
-  :after org
-  :custom
-  (org-roam-directory "~/org/roam/")
-  (org-roam-db-location "~/org/roam/roam.db")
-  (org-roam-dailies-directory "~/org/log/")
-
-  :bind (("C-c n f" . org-roam-node-find)
-         ("C-c n r" . org-roam-node-random)
-         ("C-c n c" . org-roam-capture)
-         ("C-c n l" . org-roam-dailies-capture-today)
-         :map org-mode-map
-         ("C-c n b" . org-roam-buffer-toggle)
-         ("C-c n t" . org-roam-tag-add)
-         ("C-c n e" . org-roam-extract-subtree)
-         ("C-c n i" . org-roam-node-insert))
-  :config
-  (setq org-roam-completion-everywhere t)
-  (setq org-roam-completion-system 'ido) 
-  (org-roam-db-autosync-mode t)
-  ;; (require 'org-roam-protocol)
-
-;(setq org-roam-dailies-capture-templates
-;  '(("d" "default" entry
-;     (file "~/org/log/template.org")
-;     :target (file+head "%<%Y-%m-%d>.org"
-;                        "#+title: %<%Y-%m-%d>\n"))))
-)
+;(use-package org-roam
+;  :ensure t
+;  :after org
+;  :custom
+;  (org-roam-directory "~/org/roam/")
+;  (org-roam-db-location "~/org/roam/roam.db")
+;  (org-roam-dailies-directory "~/org/log/")
+;
+;  :bind (("C-c n f" . org-roam-node-find)
+;         ("C-c n r" . org-roam-node-random)
+;         ("C-c n c" . org-roam-capture)
+;         ("C-c n l" . org-roam-dailies-capture-today)
+;         :map org-mode-map
+;         ("C-c n b" . org-roam-buffer-toggle)
+;         ("C-c n t" . org-roam-tag-add)
+;         ("C-c n e" . org-roam-extract-subtree)
+;         ("C-c n i" . org-roam-node-insert))
+;  :config
+;  (setq org-roam-completion-everywhere t)
+;  (setq org-roam-completion-system 'ido) 
+;  (org-roam-db-autosync-mode t)
+;  ;; (require 'org-roam-protocol)
+;
+;;(setq org-roam-dailies-capture-templates
+;;  '(("d" "default" entry
+;;     (file "~/org/log/template.org")
+;;     :target (file+head "%<%Y-%m-%d>.org"
+;;                        "#+title: %<%Y-%m-%d>\n"))))
+;)
 
 ;; Slime?
 ;(use-package slime
@@ -277,9 +277,10 @@
 ;; Org Agenda
 (setq org-agenda-files '("~/org/"
                          "~/org/log/"
-                         "~/Documents/CS/311/CS311.org"
-                         "~/Documents/CS/350/CS350.org"
-                         "~/Documents/CS/586/CS586.org"))
+                         "~/Documents/CS/"))
+;                         "~/Documents/CS/311/CS311.org"
+;                         "~/Documents/CS/350/CS350.org"
+;                         "~/Documents/CS/586/CS586.org"))
 ;(setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
 ;(setq org-agenda-files '("~/org/projects.org"
 ;			             "~/org/people.org"
@@ -387,7 +388,7 @@ sHeader: ")
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(slime helm multiple-cursors use-package-chords key-chord which-key org-roam smartparens try magit corfu use-package undo-tree nyan-mode)))
+   '(slime helm multiple-cursors use-package-chords key-chord which-key  smartparens try magit corfu use-package undo-tree nyan-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
