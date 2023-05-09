@@ -5,9 +5,13 @@
       '(
         beginning-of-visual-line
         end-of-visual-line
+        helm-confirm-and-exit-minibuffer
+        kill-visual-line
         org-self-insert-command
         ))
 
 (setq mc/cmds-to-run-once
       '(
+        mouse-set-region
+        org-export-dispatch
         ))

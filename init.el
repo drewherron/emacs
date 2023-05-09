@@ -163,7 +163,11 @@
 ;     :target (file+head "%<%Y-%m-%d>.org"
 ;                        "#+title: %<%Y-%m-%d>\n"))))
 )
-    
+
+;; Slime?
+;(use-package slime
+;  :init (setq inferior-lisp-program "sbcl"))
+
 ;; Smartparens
 (use-package smartparens
   :ensure t
@@ -282,12 +286,11 @@
 ;			             "~/org/todo.org"
 ;                         "~/org/tickler.org"))
 
-(setq org-refile-targets '((org-agenda-files :maxlevel . 2)))
+(setq org-refile-targets '((org-agenda-files :maxlevel . 2)
+                           ("~/org/ref/" :maxlevel . 2)))
 (setq org-refile-use-outline-path 'file)
-;; or to specify files, or vary maxlevels:
-;(setq org-refile-targets
-;      '(("projects.org" :maxlevel . 1)
-;        ("people.org" :maxlevel . 2)))
+(setq org-outline-path-complete-in-steps nil)
+(setq org-refile-allow-creating-parent-nodes 'confirm)
 
 (setq org-agenda-start-day "-3d")
 (setq org-agenda-span 14)
@@ -356,6 +359,7 @@ sHeader: ")
 ;; other org settings
 (setq org-image-actual-width nil)
 
+
 ;; Ido
 ;(setq ido-everywhere t)
 ;(setq ido-enable-flex-matching t)
@@ -383,7 +387,7 @@ sHeader: ")
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(helm multiple-cursors use-package-chords key-chord which-key org-roam smartparens try magit corfu use-package undo-tree nyan-mode)))
+   '(slime helm multiple-cursors use-package-chords key-chord which-key org-roam smartparens try magit corfu use-package undo-tree nyan-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
