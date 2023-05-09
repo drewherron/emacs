@@ -299,11 +299,17 @@
 ;			             "~/org/todo.org"
 ;                         "~/org/tickler.org"))
 
-(setq org-refile-targets '(("~/org/ref/" :maxlevel . 2)
-                           ("~/org/gtd/todo.org" :maxlevel . 1)
-                           ("~/org/gtd/tickler.org" :maxlevel . 1)
-                           ("~/org/gtd/projects.org" :maxlevel . 2)
-                           ))
+;(setq org-refile-targets '(("~/org/ref/" :maxlevel . 2)
+;                           ("~/org/gtd/todo.org" :maxlevel . 1)
+;                           ("~/org/gtd/tickler.org" :maxlevel . 1)
+;                           ("~/org/gtd/projects.org" :maxlevel . 2)
+;                           ))
+(setq org-refile-targets
+      `((,(directory-files "~/org/ref/" t "\\.org$") :maxlevel . 2)
+        ("~/org/gtd/todo.org" :maxlevel . 1)
+        ("~/org/gtd/tickler.org" :maxlevel . 1)
+        ("~/org/gtd/projects.org" :maxlevel . 2)))
+
 (setq org-refile-use-outline-path 'file)
 (setq org-outline-path-complete-in-steps nil)
 (setq org-refile-allow-creating-parent-nodes 'confirm)

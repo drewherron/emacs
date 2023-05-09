@@ -2,14 +2,14 @@
       '(
 
    ;; Generic inbox entries
-   ("c" "Inbox" entry (file "~/org/gtd/capture.org")
+   ("c" "Inbox" entry (file "~/org/inbox/capture.org")
     "* %^{Note} %^g\n:PROPERTIES:\n:CREATED:  %U\n:END:\n\n%?"
     :prepend t
     :created t
     )
 
    ;; Actions
-   ("t" "Todo" entry (file "~/org/gtd/capture.org")
+   ("t" "Todo" entry (file "~/org/inbox/capture.org")
     "* TODO %^{Todo} %^g\n:PROPERTIES:\n:CREATED:  %U\n:END:\n\n%?"
     :prepend t
     :created t
