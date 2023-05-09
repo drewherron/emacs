@@ -322,7 +322,7 @@
       (with-temp-buffer
         (insert (concat
                  "#+TITLE: " current-year "\n"
-                 "#+OPTIONS: " "^:nil " "author:nil " "date:nil " "H:4 " "num:nil"  "\n"
+                 "#+OPTIONS: " "^:nil " "title:nil " "author:nil " "date:nil " "toc:nil " "H:4 " "num:nil"  "\n"
                  "#+LATEX: \\setcounter{secnumdepth}{0}\n\n"))
         (write-file (concat org-directory "/log/" current-year ".org"))))
     (concat org-directory "/log/" current-year ".org")))
