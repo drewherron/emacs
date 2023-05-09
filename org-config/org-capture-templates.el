@@ -17,11 +17,8 @@
 
    ;; Log
    ("l" "Log" entry
-     (file+function (lambda () (my/org-capture-journal-file)) my/org-capture-find-datetree-location)
-     "* %<%H:%M> %^{Title}\n%?" :empty-lines 1)
-
-
-
+    (file+function (lambda () (my/org-capture-journal-file)) my/org-capture-find-datetree-location)
+    "* %<%H:%M> %^{Title}\n%?" :empty-lines 1)
 
    ;; Reminders
    ("r" "Reminder" entry (file "~/org/gtd/tickler.org")
