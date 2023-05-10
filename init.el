@@ -2,13 +2,10 @@
 ;;  This Is MY emacs config  ;;
 ;;  There are many like it   ;;
 ;;  But this one is mine     ;;
-;;  Below this block will go ;;
-;;  only things I understand ;;
 ;;===========================;;
 
 ;; Don't show the splash screen
-; I'll use this later:
-;(setq inhibit-startup-message t)
+(setq inhibit-startup-message t)
 
 (if (and (= emacs-major-version 26)
          (<= emacs-minor-version 1))
@@ -52,25 +49,6 @@
 	 :map company-active-map
 	 ("C-;" . helm-company)))
 
-;; Corfu
-;(use-package corfu
-;  :ensure t
-;  :custom
-;  (corfu-cycle t)
-;  (corfu-preselect 'prompt)
-;  (corfu-auto t)
-;  (corfu-auto-prefix 2)
-;  (corfu-auto-delay 0.3)
-;  (corfu-preview-current 'insert)
-;  (corfu-on-exact-match nil)
-;  :bind
-;    (:map corfu-map
-;        ("TAB"     .  corfu-next)
-;        ([tab]     .  corfu-next)
-;        ("S-TAB"   .  corfu-previous)
-;        ([backtab] .  corfu-previous))
-;  :hook prog-mode)
-;
 ;; Helm
 (use-package helm
   :ensure t
