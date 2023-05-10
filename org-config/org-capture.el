@@ -5,7 +5,7 @@
 (global-set-key (kbd "C-c c") 'org-capture)
 
 ;;; Enables a good journal system with plain old org capture
-(defun myqorg-capture-journal-file ()
+(defun my/org-capture-journal-file ()
   "Return the journal file path for the current year, creating the file if it does not exist."
   (let ((current-year (format-time-string "%Y")))
     (unless (file-exists-p (concat org-directory "/log/" current-year ".org"))
@@ -15,7 +15,7 @@
                  "#+OPTIONS: " "^:nil " "title:nil " "author:nil " "date:nil " "toc:nil " "H:4 " "num:nil " "\\n:t" "\n"
                  "#+LATEX: \\setcounter{secnumdepth}{0}\n"
                  "#+LATEX: \\setlength\\parindent{0pt}\n"
-                 "#+LATEX_HEADER: \usepackage[margin=1in]{geometry}\n"
+                 "#+LATEX_HEADER: \\usepackage[margin=1in]{geometry}\n"
                  "\n"))
         (write-file (concat org-directory "/log/" current-year ".org"))))
     (concat org-directory "/log/" current-year ".org")))
