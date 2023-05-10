@@ -8,6 +8,7 @@ elpa/
 ltximg/
 .dir-locals.el
 ido.last
+recentf
 bookmarks
 .org-id-locations
 transient/
