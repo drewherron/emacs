@@ -1,11 +1,10 @@
-;; Org Capture
+;;; Org Capture
 
 (setq org-default-notes-file (concat org-directory "~/inbox/capture.org"))
 
 (global-set-key (kbd "C-c c") 'org-capture)
 
-;;; Enables a good journal system with plain old org capture
-(defun my/org-capture-journal-file ()
+(defun org-capture-journal-file ()
   "Return the journal file path for the current year, creating the file if it does not exist."
   (let ((current-year (format-time-string "%Y")))
     (unless (file-exists-p (concat org-directory "/log/" current-year ".org"))
@@ -20,20 +19,11 @@
         (write-file (concat org-directory "/log/" current-year ".org"))))
     (concat org-directory "/log/" current-year ".org")))
 
-;; Don't need
-;(defun my/org-capture-journal-entry ()
-;  (let ((entry-file (my/org-capture-journal-file)))
-;    (with-current-buffer (find-file-noselect entry-file)
-;      (goto-char (point-min))
-;      (search-forward (format-time-string "%Y-%m-%d") nil t)
-;      (org-capture-put-target-region-and-position)
-;      (org-capture-place-entry))))
-
-;;
-(defun my/org-capture-find-datetree-location ()
+(defun org-capture-find-datetree-location ()
   "Find or create the current date's location in the datetree within an Org buffer."
   (org-datetree-find-date-create (calendar-current-date)))
 
+;; Templates
 (setq org-capture-templates
       '(
 
@@ -53,7 +43,7 @@
 
    ;; Log
    ("l" "Log" entry
-    (file+function (lambda () (my/org-capture-journal-file)) my/org-capture-find-datetree-location)
+    (file+function (lambda () (org-capture-journal-file)) org-capture-find-datetree-location)
     "* %<%H:%M> %^{Title}\n%?" :empty-lines 1)
 
    ;; Reminders
