@@ -196,7 +196,7 @@
  
 ;; Load config files
 ;;(This section will grow)
-(load "~/.config/emacs/org-config/org-capture-templates")
+(load "~/.config/emacs/org-config/org-capture")
 ;(load "~/.config/emacs/imp-mode/imp-mode")
 
 ;; Temp files to /tmp/
@@ -259,11 +259,6 @@
 
 (setq org-directory "~/org/")
 
-;; Org Capture
-(setq org-default-notes-file (concat org-directory "~/inbox/capture.org"))
-
-(global-set-key (kbd "C-c c") 'org-capture)
-
 ;; Org Agenda
 (setq org-agenda-files '("~/org/"
                          "~/org/gtd/"
@@ -301,29 +296,6 @@
 
 (setq org-agenda-show-future-repeats nil)
     
-;; Org capture journal file
-(defun my/org-capture-journal-file ()
-  (let ((current-year (format-time-string "%Y")))
-    (unless (file-exists-p (concat org-directory "/log/" current-year ".org"))
-      (with-temp-buffer
-        (insert (concat
-                 "#+TITLE: " current-year "\n"
-                 "#+OPTIONS: " "^:nil " "title:nil " "author:nil " "date:nil " "toc:nil " "H:4 " "num:nil"  "\n"
-                 "#+LATEX: \\setcounter{secnumdepth}{0}\n\n"))
-        (write-file (concat org-directory "/log/" current-year ".org"))))
-    (concat org-directory "/log/" current-year ".org")))
-
-(defun my/org-capture-journal-entry ()
-  (let ((entry-file (my/org-capture-journal-file)))
-    (with-current-buffer (find-file-noselect entry-file)
-      (goto-char (point-min))
-      (search-forward (format-time-string "%Y-%m-%d") nil t)
-      (org-capture-put-target-region-and-position)
-      (org-capture-place-entry))))
-
-(defun my/org-capture-find-datetree-location ()
-  (org-datetree-find-date-create (calendar-current-date)))
-
 ;; Calendar stuff
 ;(eval-after-load "calendar"
 ;  `(progn
@@ -370,13 +342,6 @@ sHeader: ")
 ;; other org settings
 (setq org-image-actual-width nil)
 
-
-;; Ido
-;(setq ido-everywhere t)
-;(setq ido-enable-flex-matching t)
-;(setq ido-show-dot-for-dired t)
-;(ido-mode t)
-
 ;; imp mode
 ;(let ((default-directory "/imp-mode")) 
 ;    (shell-command "hypercaps.sh"))
@@ -398,7 +363,7 @@ sHeader: ")
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(helm multiple-cursors use-package-chords key-chord which-key smartparens try magit corfu use-package undo-tree nyan-mode)))
+   '(helm multiple-cursors use-package-chords key-chord which-key smartparens try magit use-package undo-tree nyan-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
