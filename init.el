@@ -266,7 +266,7 @@
 (define-key org-mode-map (kbd "RET") nil)
 
 (global-set-key (kbd "C-c a") 'org-agenda)
-;(global-set-key (kbd "C-c r") 'org-refile)
+;q(global-set-key (kbd "C-c r") 'org-refile)
 
 (setq org-todo-keywords
 	'((sequence "TODO" "NEXT" "WAITING" "|"  "DONE")))
@@ -369,7 +369,8 @@ sHeader: ")
   "Open the Emacs config file."
   (interactive)
   (find-file "~/.config/emacs/init.el"))
-    
+
+
 ;;========;;
 ;;========;;
 ;;========;;
