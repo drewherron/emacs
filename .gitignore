@@ -9,6 +9,8 @@ ltximg/
 .dir-locals.el
 ido.last
 recentf
+elfeed
+network-security*
 bookmarks
 .org-id-locations
 transient/
