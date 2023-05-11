@@ -266,7 +266,7 @@
 (define-key org-mode-map (kbd "RET") nil)
 
 (global-set-key (kbd "C-c a") 'org-agenda)
-(global-set-key (kbd "C-c r") 'org-refile)
+;(global-set-key (kbd "C-c r") 'org-refile)
 
 (setq org-todo-keywords
 	'((sequence "TODO" "NEXT" "WAITING" "|"  "DONE")))
@@ -293,12 +293,14 @@
 ;                           ("~/org/gtd/tickler.org" :maxlevel . 1)
 ;                           ("~/org/gtd/projects.org" :maxlevel . 2)
 ;                           ))
+
+
+; This works, except maxlevels
 (setq org-refile-targets
       `((,(directory-files "~/org/ref/" t "\\.org$") :maxlevel . 2)
         ("~/org/gtd/todo.org" :maxlevel . 1)
         ("~/org/gtd/tickler.org" :maxlevel . 1)
-        ("~/org/gtd/projects.org" :maxlevel . 2)))
-
+        ("~/org/gtd/projects.org" :maxlevel . 1)))
 (setq org-refile-use-outline-path 'file)
 (setq org-outline-path-complete-in-steps nil)
 (setq org-refile-allow-creating-parent-nodes 'confirm)
