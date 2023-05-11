@@ -49,6 +49,22 @@
 	 :map company-active-map
 	 ("C-;" . helm-company)))
 
+;; Elfeed
+(use-package elfeed
+  :ensure t
+  :config
+  (setq elfeed-db-directory (expand-file-name "elfeed" user-emacs-directory)
+        elfeed-show-entry-switch 'display-buffer)
+  :bind
+  ("C-c f" . elfeed ))
+
+(use-package elfeed-org
+  :after elfeed org
+  :init
+  (setq rmh-elfeed-org-files (list "~/org/feeds.org"))
+  :config
+  (elfeed-org))
+
 ;; Helm
 (use-package helm
   :ensure t
