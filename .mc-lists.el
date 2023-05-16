@@ -13,5 +13,6 @@
 (setq mc/cmds-to-run-once
       '(
         mouse-set-region
+        org-cycle
         org-export-dispatch
         ))

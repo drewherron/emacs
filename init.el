@@ -83,6 +83,13 @@
                          (inhibit-same-window . t)
                          (window-height . 0.4)))
 
+(use-package helm-org
+  :after (org helm)
+  :ensure t
+  :custom ((helm-org-headings-fontify t)
+           (helm-org-format-outline-path t)))
+
+
 ;; key-chord
 (use-package key-chord
   :ensure t
@@ -235,6 +242,8 @@
 (scroll-bar-mode -1)
 (set-fringe-mode 10)
 
+;(setq initial-scratch-message nil)
+
 (setq x-select-enable-clipboard t)
 (setq x-select-enable-clipboard-manager t)
 
@@ -266,7 +275,7 @@
 (define-key org-mode-map (kbd "RET") nil)
 
 (global-set-key (kbd "C-c a") 'org-agenda)
-;q(global-set-key (kbd "C-c r") 'org-refile)
+;(global-set-key (kbd "C-c r") 'org-refile)
 
 (setq org-todo-keywords
 	'((sequence "TODO" "NEXT" "WAITING" "|"  "DONE")))
@@ -279,6 +288,7 @@
 (setq org-agenda-files '("~/org/"
                          "~/org/gtd/"
                          "~/org/inbox/"
+                         "~/org/ref/people.org"
                          "~/Documents/CS/311/"
                          "~/Documents/CS/350/"
                          "~/Documents/CS/586/"))
@@ -312,8 +322,8 @@
 
 (setq org-agenda-hide-tags-regexp "noexport\\|exampleforreference")
 
-(setq org-agenda-show-future-repeats nil)
-    
+(setq org-agenda-show-future-repeats t)
+
 ;; Calendar stuff
 ;(eval-after-load "calendar"
 ;  `(progn
@@ -382,7 +392,7 @@ sHeader: ")
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(helm multiple-cursors use-package-chords key-chord which-key smartparens try magit use-package undo-tree nyan-mode)))
+   '(helm-org helm multiple-cursors use-package-chords key-chord which-key smartparens try magit use-package undo-tree nyan-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
