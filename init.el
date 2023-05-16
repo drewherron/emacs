@@ -43,7 +43,7 @@
   (global-company-mode))
 
 (use-package helm-company
-  :after company
+  :after helm company
   :bind (:map company-mode-map
 	 ("C-;" . helm-company)
 	 :map company-active-map
