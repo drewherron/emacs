@@ -89,6 +89,30 @@
   :custom ((helm-org-headings-fontify t)
            (helm-org-format-outline-path t)))
 
+(use-package helm-gtags
+  :after helm
+  :ensure t
+  :init (helm-gtags-mode t)
+  :diminish ""
+  :hook ((dired-mode . helm-gtags-mode)
+         (eshell-mode-hook . helm-gtags-mode)
+         (c-mode-hook . helm-gtags-mode)
+         (c++-mode . helm-gtags-mode)
+         (asm-mode . helm-gtags-mode))
+  :custom ((helm-gtags-ignore-case t)
+           (helm-gtags-auto-update t)
+           (helm-gtags-use-input-at-cursor t)
+           (helm-gtags-pulse-at-cursor t)
+           (helm-gtags-prefix-key "\C-cg")
+           (helm-gtags-suggested-key-mapping t))
+  :bind (:map helm-gtags-mode-map
+        ("C-j" . helm-gtags-select) ; Change this or more of these?
+        ("M-." . helm-gtags-dwim)   ; After you get used to gtags
+        ("M-," . helm-gtags-pop-stack)
+        ("C-c <" . helm-gtags-previous-history)
+        ("C-c >" . helm-gtags-next-history)
+        ("C-c g a" . helm-gtags-tags-in-this-function)))
+
 
 ;; key-chord
 (use-package key-chord
@@ -389,7 +413,10 @@ sHeader: ")
   (find-file "~/.config/emacs/init.el"))
 
 
-;; Programming
+;; IDE/Programming Stuff
+;; Putting in separate file, organize later
+;; Maybe...
+;;(load "~/.config/emacs/c-ide")
 (setq-default c-basic-offset 4)
 
 
@@ -404,7 +431,7 @@ sHeader: ")
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(helm-company helm-org helm multiple-cursors use-package-chords key-chord which-key smartparens try magit use-package undo-tree nyan-mode)))
+   '(helm-gtags helm-company helm-org helm multiple-cursors use-package-chords key-chord which-key smartparens try magit use-package undo-tree nyan-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
