@@ -220,6 +220,7 @@
   (smartparens-global-mode 1)
   (show-smartparens-global-mode 1)
   (setq sp-autowrap-region nil)
+  (setq sp-highlight-pair-overlay nil)
   (setq sp-show-pair-from-inside t))
 
 ;; when you press RET, the curly braces automatically
