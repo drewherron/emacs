@@ -414,9 +414,14 @@ sHeader: ")
 
 
 ;; IDE/Programming Stuff
-;; Putting in separate file, organize later
-;; Maybe...
-;;(load "~/.config/emacs/c-ide")
+(setq c-default-style "bsd") ; maybe k&r
+(global-set-key (kbd "RET") 'newline-and-indent)
+(global-set-key (kbd "C-c w") 'whitespace-mode)
+(add-hook 'prog-mode-hook (lambda ()
+                            (interactive)
+                            (setq show-trailing-whitespace 1)))
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
 (setq-default c-basic-offset 4)
 
 
