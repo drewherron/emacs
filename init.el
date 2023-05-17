@@ -18,7 +18,7 @@
 (require 'package)
 
 (setq package-archives '(("gnu"    .  "https://elpa.gnu.org/packages/")
-                         ("nongnu" .  "https://elpa.nongnu.org/nongnu/") 
+                         ("nongnu" .  "https://elpa.nongnu.org/nongnu/")
                          ("melpa"  .  "https://melpa.org/packages/")
                          ("org"    .  "https://orgmode.org/elpa/")))
 
@@ -148,7 +148,7 @@
            ("C->"         . mc/mark-next-like-this)
            ("C-<"         . mc/mark-previous-like-this)
            ("C-c C->"     . mc/mark-all-like-this)))
-    
+
 ;; Org
 (use-package org
   :ensure t
@@ -217,10 +217,17 @@
 (use-package smartparens
   :ensure t
   :config
-  (setq smartparens-global-mode -1)
-  ;(evil-smartparens-keybindings-mode t)
-  (show-smartparens-global-mode t)
+  (smartparens-global-mode 1)
+  (show-smartparens-global-mode 1)
+  (setq sp-autowrap-region nil)
   (setq sp-show-pair-from-inside t))
+
+;; when you press RET, the curly braces automatically
+;; add another newline
+(sp-with-modes '(c-mode c++-mode)
+  (sp-local-pair "{" nil :post-handlers '(("||\n[i]" "RET")))
+  (sp-local-pair "/*" "*/" :post-handlers '((" | " "SPC")
+                                            ("* ||\n[i]" "RET"))))
 
 ;; Try
 (use-package try
@@ -248,7 +255,7 @@
 ;;==========;;
 ;; Files    ;;
 ;;==========;;
- 
+
 ;; Load config files
 ;;(This section will grow)
 (load "~/.config/emacs/org-config/org-capture")
@@ -374,7 +381,7 @@ Inserts org-mode source code snippet"
 sLanguage:
 sSwitches: 
 sHeader: ")
-  (insert 
+  (insert
    (if (string= name "")
        ""
      (concat "#+NAME: " name) )
@@ -398,12 +405,12 @@ sHeader: ")
 ; Not sure about this yet
 ;(add-to-list 'org-latex-packages-alist '("" "booktabs" nil))
 ;(setq org-latex-tables-booktabs t)
-    
+
 ;; other org settings
 (setq org-image-actual-width nil)
 
 ;; imp mode
-;(let ((default-directory "/imp-mode")) 
+;(let ((default-directory "/imp-mode"))
 ;    (shell-command "hypercaps.sh"))
 ;(setq x-hyper-keysym 'hyper)
 
