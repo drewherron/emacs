@@ -389,6 +389,10 @@ sHeader: ")
   (find-file "~/.config/emacs/init.el"))
 
 
+;; Programming
+(setq-default c-basic-offset 4)
+
+
 ;;========;;
 ;;========;;
 ;;========;;
