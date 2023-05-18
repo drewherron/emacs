@@ -312,6 +312,8 @@
 
 (global-display-line-numbers-mode t)
 (global-visual-line-mode t)
+
+(setq-default left-margin-width 0 right-margin-width 2)
 ;; Disable line numbers for some modes
 (dolist (mode '(org-mode-hook
                 org-agenda-mode-hook
@@ -320,7 +322,11 @@
                 eshell-mode-hook
                 vterm-mode-hook
                 compilation-mode-hook))
-(add-hook mode (lambda () (display-line-numbers-mode 0))))
+  (add-hook mode (lambda ()
+                    (display-line-numbers-mode 0)
+                    (with-selected-window (get-buffer-window)
+                       (set-window-margins nil 1)))))
+
 (set-face-attribute 'region nil :extend nil)
 
 ;; Highlight current line
