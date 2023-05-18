@@ -114,6 +114,15 @@
         ("C-c >" . helm-gtags-next-history)
         ("C-c g a" . helm-gtags-tags-in-this-function)))
 
+;; highlight-indent-guides
+(use-package highlight-indent-guides
+  :ensure t
+  :custom
+  ((highlight-indent-guides-method 'character)
+   (highlight-indent-guides-responsive 'top)
+   (highlight-indent-guides-delay 0))
+  :hook
+  (prog-mode   .  highlight-indent-guides-mode))
 
 ;; key-chord
 (use-package key-chord
