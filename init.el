@@ -134,11 +134,15 @@
   :ensure t
   :config (key-chord-mode 1))
 
+;; list-unicode-display
+(use-package list-unicode-display
+  :ensure t)
+
 ;; Magit
 (use-package magit
   :ensure t
   :bind (("C-x g" . magit-status)
-         ("C-x M-g" . magit-dispatch)
+         ("C-x C-g" . magit-dispatch)
          (:map dired-mode-map
           ("C-x g" . magit-dired-log))))
 
