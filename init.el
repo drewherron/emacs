@@ -462,6 +462,26 @@ sHeader: ")
   (interactive)
   (find-file "~/.config/emacs/init.el"))
 
+;; Custom wrap function
+(defun wrap-region-with-char-or-pair (open)
+  "Wrap the region with the specified OPEN character or character pair."
+  (interactive "cWrap with: ")
+  (let* ((pairs '((?\( . ?\))
+                  (?\' . ?\')
+                  (?\" . ?\")
+                  (?\{ . ?\})
+                  (?\[ . ?\])
+                  (?< . ?>)))
+         (close (or (cdr (assoc open pairs)) open))
+         (beg (region-beginning))
+         (end (region-end)))
+    (goto-char end)
+    (insert close)
+    (goto-char beg)
+    (insert open)))
+
+(global-set-key (kbd "C-x w") 'wrap-region-with-char-or-pair)
+
 
 ;; IDE/Programming Stuff
 (setq c-default-style "bsd") ; maybe k&r
