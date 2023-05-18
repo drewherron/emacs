@@ -244,10 +244,10 @@
   (sp-pair "'" "'" :wrap "C-M-\"")
   (sp-pair "{" "}" :wrap "C-{")
   (sp-pair "[" "]" :wrap "C-M-{")
+  (sp-pair "$" "$" :wrap "C-$")
   (setq sp-autowrap-region nil)
   (setq sp-highlight-pair-overlay nil)
   (setq sp-show-pair-from-inside t))
-
 
 ;; when you press RET, the curly braces automatically
 ;; add another newline
@@ -255,7 +255,6 @@
   (sp-local-pair "{" nil :post-handlers '(("||\n[i]" "RET")))
   (sp-local-pair "/*" "*/" :post-handlers '((" | " "SPC")
                                             ("* ||\n[i]" "RET"))))
-
 ;; Try
 (use-package try
   :ensure t)
@@ -313,7 +312,6 @@
 (setq x-select-enable-clipboard t)
 (setq x-select-enable-clipboard-manager t)
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;; re-org by M-x customize groups?
 
 (global-display-line-numbers-mode t)
@@ -338,7 +336,6 @@
 ;; Highlight current line
 ;(global-hl-line-mode 1)
 ;(set-face-background hl-line-face "#0c0c0c")
-
 
 ;; Themes
 (add-to-list 'custom-theme-load-path "~/.config/emacs/themes")
@@ -390,7 +387,6 @@
 ;                           ("~/org/gtd/tickler.org" :maxlevel . 1)
 ;                           ("~/org/gtd/projects.org" :maxlevel . 2)
 ;                           ))
-
 
 ; This works, except maxlevels
 (setq org-refile-targets
