@@ -210,6 +210,12 @@
 ;;                        "#+title: %<%Y-%m-%d>\n"))))
 ;)
 
+;; Rainbow-mode
+(use-package rainbow-mode
+  :ensure t
+  :delight
+  :hook ((prog-mode text-mode) . rainbow-mode))
+
 ;; Slime?
 ;(use-package slime
 ;  :init (setq inferior-lisp-program "sbcl"))
