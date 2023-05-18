@@ -143,11 +143,11 @@
 
 ;; multiple-cursors
 (use-package multiple-cursors
-    :ensure t
-    :bind (("C-S-c C-S-c" . mc/edit-lines)
-           ("C->"         . mc/mark-next-like-this)
-           ("C-<"         . mc/mark-previous-like-this)
-           ("C-c C->"     . mc/mark-all-like-this)))
+  :ensure t
+  :bind (("C-S-c C-S-c" . mc/edit-lines)
+         ("C->"         . mc/mark-next-like-this)
+         ("C-<"         . mc/mark-previous-like-this)
+         ("C-c C->"     . mc/mark-all-like-this)))
 
 ;; Org
 (use-package org
@@ -198,7 +198,7 @@
 ;         ("C-c n i" . org-roam-node-insert))
 ;  :config
 ;  (setq org-roam-completion-everywhere t)
-;  (setq org-roam-completion-system 'ido) 
+;  (setq org-roam-completion-system 'ido)
 ;  (org-roam-db-autosync-mode t)
 ;  ;; (require 'org-roam-protocol)
 ;
@@ -378,8 +378,8 @@
 (defun org-insert-source-block (name language switches header)
   "Asks name, language, switches, header.
 Inserts org-mode source code snippet"
-  (interactive "sName:
-sLanguage:
+  (interactive "sName: 
+sLanguage: 
 sSwitches: 
 sHeader: ")
   (insert
