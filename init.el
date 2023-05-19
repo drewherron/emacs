@@ -239,12 +239,6 @@
   :config
   (smartparens-global-mode 1)
   (show-smartparens-global-mode 1)
-  (sp-pair "(" ")" :wrap "C-(")
-  (sp-pair "\"" "\"" :wrap "C-\"")
-  (sp-pair "'" "'" :wrap "C-M-\"")
-  (sp-pair "{" "}" :wrap "C-{")
-  (sp-pair "[" "]" :wrap "C-M-{")
-  (sp-pair "$" "$" :wrap "C-$")
   (setq sp-autowrap-region nil)
   (setq sp-highlight-pair-overlay nil)
   (setq sp-show-pair-from-inside t))
