@@ -476,6 +476,21 @@ sHeader: ")
 
 (global-set-key (kbd "C-x w") 'wrap-region-with-char-or-pair)
 
+;; Insert scrot to org-mode
+(defun org-insert-scrot ()
+  "Take a screenshot using `scrot', save it to .img directory, and insert a link at point."
+  (interactive)
+  (let* ((default-directory (or (file-name-directory (buffer-file-name)) "./"))
+         (img-dir (expand-file-name ".img"))
+         (img-path (expand-file-name (format-time-string "%Y%m%d-%H%M%S.png") img-dir))
+         (cmd (format "scrot -s '%s'" img-path)))
+    (unless (file-exists-p img-dir)
+      (make-directory img-dir))
+    (if (eq 0 (call-process-shell-command cmd))
+        (insert (format "[[file:%s]]" img-path))
+      (message "Failed to take a screenshot with scrot"))))
+
+(define-key org-mode-map (kbd "C-M-s") 'org-insert-scrot)
 
 ;; IDE/Programming Stuff
 (setq c-default-style "bsd") ; maybe k&r
