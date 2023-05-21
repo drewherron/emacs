@@ -493,6 +493,29 @@ sHeader: ")
 
 (define-key org-mode-map (kbd "C-M-s") 'org-scrot)
 
+;; An audio version?
+(defvar audio-recording-process nil)
+(defvar audio-recording-filename nil)
+
+(defun toggle-audio-recording ()
+  "Record audio to a directory named .audio and add a link to file at point."
+  (interactive)
+  (if audio-recording-process
+      (progn
+        (delete-process audio-recording-process)
+        (setq audio-recording-process nil)
+        (insert (format "[[./%s]]" (file-relative-name audio-recording-filename)))
+        (setq audio-recording-filename nil))
+    (let* ((dirname (concat (file-name-directory buffer-file-name) ".audio/"))
+           (filename (concat (make-temp-name (concat dirname (format-time-string "%Y%m%d_"))) ".mp3")))
+      (make-directory dirname t)
+      (setq audio-recording-process
+      (start-process-shell-command "audio-recording" nil
+                                   (format "arecord -f cd -t wav | lame - -b 192 %s" filename)))
+      (setq audio-recording-filename filename))))
+
+(define-key org-mode-map (kbd "C-M-S-s") 'toggle-audio-recording)
+
 ;; IDE/Programming Stuff
 (setq c-default-style "bsd") ; maybe k&r
 (global-set-key (kbd "RET") 'newline-and-indent)
