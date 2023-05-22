@@ -509,7 +509,7 @@ sHeader: ")
   ; Consider this:
   ;  (insert (concat "#+ATTR_HTML: :width 450px\n#+ATTR_LATEX: :width 14cm\n[[" relative-filename "]]")))
 
-(define-key org-mode-map (kbd "C-M-s") 'org-scrot)
+(define-key org-mode-map (kbd "C-M-S-s") 'org-scrot)
 
 ;; An audio version?
 (defvar audio-recording-process nil)
@@ -532,7 +532,19 @@ sHeader: ")
                                    (format "arecord -f cd -t wav | lame - -b 192 %s" filename)))
       (setq audio-recording-filename filename))))
 
-(define-key org-mode-map (kbd "C-M-S-s") 'toggle-audio-recording)
+(define-key org-mode-map (kbd "C-M-S-a") 'toggle-audio-recording)
+
+;; Play audio link at point
+(defun emms-play-org-link-at-point ()
+  "Play the audio file at point using EMMS."
+  (interactive)
+  (when (eq (org-element-type (org-element-context)) 'link)
+    (let ((path (org-element-property :path (org-element-context))))
+      (emms-play-file path))))
+
+;; Bind it to a key in org-mode
+(define-key org-mode-map (kbd "C-M->") 'emms-play-org-link-at-point)
+
 
 ;; IDE/Programming Stuff
 (setq c-default-style "bsd") ; maybe k&r
