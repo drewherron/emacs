@@ -71,9 +71,15 @@
   :ensure t
   :pin "melpa"
   :config
+  (add-to-list 'load-path "~/.emacs.d/emms/lisp")
   (require 'emms-setup)
   (emms-standard)
   (emms-default-players)
+  (setq emms-browser-covers 'emms-browser-cache-thumbnail-async)
+  (setq-default
+    emms-player-list '(emms-player-mpv)
+    emms-source-file-default-directory "~/Music"
+    emms-source-playlist-default-format 'm3u)
   :bind
     ("<XF86AudioPrev>" . emms-previous)
     ("<XF86AudioNext>" . emms-next)
@@ -83,6 +89,10 @@
 ;(use-package emms-info-mp3info)
 ;(use-package emms-info-ogginfo)
 ;(use-package emms-browser)
+
+(use-package helm-emms
+  :bind
+  (("<C-f6>" . helm-emms)))
 
 ;; Helm
 (use-package helm
@@ -402,7 +412,7 @@
 
 ; This works, except maxlevels
 (setq org-refile-targets
-      `((,(directory-files "~/org/ref/" t "\\.org$") :maxlevel . 2)
+      `((,(directory-files "~/org/ref/" t "\\.org$") :maxlevel . 1)
         ("~/org/gtd/todo.org" :maxlevel . 1)
         ("~/org/gtd/tickler.org" :maxlevel . 1)
         ("~/org/gtd/projects.org" :maxlevel . 1)))
@@ -569,9 +579,9 @@ sHeader: ")
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("8ad09291741c32c9c9bafb2a6cf91d32f63304d9187fb64e003669a3ce593802" "28a34dd458a554d34de989e251dc965e3dc72bace7d096cdc29249d60f395a82" "79a51b6114f2f57ce6e96383c01c0a836210c9b23ed712e863b7ebad6010f3b1" "18624b2da7749af193a4eeaa7be1dc2abe94a97a8562ba69f5ee0f06d6dd156e" "6c2a850ca31ae416c0920cb44283aa8a8c8ec3f9a4e34dadd6b3afa76ce78c12" "76eb683894aa00c77e55f482a23233d0007d59cc47a5653a37ad2897f31330b0" "4363ac3323e57147141341a629a19f1398ea4c0b25c79a6661f20ffc44fdd2cb" "5fdc0f5fea841aff2ef6a75e3af0ce4b84389f42e57a93edc3320ac15337dc10" "062e6ec918ed89d5d9a342dbbefd99e8690c5514c6698a78fc25f259972e9242" "ac557db1a7c09e61798b356e0af7aa9cba281b95deb76c8fa0765de761dae5a8" "02591317120fb1d02f8eb4ad48831823a7926113fa9ecfb5a59742420de206e0" "ba4ab079778624e2eadbdc5d9345e6ada531dc3febeb24d257e6d31d5ed02577" "9584533e7ca091a59f88e7f2acc2f8ce9124753d7b82aad6d4526ccf77787975" "ae823a87daa15b90a193830aa7edd34454be68a0dfb52e8316d9280a5aeeb51a" "2db9c83380f626b24a0ba7a1dd9972b72ec3e5ce9e58892350d7188106e0e114" "4c7a1f0559674bf6d5dd06ec52c8badc5ba6e091f954ea364a020ed702665aa1" "47610f9d6af7e30fbfb52fffe6de4c7de299792a7f0d09192a5b2b593c18931b" "e068203104e27ac7eeff924521112bfcd953a655269a8da660ebc150c97d0db8" "0c860c4fe9df8cff6484c54d2ae263f19d935e4ff57019999edbda9c7eda50b8" "37c8c2817010e59734fe1f9302a7e6a2b5e8cc648cf6a6cc8b85f3bf17fececf" default))
+        '("8ad09291741c32c9c9bafb2a6cf91d32f63304d9187fb64e003669a3ce593802" "28a34dd458a554d34de989e251dc965e3dc72bace7d096cdc29249d60f395a82" "79a51b6114f2f57ce6e96383c01c0a836210c9b23ed712e863b7ebad6010f3b1" "18624b2da7749af193a4eeaa7be1dc2abe94a97a8562ba69f5ee0f06d6dd156e" "6c2a850ca31ae416c0920cb44283aa8a8c8ec3f9a4e34dadd6b3afa76ce78c12" "76eb683894aa00c77e55f482a23233d0007d59cc47a5653a37ad2897f31330b0" "4363ac3323e57147141341a629a19f1398ea4c0b25c79a6661f20ffc44fdd2cb" "5fdc0f5fea841aff2ef6a75e3af0ce4b84389f42e57a93edc3320ac15337dc10" "062e6ec918ed89d5d9a342dbbefd99e8690c5514c6698a78fc25f259972e9242" "ac557db1a7c09e61798b356e0af7aa9cba281b95deb76c8fa0765de761dae5a8" "02591317120fb1d02f8eb4ad48831823a7926113fa9ecfb5a59742420de206e0" "ba4ab079778624e2eadbdc5d9345e6ada531dc3febeb24d257e6d31d5ed02577" "9584533e7ca091a59f88e7f2acc2f8ce9124753d7b82aad6d4526ccf77787975" "ae823a87daa15b90a193830aa7edd34454be68a0dfb52e8316d9280a5aeeb51a" "2db9c83380f626b24a0ba7a1dd9972b72ec3e5ce9e58892350d7188106e0e114" "4c7a1f0559674bf6d5dd06ec52c8badc5ba6e091f954ea364a020ed702665aa1" "47610f9d6af7e30fbfb52fffe6de4c7de299792a7f0d09192a5b2b593c18931b" "e068203104e27ac7eeff924521112bfcd953a655269a8da660ebc150c97d0db8" "0c860c4fe9df8cff6484c54d2ae263f19d935e4ff57019999edbda9c7eda50b8" "37c8c2817010e59734fe1f9302a7e6a2b5e8cc648cf6a6cc8b85f3bf17fececf" default))
  '(package-selected-packages
-   '(org-emms emms-browser emms-info-ogginfo emms-info-mp3info emms highlight-indent-guides list-unicode-display rainbow-mode helm-gtags helm-company helm-org helm multiple-cursors use-package-chords key-chord which-key smartparens try magit use-package undo-tree nyan-mode)))
+        '(helm-emms emms-player-mpv org-emms emms-browser emms-info-ogginfo emms-info-mp3info emms highlight-indent-guides list-unicode-display rainbow-mode helm-gtags helm-company helm-org helm multiple-cursors use-package-chords key-chord which-key smartparens try magit use-package undo-tree nyan-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
