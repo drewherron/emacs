@@ -18,3 +18,5 @@ transient/
 url/
 org-roam.db
 emms/
+*.log
+*history
