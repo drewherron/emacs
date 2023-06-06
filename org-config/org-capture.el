@@ -35,7 +35,7 @@
     )
 
    ;; Actions
-   ("t" "Todo" entry (file "~/org/inbox/capture.org")
+   ("t" "Todo" entry (file "~/org/gtd/todo.org")
     "* TODO %^{Todo} %^g\n:PROPERTIES:\n:CREATED:  %U\n:END:\n\n%?"
     :prepend t
     :created t
