@@ -137,6 +137,7 @@
            (helm-gtags-use-input-at-cursor t)
            (helm-gtags-pulse-at-cursor t)
            (helm-gtags-prefix-key "\C-cg")
+           (helm-autoresize-mode nil) ; Test without this after v28 update
            (helm-gtags-suggested-key-mapping t))
   :bind (:map helm-gtags-mode-map
         ("C-j" . helm-gtags-select) ; Change this or more of these?
@@ -344,6 +345,7 @@
 (global-visual-line-mode t)
 
 (setq-default left-margin-width 0 right-margin-width 2)
+
 ;; Disable line numbers for some modes
 (dolist (mode '(org-mode-hook
                 org-agenda-mode-hook
@@ -353,9 +355,11 @@
                 vterm-mode-hook
                 compilation-mode-hook))
   (add-hook mode (lambda ()
-                    (display-line-numbers-mode 0)
-                    (with-selected-window (get-buffer-window)
-                       (set-window-margins nil 1)))))
+                   (display-line-numbers-mode 0)
+                   (let ((win (get-buffer-window)))
+                     (when win
+                       (with-selected-window win
+                         (set-window-margins nil 1)))))))
 
 (set-face-attribute 'region nil :extend nil)
 
@@ -558,7 +562,6 @@ sHeader: ")
 ;; Bind it to a key in org-mode
 (define-key org-mode-map (kbd "C-M->") 'emms-play-org-link-at-point)
 
-
 ;; IDE/Programming Stuff
 (setq c-default-style "bsd") ; maybe k&r
 (global-set-key (kbd "RET") 'newline-and-indent)
@@ -569,7 +572,6 @@ sHeader: ")
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 (setq-default c-basic-offset 4)
-
 
 ;;========;;
 ;;========;;
