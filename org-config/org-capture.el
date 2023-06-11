@@ -85,5 +85,7 @@
 
 ** gifts
 
-** notes\n\n%?" :empty-lines 1)
+** notes
+
+** todo\n\n%?" :empty-lines 1)
    ))
