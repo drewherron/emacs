@@ -562,6 +562,20 @@ sHeader: ")
 ;; Bind it to a key in org-mode
 (define-key org-mode-map (kbd "C-M->") 'emms-play-org-link-at-point)
 
+;; Transpose windows
+(defun transpose-windows ()
+  "Transpose two windows.  If more or less than two windows are visible, error."
+  (interactive)
+  (unless (= 2 (count-windows))
+    (error "There are not 2 windows."))
+  (let* ((windows (window-list))
+         (w1 (car windows))
+         (w2 (nth 1 windows))
+         (w1b (window-buffer w1))
+         (w2b (window-buffer w2)))
+    (set-window-buffer w1 w2b)
+    (set-window-buffer w2 w1b)))
+
 ;; IDE/Programming Stuff
 (setq c-default-style "bsd") ; maybe k&r
 (global-set-key (kbd "RET") 'newline-and-indent)
