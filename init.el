@@ -559,7 +559,6 @@ sHeader: ")
     (let ((path (org-element-property :path (org-element-context))))
       (emms-play-file path))))
 
-;; Bind it to a key in org-mode
 (define-key org-mode-map (kbd "C-M->") 'emms-play-org-link-at-point)
 
 ;; Transpose windows
@@ -575,6 +574,8 @@ sHeader: ")
          (w2b (window-buffer w2)))
     (set-window-buffer w1 w2b)
     (set-window-buffer w2 w1b)))
+
+(global-set-key (kbd "C-x 9") 'transpose-windows)
 
 ;; IDE/Programming Stuff
 (setq c-default-style "bsd") ; maybe k&r
