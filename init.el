@@ -475,6 +475,8 @@ sHeader: ")
 ;; LaTeX
 (plist-put org-format-latex-options :scale 2.5)
 
+(setq org-latex-compiler "lualatex")
+
 ; Not sure about this yet
 ;(add-to-list 'org-latex-packages-alist '("" "booktabs" nil))
 ;(setq org-latex-tables-booktabs t)
