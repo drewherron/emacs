@@ -334,8 +334,17 @@
 (scroll-bar-mode -1)
 (set-fringe-mode 10)
 
-;(setq initial-scratch-message nil)
+;; Tabs
+(setq tab-bar-mode nil)
+(setq tab-bar-show 1)
+(setq tab-bar-close-button-show nil)
+(setq tab-bar-new-button-show nil)
+(global-set-key (kbd "C-S-b") 'tab-bar-switch-to-prev-tab)
+(global-set-key (kbd "C-S-f") 'tab-bar-switch-to-next-tab)
+(global-set-key (kbd "C-x t n") 'tab-bar-new-tab)
+(global-set-key (kbd "C-x t c") 'tab-bar-close-tab)
 
+;; Clipboard
 (setq x-select-enable-clipboard t)
 (setq x-select-enable-clipboard-manager t)
 
