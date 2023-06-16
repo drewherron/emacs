@@ -413,9 +413,9 @@
                          "~/org/gtd/"
                          "~/org/inbox/"
                          "~/org/ref/people.org"
-                         "~/Documents/CS/311/"
-                         "~/Documents/CS/350/"
-                         "~/Documents/CS/586/"))
+                         "~/Documents/CS/510-code-review/"
+                         "~/Documents/CS/541/"
+                         "~/Documents/PSU/MTH/252/"))
 ;(setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
 ;(setq org-agenda-files '("~/org/projects.org"
 ;			             "~/org/people.org"
