@@ -339,10 +339,11 @@
 (setq tab-bar-show 1)
 (setq tab-bar-close-button-show nil)
 (setq tab-bar-new-button-show nil)
-(global-set-key (kbd "C-S-b") 'tab-bar-switch-to-prev-tab)
-(global-set-key (kbd "C-S-f") 'tab-bar-switch-to-next-tab)
-(global-set-key (kbd "C-x t n") 'tab-bar-new-tab)
-(global-set-key (kbd "C-x t c") 'tab-bar-close-tab)
+; These bindings may have a better use, think about it
+(global-set-key (kbd "C-S-<left> ") 'tab-bar-switch-to-prev-tab)
+(global-set-key (kbd "C-S-<right>") 'tab-bar-switch-to-next-tab)
+(global-set-key (kbd "C-S-<up>") 'tab-bar-new-tab)
+(global-set-key (kbd "C-S-<down>") 'tab-bar-close-tab)
 
 ;; Clipboard
 (setq x-select-enable-clipboard t)
