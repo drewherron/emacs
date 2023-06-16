@@ -524,6 +524,23 @@ sHeader: ")
 
 (global-set-key (kbd "C-x w") 'wrap-region-with-char-or-pair)
 
+;; Kill org-agenda files
+(defun org-agenda-kill-all-files ()
+  "Close the buffers associated with 'org-agenda-files'."
+  (interactive)
+  (let* ((file-list (apply #'append (mapcar (lambda (x)
+                                              (if (file-directory-p x)
+                                                  (directory-files x t "\\.org\\'")
+                                                (list x)))
+                                            org-agenda-files)))
+         (buffer-list (mapcar #'find-buffer-visiting file-list)))
+    (dolist (buffer buffer-list)
+      (when buffer
+        (kill-buffer buffer)))))
+
+(global-set-key (kbd "C-c k a") 'org-agenda-kill-all-files)
+(which-key-add-key-based-replacements "C-c k" "kill")
+
 ;; Insert scrot to org-mode
 (defun org-scrot ()
   "Take a screenshot using `scrot', save it to .img directory, and insert a link at point."
