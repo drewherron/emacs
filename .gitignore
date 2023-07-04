@@ -6,6 +6,7 @@ eshell/history
 eshell/lastdir
 elpa/
 ltximg/
+eln-cache/
 .dir-locals.el
 ido.last
 recentf
