@@ -340,10 +340,10 @@
 (setq tab-bar-close-button-show nil)
 (setq tab-bar-new-button-show nil)
 ; These bindings may have a better use, think about it
-(global-set-key (kbd "C-S-<left> ") 'tab-bar-switch-to-prev-tab)
-(global-set-key (kbd "C-S-<right>") 'tab-bar-switch-to-next-tab)
-(global-set-key (kbd "C-S-<up>") 'tab-bar-new-tab)
-(global-set-key (kbd "C-S-<down>") 'tab-bar-close-tab)
+(global-set-key (kbd "C-M-S-<left> ") 'tab-bar-switch-to-prev-tab)
+(global-set-key (kbd "C-M-S-<right>") 'tab-bar-switch-to-next-tab)
+(global-set-key (kbd "C-M-S-<up>") 'tab-bar-new-tab)
+(global-set-key (kbd "C-M-S-<down>") 'tab-bar-close-tab)
 
 ;; Clipboard
 (setq x-select-enable-clipboard t)
@@ -408,14 +408,16 @@
 
 (setq org-directory "~/org/")
 
+(setq org-latex-tables-centered nil)
+
 ;; Org Agenda
 (setq org-agenda-files '("~/org/"
                          "~/org/gtd/"
                          "~/org/inbox/"
                          "~/org/ref/people.org"
-                         "~/Documents/CS/510-code-review/"
-                         "~/Documents/CS/541/"
-                         "~/Documents/PSU/MTH/252/"))
+                         "~/Documents/CS/530/"
+                         "~/Documents/CS/593/"
+                         "~/Documents/PSU/LING/LING511"))
 ;(setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
 ;(setq org-agenda-files '("~/org/projects.org"
 ;			             "~/org/people.org"
@@ -430,10 +432,13 @@
 
 ; This works, except maxlevels
 (setq org-refile-targets
-      `((,(directory-files "~/org/ref/" t "\\.org$") :maxlevel . 1)
+      `((,(directory-files "~/org/ref/" t "\\.org$") :maxlevel . 2)
         ("~/org/gtd/todo.org" :maxlevel . 1)
         ("~/org/gtd/tickler.org" :maxlevel . 1)
-        ("~/org/gtd/projects.org" :maxlevel . 1)))
+        ("~/org/gtd/projects.org" :maxlevel . 1)
+        ("~/Documents/CS/530/CS530.org" :maxlevel . 1)
+        ("~/Documents/CS/593/CS593.org" :maxlevel . 1)
+        ("~/Documents/PSU/LING/LING511/LING511.org" :maxlevel . 1)))
 (setq org-refile-use-outline-path 'file)
 (setq org-outline-path-complete-in-steps nil)
 (setq org-refile-allow-creating-parent-nodes 'confirm)
@@ -445,6 +450,8 @@
 (setq org-agenda-hide-tags-regexp "noexport\\|exampleforreference")
 
 (setq org-agenda-show-future-repeats t)
+
+(setq org-list-allow-alphabetical t)
 
 ;; Calendar stuff
 ;(eval-after-load "calendar"
@@ -627,13 +634,15 @@ sHeader: ")
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
-  '(frame-brackground-mode 'dark)
-  '(package-selected-packages
-   '(helm-emms org-emms emms-browser emms-info-ogginfo emms-info-mp3info emms highlight-indent-guides list-unicode-display rainbow-mode helm-gtags helm-company helm-org helm multiple-cursors use-package-chords key-chord which-key smartparens try magit use-package undo-tree nyan-mode))
-)
+ '(custom-safe-themes
+    '("0c860c4fe9df8cff6484c54d2ae263f19d935e4ff57019999edbda9c7eda50b8" "30f6e5da73f9bd5b10293caba684b5516a449e9ac5a149e4b6c9cd0190eef521" default))
+ '(frame-brackground-mode 'dark)
+ '(package-selected-packages
+    '(helm-emms org-emms emms-browser emms-info-ogginfo emms-info-mp3info emms highlight-indent-guides list-unicode-display rainbow-mode helm-gtags helm-company helm-org helm multiple-cursors use-package-chords key-chord which-key smartparens try magit use-package undo-tree nyan-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+(put 'downcase-region 'disabled nil)

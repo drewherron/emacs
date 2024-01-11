@@ -1,0 +1,8 @@
+;; -*- emacs-lisp -*- <23/09/28 11:54:06 /home/drew/.config/emacs/tramp>
+;; Tramp connection history.  Don't change this file.
+;; Run `M-x tramp-cleanup-all-connections' instead.
+
+(((tramp-file-name "mtp" nil nil "Pixel_7" nil nil nil)
+  ("activation-uri" "mtp://Google_Pixel_7_2B291FDH2004PG/")
+  ("media-device"
+   (tramp-media-device "mtp" "Google_Pixel_7_2B291FDH2004PG" nil))))
