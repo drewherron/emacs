@@ -256,6 +256,12 @@
 ;;                        "#+title: %<%Y-%m-%d>\n"))))
 ;)
 
+;; Python
+(use-package python-mode
+  :ensure t
+  :custom
+  (python-shell-interpreter "python3"))
+
 ;; Rainbow-mode
 (use-package rainbow-mode
   :ensure t
