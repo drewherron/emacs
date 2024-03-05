@@ -274,7 +274,10 @@
   (show-smartparens-global-mode 1)
   (setq sp-autowrap-region nil)
   (setq sp-highlight-pair-overlay nil)
-  (setq sp-show-pair-from-inside t))
+  (setq sp-show-pair-from-inside t)
+  ; Disable quote escaping
+  (sp-pair "\"" nil :actions :rem)
+  (sp-pair "\'" nil :actions :rem))
 
 ;; when you press RET, the curly braces automatically
 ;; add another newline
