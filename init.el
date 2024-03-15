@@ -633,6 +633,14 @@ sHeader: ")
 (setq-default tab-width 4)
 (setq-default c-basic-offset 4)
 
+;; Reminder
+;; This runs a local python script and prints the output in the current buffer
+;; Org Recipes?
+;(defun insert-python-script-output (url)
+;  (interactive "sURL: ")
+;  (let ((output (shell-command-to-string (format "python3 /path/to/your/script.py '%s'" url))))
+;    (insert output)))
+
 ;;========;;
 ;;========;;
 ;;========;;
