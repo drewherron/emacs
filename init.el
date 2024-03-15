@@ -188,6 +188,23 @@
          (:map dired-mode-map
           ("C-x g" . magit-dired-log))))
 
+;; Markdown Mode
+(use-package markdown-mode
+  :ensure t
+  :pin "melpa"
+  :mode (("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
+  :hook (markdown-mode . (lambda ()
+                           (local-set-key (kbd "RET") 'newline))))
+
+;; Markdown Preview Mode
+(use-package markdown-preview-mode
+  :ensure t
+  :after markdown-mode
+  :commands markdown-preview-mode
+  :config
+  (setq markdown-command "/bin/pandoc"))
+
 ;; multiple-cursors
 (use-package multiple-cursors
   :ensure t
@@ -658,7 +675,7 @@ sHeader: ")
    '("0c860c4fe9df8cff6484c54d2ae263f19d935e4ff57019999edbda9c7eda50b8" "30f6e5da73f9bd5b10293caba684b5516a449e9ac5a149e4b6c9cd0190eef521" default))
  '(frame-brackground-mode 'dark)
  '(package-selected-packages
-   '(python-mode helm-emms org-emms emms-browser emms-info-ogginfo emms-info-mp3info emms highlight-indent-guides list-unicode-display rainbow-mode helm-gtags helm-company helm-org helm multiple-cursors use-package-chords key-chord which-key smartparens try magit use-package undo-tree nyan-mode)))
+    '(python-mode markdown-preview-mode markdown-mode helm-emms org-emms emms-browser emms-info-ogginfo emms-info-mp3info emms highlight-indent-guides list-unicode-display rainbow-mode helm-gtags helm-company helm-org helm multiple-cursors use-package-chords key-chord which-key smartparens try magit use-package undo-tree nyan-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
