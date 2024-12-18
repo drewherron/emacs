@@ -347,17 +347,13 @@
 (setq org-agenda-files '("~/org/"
                         "~/org/gtd/"
                         "~/org/inbox/"
-                        "~/org/ref/people.org"
-                        "~/Documents/PSU/CS/CS510-llms"
-                        "~/Documents/PSU/CS/CS510-gensecapps"))
+                        "~/org/ref/people.org"))
 
 (setq org-refile-targets
       `((,(directory-files "~/org/ref/" t "\\.org$") :maxlevel . 2)
         ("~/org/gtd/todo.org" :maxlevel . 1)
         ("~/org/gtd/tickler.org" :maxlevel . 1)
-        ("~/org/gtd/projects.org" :maxlevel . 1)
-        ("~/Documents/PSU/CS/CS510-llms/llms.org" :maxlevel . 1)
-        ("~/Documents/PSU/CS/CS510-gensecapps/gensecapps.org" :maxlevel . 1)))
+        ("~/org/gtd/projects.org" :maxlevel . 1)))
 
 (setq org-refile-use-outline-path 'file
       org-outline-path-complete-in-steps nil
