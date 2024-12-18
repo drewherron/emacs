@@ -210,6 +210,22 @@
   :delight
   :hook ((prog-mode text-mode) . rainbow-mode))
 
+;; recentf
+(use-package recentf
+  :custom
+  (recentf-max-saved-items 200)
+  (recentf-max-menu-items 15)
+  (recentf-auto-cleanup 'never)
+  (recentf-save-file (expand-file-name "recentf" user-emacs-directory))
+  :config
+  (recentf-mode 1)
+  ;; Save file list every 5 minutes
+  (run-at-time nil (* 5 60) 'recentf-save-list))
+
+;; Optional: Add helm-recentf binding if you want quick access through helm
+(with-eval-after-load 'helm
+  (global-set-key (kbd "C-c r") 'helm-recentf))
+
 ;; Smartparens
 (use-package smartparens
   :config
