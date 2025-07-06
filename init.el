@@ -155,15 +155,15 @@
   (prog-mode . highlight-indent-guides-mode))
 
 ;; key-chord
-(use-package key-chord
-  :config
-  (setq key-chord-two-keys-delay 0.150)
-  (key-chord-mode)
-  (key-chord-define-global "kj" ctl-x-map)
-  (key-chord-define-global "df" 'null)
-  (define-key key-translation-map (kbd "<key-chord> df") (kbd "C-c"))
-  (key-chord-define-global "fd" 'null)
-  (define-key key-translation-map (kbd "<key-chord> fd") (kbd "C-c")))
+;(use-package key-chord
+;  :config
+;  (setq key-chord-two-keys-delay 0.150)
+;  (key-chord-mode)
+;  (key-chord-define-global "kj" ctl-x-map)
+;  (key-chord-define-global "df" 'null)
+;  (define-key key-translation-map (kbd "<key-chord> df") (kbd "C-c"))
+;  (key-chord-define-global "fd" 'null)
+;  (define-key key-translation-map (kbd "<key-chord> fd") (kbd "C-c")))
 
 ;; use-package-chords
 (use-package use-package-chords
