@@ -137,6 +137,14 @@
          ("C-c >" . helm-gtags-next-history)
          ("C-c g a" . helm-gtags-tags-in-this-function)))
 
+
+;; Better completion ordering
+(with-eval-after-load 'helm
+  (setq helm-mode-fuzzy-match t
+        helm-completion-in-region-fuzzy-match t
+        helm-buffers-fuzzy-matching t
+        helm-M-x-fuzzy-match t))
+
 ;; highlight-indent-guides
 (use-package highlight-indent-guides
   :custom
