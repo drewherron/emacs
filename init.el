@@ -12,13 +12,13 @@
 ;;==========;;
 (require 'package)
 
-(setq package-archives '(("gnu"    . "https://elpa.gnu.org/packages/")
+(setq package-archives '(("gnu"   . "https://elpa.gnu.org/packages/")
                         ("nongnu" . "https://elpa.nongnu.org/nongnu/")
                         ("melpa"  . "https://melpa.org/packages/")
                         ("org"    . "https://orgmode.org/elpa/")))
 
 ;; Only uncomment when you change a package (slows every load)
-;; (package-refresh-contents)
+(package-refresh-contents)
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
@@ -425,11 +425,55 @@ Inserts org-mode source code snippet"
 
 (define-key org-mode-map (kbd "C-c s") #'org-insert-source-block)
 
-;; Custom Functions
+;;==================;;
+;; Custom Functions ;;
+;;==================;;
+
+;; Open this file
 (defun open-init-file ()
   "Open the Emacs config file."
   (interactive)
   (find-file "~/.config/emacs/init.el"))
+
+;; 'brnm' from command line
+(defun dired-rename-from-shell (dir)
+  "Open dired in DIR for renaming, auto-close frame on finish."
+  (let* ((use-sudo (string-prefix-p "sudo::" dir))
+         (actual-dir (if use-sudo 
+                         (substring dir 6)
+                       dir))
+         (tramp-dir (if use-sudo
+                        (concat "/sudo::" actual-dir)
+                      dir))
+         (buf (dired tramp-dir)))
+    (with-current-buffer buf
+      (dired-toggle-read-only)
+      (setq header-line-format
+            '(:eval (propertize " Wdired: C-c C-c to apply & exit, C-c C-k to cancel & exit" 
+                                'face '(:foreground "green" :weight bold))))
+      (local-set-key (kbd "C-c C-c")
+                     (lambda ()
+                       (interactive)
+                       (wdired-finish-edit)
+                       (kill-buffer)
+                       (delete-frame)))
+      (local-set-key (kbd "C-c C-k")
+                     (lambda ()
+                       (interactive)
+                       (wdired-abort-changes)
+                       (kill-buffer)
+                       (delete-frame))))))
+;; Then in .zshrc
+;dired() {
+;    local dir="${1:-.}"
+;    # Check if we can write to the directory
+;    if [[ -w "$dir" ]]; then
+;        emacsclient --tty --eval "(dired-rename-from-shell \"$dir\")"
+;    else
+;        echo "Directory not writable, using sudo..."
+;        emacsclient --tty --eval "(dired-rename-from-shell \"/sudo::$(realpath $dir)\")"
+;    fi
+;}
 
 (defun wrap-region-with-char-or-pair (open)
   "Wrap the region with the specified OPEN character or character pair."
