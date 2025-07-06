@@ -83,6 +83,13 @@
   :bind
   ("<C-f6>" . helm-emms))
 
+;; Go
+(use-package go-mode
+  :ensure t
+  :mode "\\.go\\'"
+  :hook (go-mode .
+          go-enable-fmt-on-save))
+
 ;; Helm
 (use-package helm
   :bind (("M-x"     . helm-M-x)
