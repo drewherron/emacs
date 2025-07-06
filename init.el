@@ -546,6 +546,20 @@ Inserts org-mode source code snippet"
               tab-width 4
               c-basic-offset 4)
 
+;; Custom scripts
+(add-to-list 'load-path (expand-file-name "scripts" user-emacs-directory))
+
+;(use-package stock-line
+;  :ensure nil
+;  :load-path "~/.config/emacs/scripts"
+;  :custom
+;  (stock-line-api-key "api_key_here")
+;  (stock-line-tickers '("AAPL" "MSFT" "GOOG" "AMZN"))
+;  (stock-line-update-interval 1800)
+;  (stock-line-scroll-speed 1.0)
+;  :config
+;  (stock-line-mode nil))
+
 ;; Keep customizations in separate file
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (when (file-exists-p custom-file)
