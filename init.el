@@ -306,6 +306,7 @@
 (scroll-bar-mode -1)
 (set-fringe-mode 10)
 (xterm-mouse-mode 1)
+(setq visible-bell t)
 
 ;; Tabs
 (setq tab-bar-mode nil
