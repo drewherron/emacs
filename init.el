@@ -31,9 +31,8 @@
 
 ;; Company
 (use-package company
-  :commands (global-company-mode)
   :delight
-  :init
+  :config
   (global-company-mode))
 
 (use-package helm-company
