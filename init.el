@@ -18,7 +18,7 @@
                         ("org"    . "https://orgmode.org/elpa/")))
 
 ;; Only uncomment when you change a package (slows every load)
-(package-refresh-contents)
+;(package-refresh-contents)
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
@@ -35,12 +35,14 @@
   :config
   (global-company-mode))
 
-(use-package helm-company
-  :after helm company
-  :bind (:map company-mode-map
-         ("C-;" . helm-company)
-         :map company-active-map
-         ("C-;" . helm-company)))
+;; helm-company is not available in newer repositories
+;; Using built-in company completion instead
+;(use-package helm-company
+;  :after helm company
+;  :bind (:map company-mode-map
+;         ("C-;" . helm-company)
+;         :map company-active-map
+;         ("C-;" . helm-company)))
 
 ;; darkroom
 (use-package darkroom)
@@ -214,8 +216,9 @@
      (python . t)
      (shell . t))))
 
-;; Python
-(use-package python-mode
+;; Python - Use built-in python.el instead of python-mode for better compatibility
+(use-package python
+  :ensure nil
   :custom
   (python-shell-interpreter "python3"))
 
