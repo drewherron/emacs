@@ -91,6 +91,17 @@
   :hook (go-mode .
           go-enable-fmt-on-save))
 
+;; gptel - LLM client for Claude/ChatGPT/Gemini
+(use-package gptel
+  :config
+;  (setq gptel-model "gemini-2.5-pro-exp-03-25"
+  (setq gptel-model "gemini-2.0-flash-exp"
+        gptel-backend (gptel-make-gemini "Gemini"
+                        :key (getenv "GEMINI_API_KEY")
+                        :stream t))
+  :bind (("C-c g" . gptel-menu)
+         ("C-c C-g" . gptel-send)))
+
 ;; Helm
 (use-package helm
   :bind (("M-x"     . helm-M-x)
@@ -129,14 +140,14 @@
   (helm-gtags-pulse-at-cursor t)
   (helm-gtags-prefix-key "\C-cg")
   (helm-autoresize-mode nil)
-  (helm-gtags-suggested-key-mapping t)
-  :bind (:map helm-gtags-mode-map
-         ("C-j" . helm-gtags-select)
-         ("M-." . helm-gtags-dwim)
-         ("M-," . helm-gtags-pop-stack)
-         ("C-c <" . helm-gtags-previous-history)
-         ("C-c >" . helm-gtags-next-history)
-         ("C-c g a" . helm-gtags-tags-in-this-function)))
+  (helm-gtags-suggested-key-mapping t))
+;  :bind (:map helm-gtags-mode-map
+;         ("C-j" . helm-gtags-select)
+;         ("M-." . helm-gtags-dwim)
+;         ("M-," . helm-gtags-pop-stack)
+;         ("C-c <" . helm-gtags-previous-history)
+;         ("C-c >" . helm-gtags-next-history)
+;         ("C-c g a" . helm-gtags-tags-in-this-function)))
 
 
 ;; Better completion ordering
