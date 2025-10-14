@@ -438,6 +438,37 @@ Inserts org-mode source code snippet"
   (interactive)
   (find-file "~/.config/emacs/init.el"))
 
+;; Custom refile function for bookmarks files
+(defun my/verify-refile-target-is-folder ()
+  "Return t if the current heading has no direct link (children don't matter)."
+  (save-excursion
+    (org-back-to-heading t)
+    (let ((heading-end (save-excursion
+                         (outline-next-heading)
+                         (point))))
+      ;; Skip the headline itself and check only until the next heading
+      (forward-line)
+      ;; Only check this entry's content, not children
+      (let ((next-heading (save-excursion
+                            (if (re-search-forward "^\\*+ " heading-end t)
+                                (match-beginning 0)
+                              heading-end))))
+        (not (re-search-forward org-link-bracket-re next-heading t))))))
+
+(defun my/org-refile-bookmarks ()
+  "Refile to bookmarks.org when in bookmarks.org or bookmarks_source.org."
+  (interactive)
+  (if (and buffer-file-name
+           (string-match-p "bookmarks\\(_source\\)?\\.org$" buffer-file-name))
+      (let ((org-refile-targets '(("~/org/bookmarks.org" :maxlevel . 10)))
+            (org-refile-target-verify-function 'my/verify-refile-target-is-folder))
+        (org-refile))
+    (org-refile)))
+
+;; Bind this to C-c C-w (the normal org-refile binding)
+(with-eval-after-load 'org
+  (define-key org-mode-map (kbd "C-c C-w") 'my/org-refile-bookmarks))
+
 ;; 'brnm' from command line
 (defun dired-rename-from-shell (dir)
   "Open dired in DIR for renaming, auto-close frame on finish."
