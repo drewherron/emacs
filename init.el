@@ -227,6 +227,13 @@
      (python . t)
      (shell . t))))
 
+;; org-finance
+(add-to-list 'load-path "~/Projects/org-finance/lisp")
+(require 'org-finance)
+
+;; Set your finance directory
+(setq org-finance-directory "~/org/fin")
+
 ;; Python - Use built-in python.el instead of python-mode for better compatibility
 (use-package python
   :ensure nil
