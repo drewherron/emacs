@@ -305,6 +305,7 @@
 
 ;; Load config files
 (load "~/.config/emacs/org-config/org-capture")
+(load "~/.config/emacs/org-config/org-agenda")
 
 ;; Backup files
 (setq backup-directory-alist
@@ -386,37 +387,15 @@
 
 (require 'org)
 (define-key org-mode-map (kbd "RET") nil)
-(global-set-key (kbd "C-c a") 'org-agenda)
 
 (setq org-todo-keywords
-      '((sequence "TODO" "NEXT" "WAITING" "|" "DONE")))
+      '((sequence "TODO" "WAITING" "|" "DONE")))
 
 (setq org-log-done 'time
       org-directory "~/org/"
       org-latex-tables-centered nil)
 
-;; Org Agenda
-(setq org-agenda-files '("~/org/"
-                        "~/org/gtd/"
-                        "~/org/inbox/"
-                        "~/org/ref/people.org"))
-
-(setq org-refile-targets
-      `((,(directory-files "~/org/ref/" t "\\.org$") :maxlevel . 2)
-        ("~/org/gtd/todo.org" :maxlevel . 1)
-        ("~/org/gtd/tickler.org" :maxlevel . 1)
-        ("~/org/gtd/projects.org" :maxlevel . 1)))
-
-(setq org-refile-use-outline-path 'file
-      org-outline-path-complete-in-steps nil
-      org-refile-allow-creating-parent-nodes 'confirm
-      org-agenda-start-day "-3d"
-      org-agenda-span 14
-      org-agenda-start-on-weekday nil
-      org-deadline-warning-days 0
-      org-agenda-hide-tags-regexp "noexport\\|exampleforreference"
-      org-agenda-show-future-repeats t
-      org-list-allow-alphabetical t)
+;; Org Agenda configuration moved to ~/.config/emacs/org-config/org-agenda.el
 
 ;; Calendar
 (define-key calendar-mode-map (kbd "RET") 'org-journal-display-entry)
