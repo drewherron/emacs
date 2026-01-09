@@ -306,6 +306,7 @@
 ;; Load config files
 (load "~/.config/emacs/org-config/org-capture")
 (load "~/.config/emacs/org-config/org-agenda")
+(load "~/.config/emacs/org-config/org-utils")
 
 ;; Backup files
 (setq backup-directory-alist
@@ -457,7 +458,7 @@ Inserts org-mode source code snippet"
   (interactive)
   (if (and buffer-file-name
            (string-match-p "bookmarks\\(_source\\)?\\.org$" buffer-file-name))
-      (let ((org-refile-targets '(("~/org/bookmarks.org" :maxlevel . 10)))
+      (let ((org-refile-targets '(("~/org/lib/bookmarks.org" :maxlevel . 10)))
             (org-refile-target-verify-function 'my/verify-refile-target-is-folder))
         (org-refile))
     (org-refile)))
