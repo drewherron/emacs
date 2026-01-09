@@ -6,18 +6,21 @@
 
 ;; Org Agenda files
 (setq org-agenda-files '("~/org/"
-                         "~/org/gtd/"
-                         "~/org/inbox/"
-                         "~/org/ref/"))
+                         "~/org/act/"
+                         "~/org/cap/"
+                         "~/org/lib/"))
 
 ;; Org Refile targets
 (setq org-refile-targets
-      `((,(directory-files "~/org/ref/" t "\\.org$") :maxlevel . 2)
-        ("~/org/gtd/todo.org" :maxlevel . 1)
-        ("~/org/gtd/tickler.org" :maxlevel . 1)
-        ("~/org/gtd/ideas.org" :maxlevel . 1)
-        ("~/org/gtd/projects.org" :maxlevel . 1)
-        ("~/org/gtd/today.org" :maxlevel . 1)))
+      `((,(directory-files "~/org/lib/" t "\\.org$") :maxlevel . 2)
+        ("~/org/act/todo.org" :maxlevel . 1)
+        ("~/org/act/read.org" :maxlevel . 1)
+        ("~/org/act/watch.org" :maxlevel . 1)
+        ("~/org/act/write.org" :maxlevel . 1)
+        ("~/org/act/reminders.org" :maxlevel . 1)
+        ("~/org/act/maybe.org" :maxlevel . 1)
+        ("~/org/act/projects.org" :maxlevel . 1)
+        ("~/org/act/today.org" :maxlevel . 1)))
 
 ;; Refile and agenda settings
 (setq org-refile-use-outline-path 'file
@@ -44,13 +47,13 @@
          (;; TODAY'S PRIORITIES
           (tags-todo "TODAY"
                      ((org-agenda-overriding-header "\nTODAY'S PRIORITIES\n")
-                      (org-agenda-files '("~/org/gtd/today.org"))
+                      (org-agenda-files '("~/org/act/today.org"))
                       (org-agenda-sorting-strategy '(priority-down))))
 
           ;; DAILY HABITS
           (tags-todo "HABIT"
                      ((org-agenda-overriding-header "\nDAILY HABITS\n")
-                      (org-agenda-files '("~/org/gtd/today.org"))))
+                      (org-agenda-files '("~/org/act/today.org"))))
 
           ;; AGENDA VIEW
           (agenda ""
@@ -76,7 +79,7 @@
   "Reset all habits in today.org to TODO state and clear numeric tracking."
   (interactive)
   (save-excursion
-    (with-current-buffer (find-file-noselect "~/org/gtd/today.org")
+    (with-current-buffer (find-file-noselect "~/org/act/today.org")
       (goto-char (point-min))
       (let ((binary-count 0)
             (numeric-count 0))
@@ -110,7 +113,7 @@
   "Archive completed items from today.org priority tasks."
   (interactive)
   (save-excursion
-    (with-current-buffer (find-file-noselect "~/org/gtd/today.org")
+    (with-current-buffer (find-file-noselect "~/org/act/today.org")
       (goto-char (point-min))
       (let ((count 0))
         ;; Find all DONE items under "Today's Priority Tasks"
@@ -131,7 +134,7 @@ ARG is ignored, present for compatibility with org-agenda-custom-commands."
   (interactive)
   (reset-today-habits)
   (archive-today-completed)
-  (find-file "~/org/gtd/today.org")
+  (find-file "~/org/act/today.org")
   (goto-char (point-min))
   (when (re-search-forward "^\\* Today's Priority Tasks" nil t)
     (forward-line 1))
@@ -149,7 +152,7 @@ ARG is ignored, present for compatibility with org-agenda-custom-commands."
         (completed 0))
 
     ;; Extract habit completions from today.org
-    (with-current-buffer (find-file-noselect "~/org/gtd/today.org")
+    (with-current-buffer (find-file-noselect "~/org/act/today.org")
       (save-excursion
         (goto-char (point-min))
         (when (re-search-forward "^\\* Daily Habits.*:HABIT:" nil t)
@@ -183,11 +186,11 @@ ARG is ignored, present for compatibility with org-agenda-custom-commands."
 
     ;; Open today.org in left window
     (delete-other-windows)
-    (find-file "~/org/gtd/today.org")
+    (find-file "~/org/act/today.org")
     ;; Split and open habits.org in right window
     (split-window-right)
     (other-window 1)
-    (find-file "~/org/gtd/habits.org")
+    (find-file "~/org/act/habits.org")
 
     ;; Jump to current month or create it
     (goto-char (point-min))

@@ -1,6 +1,6 @@
 ;;; Org Capture
 
-(setq org-default-notes-file (concat org-directory "~/inbox/capture.org"))
+(setq org-default-notes-file (concat org-directory "~/cap/capture.org"))
 
 (global-set-key (kbd "C-c c") 'org-capture)
 
@@ -28,14 +28,14 @@
       '(
 
    ;; Generic inbox entries
-   ("c" "Inbox" entry (file "~/org/inbox/capture.org")
+   ("c" "Inbox" entry (file "~/org/cap/capture.org")
     "* %^{Note} %^g\n:PROPERTIES:\n:CREATED:  %U\n:END:\n\n%?"
     :prepend t
     :created t
     )
 
    ;; Actions
-   ("t" "Todo" entry (file "~/org/gtd/todo.org")
+   ("t" "Todo" entry (file "~/org/act/todo.org")
     "* TODO %^{Todo} %^g\n:PROPERTIES:\n:CREATED:  %U\n:END:\n\n%?"
     :prepend t
     :created t
@@ -47,7 +47,7 @@
     "* %<%H:%M> %^{Title}\n%?" :empty-lines 1)
 
    ;; Reminders
-   ("r" "Reminder" entry (file "~/org/gtd/tickler.org")
+   ("r" "Reminder" entry (file "~/org/act/reminders.org")
     "* %^{Reminder} %^g\nSCHEDULED:  %^t\n:PROPERTIES:\n:CREATED:  %U\n:END:\n\n%?"
     :prepend t
     :created t
@@ -61,7 +61,7 @@
     )
 
    ;; People
-   ("p" "People" entry (file "~/org/ref/people.org")
+   ("p" "People" entry (file "~/org/lib/people.org")
   "* %^{First} %^{Last}
 :PROPERTIES:
 :First:    %\\1
