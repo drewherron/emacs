@@ -460,7 +460,7 @@ Inserts org-mode source code snippet"
   (interactive)
   (if (and buffer-file-name
            (string-match-p "bookmarks\\(_source\\)?\\.org$" buffer-file-name))
-      (let ((org-refile-targets '(("~/org/lib/bookmarks.org" :maxlevel . 10)))
+      (let ((org-refile-targets '(("~/org/web/bookmarks.org" :maxlevel . 10)))
             (org-refile-target-verify-function 'my/verify-refile-target-is-folder))
         (org-refile))
     (org-refile)))
