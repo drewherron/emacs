@@ -291,6 +291,19 @@
   :bind
   ("C-x u" . undo-tree-visualize))
 
+;; Prune undo-tree history files older than 30 days on startup
+(run-with-idle-timer
+ 60 nil
+ (lambda ()
+   (let ((dir (expand-file-name "undo" user-emacs-directory))
+         (cutoff (* 30 24 60 60)))
+     (when (file-directory-p dir)
+       (dolist (f (directory-files dir t "\\`\\."))
+         (when (and (file-regular-p f)
+                    (> (float-time (time-since (nth 5 (file-attributes f))))
+                       cutoff))
+           (delete-file f)))))))
+
 ;; which-key
 (use-package which-key
   :custom
