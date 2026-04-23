@@ -311,8 +311,10 @@
 ;; Backup files
 (setq backup-directory-alist
       `(("." . ,(expand-file-name "backup" user-emacs-directory))))
-(setq auto-save-file-name-transforms
-      `((".*" ,(expand-file-name "auto-save" user-emacs-directory) t)))
+(let ((auto-save-dir (expand-file-name "auto-save/" user-emacs-directory)))
+  (make-directory auto-save-dir t)
+  (setq auto-save-file-name-transforms
+        `((".*" ,auto-save-dir t))))
 
 ;; Spaces
 (setq-default indent-tabs-mode nil
