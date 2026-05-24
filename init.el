@@ -211,7 +211,21 @@
 (use-package python
   :ensure nil
   :custom
-  (python-shell-interpreter "python3"))
+  (python-shell-interpreter "python3")
+  :hook ((python-mode python-ts-mode) . eglot-ensure))
+
+;; eglot (built-in LSP client)
+(use-package eglot
+  :ensure nil
+  :custom
+  ;; Shut the language server down when its last buffer is closed
+  (eglot-autoshutdown t)
+  ;; Don't log all server JSON traffic (debugging aid we rarely need)
+  (eglot-events-buffer-size 0)
+  :bind (:map eglot-mode-map
+         ("C-c l r" . eglot-rename)
+         ("C-c l a" . eglot-code-actions)
+         ("C-c l f" . eglot-format-buffer)))
 
 ;; Rainbow-mode
 (use-package rainbow-mode
