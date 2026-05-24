@@ -32,17 +32,17 @@
 ;; Company
 (use-package company
   :delight
+  :custom
+  ;; Don't preselect a candidate
+  (company-selection-default nil)
+  ;; Never force a match
+  (company-require-match nil)
+  ;; Cycle from the bottom to top
+  (company-selection-wrap-around t)
   :config
-  (global-company-mode))
-
-;; helm-company is not available in newer repositories
-;; Using built-in company completion instead
-;(use-package helm-company
-;  :after helm company
-;  :bind (:map company-mode-map
-;         ("C-;" . helm-company)
-;         :map company-active-map
-;         ("C-;" . helm-company)))
+  (global-company-mode)
+  ;; tab-and-go: TAB selects/cycles candidates, RET/SPC behave normally
+  (company-tng-mode))
 
 ;; darkroom
 (use-package darkroom)
