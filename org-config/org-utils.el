@@ -148,5 +148,12 @@ Only deletes from the current buffer, leaving other files untouched."
                       deleted-count (buffer-name))
             (message "No duplicate trees found in current buffer")))))))
 
+;; Label org-mode's prefix keymaps for which-key
+(with-eval-after-load 'which-key
+  (which-key-add-major-mode-key-based-replacements 'org-mode
+    "C-c \"" "plot"
+    "C-c C-v" "babel"
+    "C-c C-x" "extras"))
+
 (provide 'org-utils)
 ;;; org-utils.el ends here

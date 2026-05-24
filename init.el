@@ -172,6 +172,15 @@
   :hook (markdown-mode . (lambda ()
                           (local-set-key (kbd "RET") 'newline))))
 
+;; Label markdown-mode's prefix keymaps
+(with-eval-after-load 'which-key
+  (which-key-add-major-mode-key-based-replacements 'markdown-mode
+    "C-c C-a" "links"
+    "C-c C-c" "commands"
+    "C-c C-s" "styles"
+    "C-c C-t" "headings"
+    "C-c C-x" "toggle/move"))
+
 ;; Markdown Preview Mode
 (use-package markdown-preview-mode
   :after markdown-mode
@@ -226,6 +235,15 @@
          ("C-c l r" . eglot-rename)
          ("C-c l a" . eglot-code-actions)
          ("C-c l f" . eglot-format-buffer)))
+
+(which-key-add-key-based-replacements "C-c l" "lsp")
+
+;; Label python-mode's built-in prefixes
+(with-eval-after-load 'which-key
+  (dolist (mode '(python-mode python-ts-mode))
+    (which-key-add-major-mode-key-based-replacements mode
+      "C-c TAB" "imports"
+      "C-c C-t" "skeletons")))
 
 ;; Rainbow-mode
 (use-package rainbow-mode
