@@ -216,6 +216,11 @@
 ;; Set your finance directory
 (setq org-finance-directory "~/org/fin")
 
+;; Make sure pip's --user bin dir is visible to Emacs (for pylsp, etc.)
+(let ((local-bin (expand-file-name "~/.local/bin")))
+  (add-to-list 'exec-path local-bin)
+  (setenv "PATH" (concat local-bin path-separator (getenv "PATH"))))
+
 ;; Python - Use built-in python.el instead of python-mode for better compatibility
 (use-package python
   :ensure nil
