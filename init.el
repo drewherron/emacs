@@ -124,32 +124,6 @@
   (helm-org-headings-fontify t)
   (helm-org-format-outline-path t))
 
-(use-package helm-gtags
-  :after helm
-  :init (helm-gtags-mode t)
-  :diminish ""
-  :hook ((dired-mode . helm-gtags-mode)
-         (eshell-mode-hook . helm-gtags-mode)
-         (c-mode-hook . helm-gtags-mode)
-         (c++-mode . helm-gtags-mode)
-         (asm-mode . helm-gtags-mode))
-  :custom
-  (helm-gtags-ignore-case t)
-  (helm-gtags-auto-update t)
-  (helm-gtags-use-input-at-cursor t)
-  (helm-gtags-pulse-at-cursor t)
-  (helm-gtags-prefix-key "\C-cg")
-  (helm-autoresize-mode nil)
-  (helm-gtags-suggested-key-mapping t))
-;  :bind (:map helm-gtags-mode-map
-;         ("C-j" . helm-gtags-select)
-;         ("M-." . helm-gtags-dwim)
-;         ("M-," . helm-gtags-pop-stack)
-;         ("C-c <" . helm-gtags-previous-history)
-;         ("C-c >" . helm-gtags-next-history)
-;         ("C-c g a" . helm-gtags-tags-in-this-function)))
-
-
 ;; Better completion ordering
 (with-eval-after-load 'helm
   (setq helm-mode-fuzzy-match t
@@ -230,7 +204,6 @@
 ;; org-finance
 (add-to-list 'load-path "~/Projects/org-finance/lisp")
 (require 'org-finance)
-
 ;; Set your finance directory
 (setq org-finance-directory "~/org/fin")
 
