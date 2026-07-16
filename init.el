@@ -7,6 +7,10 @@
 ;; Don't show the splash screen
 (setq inhibit-startup-message t)
 
+;; Silence async native-compilation warnings (e.g. go-mode referencing
+;; eglot/lsp functions that aren't loaded at compile time)
+(setq native-comp-async-report-warnings-errors 'silent)
+
 ;;==========;;
 ;; Packages ;;
 ;;==========;;
