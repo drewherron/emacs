@@ -242,6 +242,29 @@
   (python-shell-interpreter "python3")
   :hook ((python-mode python-ts-mode) . eglot-ensure))
 
+;; pyvenv - virtual environment support, auto-activated per project
+(use-package pyvenv
+  :config
+  (pyvenv-mode 1)
+  (defun my/auto-activate-venv ()
+    "Activate a venv found in the current project's root, if any.
+Prefers `.venv' (modern convention), falling back to `venv'/`env'
+for older projects.  Reconnects eglot so the language server sees
+the venv's packages."
+    (when-let* ((proj (project-current))
+                (root (project-root proj))
+                (venv (seq-some (lambda (d)
+                                  (let ((p (expand-file-name d root)))
+                                    (and (file-directory-p p) p)))
+                                '(".venv" "venv" "env"))))
+      (unless (and pyvenv-virtual-env
+                   (file-equal-p pyvenv-virtual-env venv))
+        (pyvenv-activate venv)
+        ;; If eglot is already running here, restart it with the new env
+        (when (and (fboundp 'eglot-managed-p) (eglot-managed-p))
+          (eglot-reconnect (eglot-current-server))))))
+  :hook ((python-mode python-ts-mode) . my/auto-activate-venv))
+
 ;; eglot (built-in LSP client)
 (use-package eglot
   :ensure nil
