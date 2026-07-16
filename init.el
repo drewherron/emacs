@@ -198,6 +198,10 @@
   :custom
   (markdown-command "/bin/pandoc"))
 
+;; Use the system default browser
+(setq browse-url-browser-function 'browse-url-generic
+      browse-url-generic-program (or (getenv "BROWSER") "xdg-open"))
+
 ;; multiple-cursors
 (use-package multiple-cursors
   :bind (("C-S-c C-S-c" . mc/edit-lines)
