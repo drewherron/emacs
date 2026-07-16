@@ -103,12 +103,14 @@
 (use-package gptel
   :config
 ;  (setq gptel-model "gemini-2.5-pro-exp-03-25"
-  (setq gptel-model "gemini-2.0-flash-exp"
-        gptel-backend (gptel-make-gemini "Gemini"
-                        :key (getenv "GEMINI_API_KEY")
+  (gptel-make-gemini "Gemini"
+    :key (getenv "GEMINI_API_KEY")
+    :stream t)
+  (setq gptel-model "claude-sonnet-4-6"
+        gptel-backend (gptel-make-anthropic "Claude"
+                        :key (getenv "ANTHROPIC_API_KEY")
                         :stream t))
-  :bind (("C-c g" . gptel-menu)
-         ("C-c C-g" . gptel-send)))
+  :bind (("C-c g" . gptel-menu)))
 
 ;; Helm
 (use-package helm
