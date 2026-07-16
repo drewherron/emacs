@@ -88,6 +88,10 @@
   :bind
   ("<C-f6>" . helm-emms))
 
+;; Genmark
+(use-package genmark-mode
+  :load-path "/home/drew/Projects/genmark/editor/emacs")
+
 ;; Go
 (use-package go-mode
   :ensure t
