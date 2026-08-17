@@ -230,6 +230,33 @@
 ;; Set your finance directory
 (setq org-finance-directory "~/org/fin")
 
+;; ox-hugo - export org subtrees to Hugo markdown
+(use-package ox-hugo
+  :after ox
+  :config
+  ;; Workaround for cross-post links ("Unable to resolve link ...
+  ;; pre-processed.org"): ox-hugo rewrites links between posts into
+  ;; file: links, but Org 9.7+ only serializes the "file:" prefix when
+  ;; :type-explicit-p is set, which ox-hugo doesn't do. Without the
+  ;; prefix the links re-parse as broken fuzzy links and abort the
+  ;; export. Restore the prefix in the pre-processed buffer.
+  (defun my/ox-hugo-fix-preprocessed-links (buffer)
+    (with-current-buffer buffer
+      (save-excursion
+        (goto-char (point-min))
+        (while (re-search-forward
+                "\\[\\[\\([^:*][^:]*\\.pre-processed\\.org\\(::[^][]*\\)?\\)\\]" nil t)
+          (replace-match "[[file:\\1]" t)))
+      ;; The pre-processed buffer shares the source file's
+      ;; buffer-file-name; keep it marked unmodified so save-some-buffers
+      ;; can never write this throwaway buffer over the real .org file.
+      (set-buffer-modified-p nil))
+    buffer)
+  (advice-add 'org-hugo--get-pre-processed-buffer
+              :filter-return #'my/ox-hugo-fix-preprocessed-links))
+;; "Export all, but skip the drafts" command (C-c p) lives in
+;; org-config/ox-hugo-publish.el, loaded below with the other org config.
+
 ;; Make sure pip's --user bin dir is visible to Emacs (for pylsp, etc.)
 (let ((local-bin (expand-file-name "~/.local/bin")))
   (add-to-list 'exec-path local-bin)
@@ -367,6 +394,7 @@ the venv's packages."
 (load "~/.config/emacs/org-config/org-capture")
 (load "~/.config/emacs/org-config/org-agenda")
 (load "~/.config/emacs/org-config/org-utils")
+(load "~/.config/emacs/org-config/ox-hugo-publish")
 
 ;; Backup files
 (setq backup-directory-alist
